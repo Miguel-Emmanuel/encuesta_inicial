@@ -3,6 +3,8 @@
     background-image: url("../img/rectoria.png");
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: 500px;
+    
 }
 .contenedor{
     margin: 0 auto;
@@ -28,4 +30,27 @@
 .form-text{
     font-size:x-small;
 }
+.btn{
+    margin-top: 45px;
+    text-align: center;
+}
+a{
+    font-size: small;
+}
+
+
+
+
+
+
+
+/*Responsive*/
+@media screen and (max-width:1300px) {
+    /*Universal*/
+    .contenedor{
+        width: 80%;
+        text-align: justify;
+        margin-top: 10%;
+    }
+    }
 

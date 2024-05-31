@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <?php 
+        include("../../../app/Models/conexion.php");
+    ?>
+
     <link rel="stylesheet" href="../../css/login.css">
 </head>
 <body>
@@ -16,21 +20,29 @@
             </div>
             <div class="col form">
                 <h2 class="text-center bp-3"> Inicia Sesión </h2> <br>
-                <form action=""> <!-- ESTE ES EL FORMULARIO -->
+                <form action="post"> <!-- ESTE ES EL FORMULARIO -->
+                <?php
+                include("../../../app/Controllers/sesiones_controller.php");
+                ?>
                     <!-- Email input -->
-                    <input type="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3">
+                    <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3">
                     <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div>
 
                     <br>
 
                     <!-- Password input -->
-                    <input type="password" class="form-control form-control-sm" placeholder="Contraseña" aria-describedby="basic-addon3">
+                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Contraseña" aria-describedby="basic-addon3">
                     <div class="form-text" id="basic-addon3">No olvides cambiar tu contraseña si es primera vez que ingresas.</div>
 
                     <br>
 
                     <!-- Submit -->
-                    <button type="button" class="btn btn-success align-center">Ingresar</button>
+
+                    <a href="">Olvidaste tu contraseña?</a>
+
+                    <br>
+
+                    <center><input type="submit" name="btningresar" class="btn btn-success" value="Ingresar"></center>
                 </form>
             </div>
         </div> 
