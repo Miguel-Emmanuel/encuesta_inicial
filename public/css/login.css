@@ -1,0 +1,20 @@
+/*Universal*/
+.bg{
+    background-image: url("../img/rectoria.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.contenedor{
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 55%;
+    border: 2px solid;
+    border-radius: 1px;
+
+}
+
+.form-control-sm{
+    border-radius: 0;
+    border: 1px solid;
+    outline: none;
+}
