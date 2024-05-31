@@ -10,11 +10,22 @@
     width: 55%;
     border: 2px solid;
     border-radius: 1px;
-
 }
-
-.form-control-sm{
+.form-control{
     border-radius: 0;
-    border: 1px solid;
+    border: none;
+    border-bottom: 1px solid;
     outline: none;
+    &:focus{
+        border-color: #ced4da; /* Mismo color de borde que el estado normal */
+            box-shadow: none; /* Eliminar sombra */
+    }
 }
+.form{
+    padding: 7%;
+    padding-top: 3%;
+}
+.form-text{
+    font-size:x-small;
+}
+
