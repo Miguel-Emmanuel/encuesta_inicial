@@ -3,6 +3,9 @@ session_start();
 if (empty($_SESSION["id"])){
     header("location: ../sesiones/login.php");
 }
+if ($_SESSION["rol_id"] = 2){
+    header("location: ../sesiones/inicio.php");
+}
 ?>
 
 Bienvenido alumno
