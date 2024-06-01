@@ -1,20 +1,24 @@
-/*Universal*/
-.bg{
-    background-image: url("../img/rectoria.png");
-    background-position: center center;
-    background-repeat: no-repeat;
+
+body {
+    background-color: #f4f4f4;
 }
-.contenedor{
-    margin: 0 auto;
+
+.container {
     margin-top: 100px;
-    width: 55%;
-    border: 2px solid;
-    border-radius: 1px;
-
 }
 
-.form-control-sm{
-    border-radius: 0;
-    border: 1px solid;
-    outline: none;
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
 }
