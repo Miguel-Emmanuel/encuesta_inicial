@@ -20,7 +20,7 @@
             </div>
             <div class="col form">
                 <h2 class="text-center bp-3"> Inicia Sesión </h2> <br>
-                <form action="post"> <!-- ESTE ES EL FORMULARIO -->
+                <form method="post" action=""> <!-- ESTE ES EL FORMULARIO -->
                 <?php
                 include("../../../app/Controllers/sesiones_controller.php");
                 ?>
