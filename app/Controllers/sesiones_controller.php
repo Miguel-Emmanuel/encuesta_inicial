@@ -16,10 +16,21 @@ if (!empty($_POST["btningresar"])){  /*SI EL BOTON HA SIDO PULSADO*/
             $_SESSION["am"] = $datos->apellido_materno;
             $_SESSION["rol"] = $datos->rol_id;
 
-            if ($_SESSION["rol"] = 1) {
-                header("location: ../encuesta/encuesta.php");
-            } else if ($_SESSION["rol"] = 2){
-                header("location: inicio.php");
+            $rol = $_SESSION["rol"];
+
+            switch($rol) {
+                case 1:
+                    header("Location: inicio.php");
+                    exit();
+                case 1:
+                    header("Location: inicio.php");
+                    exit();
+                case 3:
+                    header("Location: ../encuesta/encuesta.php");
+                    exit();
+                case 3:
+                    header("Location: ../encuesta/encuesta.php");
+                    exit();
             }
             
         } else {
