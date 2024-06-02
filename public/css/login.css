@@ -1,24 +1,56 @@
-
-body {
-    background-color: #f4f4f4;
+/*Universal*/
+.bg{
+    background-image: url("../img/rectoria.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 500px;
+    
 }
 
 .container {
     margin-top: 100px;
+    width: 55%;
+    border: 2px solid;
+    border-radius: 1px;
+}
+.form-control{
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+    &:focus{
+        border-color: #ced4da; /* Mismo color de borde que el estado normal */
+            box-shadow: none; /* Eliminar sombra */
+    }
+}
+.form{
+    padding: 7%;
+    padding-top: 3%;
+}
+.form-text{
+    font-size:x-small;
+}
+.btn{
+    margin-top: 45px;
+    text-align: center;
+}
+a{
+    font-size: small;
 }
 
-.card {
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.card-header {
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 10px 10px 0 0;
-}
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-}
+
+
+
+
+/*Responsive*/
+@media screen and (max-width:1300px) {
+    /*Universal*/
+    .contenedor{
+        width: 80%;
+        text-align: justify;
+        margin-top: 10%;
+    }
+    }
+
