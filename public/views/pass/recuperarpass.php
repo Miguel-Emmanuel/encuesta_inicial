@@ -15,34 +15,24 @@
     <div class="contenedor rounded shadow"> <!-- CUERPO DE LA PAGINA -->
         <div class="row m-2 align-items-stretch"> <!-- CUERPO DEL LOGIN -->
         <!-- COLUMNAS -->
-            <div class="bg col d-none d-lg-block col-md-6 col-lg-6 col-xl-6 rounded">
-                <!-- ESTE ES LA IMAGEN PORTADA DE LA DERECHA -->
-            </div>
             <div class="col form">
-                <h2 class="text-center bp-3"> Inicia Sesión </h2> <br>
+                <h2 class="text-center bp-3"> Recuperacion de Contraseña </h2> <br>
                 <form method="post" action=""> <!-- ESTE ES EL FORMULARIO -->
                 <?php
-                include("../../../app/Controllers/sesiones_controller.php");
+                include("../../../app/controllers/correos_controller.php");
                 ?>
                     <!-- Email input -->
                     <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3">
-                    <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div>
-
-                    <br>
-
-                    <!-- Password input -->
-                    <input type="password" name="password" class="form-control form-control-sm" placeholder="Contraseña" aria-describedby="basic-addon3">
-                    <div class="form-text" id="basic-addon3">No olvides cambiar tu contraseña si es primera vez que ingresas.</div>
+                    <div class="form-text" id="basic-addon3">Verifica el dominio y datos de tu correo para poder identificarlo.</div>
 
                     <br>
 
                     <!-- Submit -->
 
-                    <a href="recuperarcontraseña.php">Olvidaste tu contraseña?</a>
 
                     <br>
 
-                    <center><input type="submit" name="btningresar" class="btn btn-success" value="Ingresar"></center>
+                    <center><input type="submit" name="btnenviarcorreo" class="btn btn-success" value="Ingresar"></center>
                 </form>
             </div>
         </div> 

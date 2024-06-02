@@ -4,6 +4,9 @@ session_start();
 if (empty($_SESSION["id"])) {
     header("location: login.php");
 }
+if($_SESSION["id"] == 3){
+    header("location: ../encuesta/encuesta.php");
+}
 
 ?>
 
@@ -22,7 +25,6 @@ if (empty($_SESSION["id"])) {
 </head>
 
 <body>
-
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
