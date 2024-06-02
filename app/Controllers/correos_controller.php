@@ -16,22 +16,10 @@ if (!empty($_POST["btnenviarcorreo"])) {
         $email = $_POST["email"];
         $sql = $conexion->query("SELECT * FROM usuarios WHERE email = '$email'");
         if ($datos = $sql->fetch_object()) {
-            // Generar el token de la URL
-            $llaveSecreta = 'llave_secreta_aqui';
-            $idUsuario = $datos->id;
-            $tiempoVidaToken = 900; // 15 minutos
-            $timestamp = time();
-            $datos = [
-                'id' => $idUsuario,
-                'timestamp' => $timestamp,
-            ];
-            $datosCodificados = json_encode($datos);
-            $token = hash_hmac('sha256', $datosCodificados, $llaveSecreta);
-            $url = 'http://127.0.0.1:8000/public/views/pass/cambiarpass.php?' . http_build_query([
-                'id' => $idUsuario,
-                'timestamp' => $timestamp,
-                'token' => $token,
-            ]);
+            $row = $sql->fetch_assoc();
+            $id=$datos->id;
+            $url = "http://127.0.0.1:8000/public/views/pass/cambiarpass.php?id=" . $id;
+
 
             // Configurar y enviar el correo
             $mail = new PHPMailer(true);
@@ -43,7 +31,7 @@ if (!empty($_POST["btnenviarcorreo"])) {
                 $mail->SMTPAuth = true;                                  // Habilitar autenticación SMTP
                 $mail->Username = 'soporteuippe@gmail.com';              // Tu dirección de correo
                 $mail->Password = 'mhrcaotksyefxybd';                    // Tu contraseña de aplicación SMTP
-                $mail->SMTPSecure = 'ssl';                               // Habilitar encriptación TLS implícita
+                $mail->SMTPSecure = 'ssl';                               // Habilitar encriptación implícita
                 $mail->Port = 465;                                       // Puerto TCP
 
                 // Destinatarios
