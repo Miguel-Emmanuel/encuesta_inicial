@@ -14,7 +14,7 @@ if($_SESSION["id"] == 3){
 <html lang="en">
 
 <head>
-    <title>Sidebar 02</title>
+    <title>Encuesta Inicial | UTVT</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
