@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+.form-encuesta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pregunta {
+    margin-bottom: 15px;
+}
+
+.pregunta-texto {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.respuesta-input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-enviar {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: center;
+}
+
+.btn-enviar:hover {
+    background-color: #218838;
+}
+
+.btn-cerrar-sesion {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.btn-cerrar-sesion .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cerrar-sesion .btn:hover {
+    background-color: #c82333;
+}
