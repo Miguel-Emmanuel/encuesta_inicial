@@ -9,7 +9,13 @@ if (empty($_SESSION["id"])){
 $idUsuario = $_SESSION["id"];
 
 ///////////////////DAR DE ALTA VARIAS RESPUESTAS////////////////////
-
+// if ($preguntas = $sql -> fetch_object()) {
+//     $id= $preguntas->id;
+//     $preguntaa = $preguntas->pregunta;
+//     $tipo = $preguntas->tipo;
+//     $seccion = $preguntas->seccion;
+//     $activo = $preguntas->activo;
+// }
 
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
