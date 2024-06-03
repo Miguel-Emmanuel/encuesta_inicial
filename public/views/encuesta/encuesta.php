@@ -234,6 +234,98 @@ if ($_SESSION["id"] != 3) {
         </div>
         <div class="col-12 row shadow p-3 mb-5 bg-body-tertiary rounded">
             <h4 class="oswald-secondary">Datos para Contactar</h4>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="telefono_celular" class="form-label"> <strong style="color: red;">*</strong> Teléfono Celular:</label>
+                    <input type="text" class="form-control" id="telefono_celular" name="telefono_celular" placeholder="Ingrese su teléfono celular...">
+                </div>
+            </div>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="telefono_casa" class="form-label"> <strong style="color: red;">*</strong> Teléfono Casa:</label>
+                    <input type="text" class="form-control" id="telefono_casa" name="telefono_casa" placeholder="Ingrese su teléfono de casa...">
+                </div>
+            </div>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Correo electrónico personal:</label>
+                    <input type="email" class="form-control" id="telefono_casa" name="telefono_casa" placeholder="Ingrese su teléfono de casa...">
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <div class="input-group">
+                    <span class="input-group-text"><strong style="color: red;">* </strong> Redes sociales (minimo una):</span>
+                    <input type="text" aria-label="social_media1" class="form-control" name="social_media1" id="social_media1">
+                    <input type="text" aria-label="social_media2" class="form-control" name="social_media2" id="social_media2">
+                </div>
+            </div>
+        </div>
+        <div class="col-12 row shadow p-3 mb-5 bg-body-tertiary rounded">
+            <h4 class="oswald-secondary">Domicilio de Residencia</h4>
+            <p>(Actual o en caso de rentar cerca de la universidad)</p>
+            <div class="col-12 mt-1">
+                <label for="genero" class="form-label"><strong style="color: red;">*</strong> Renta cerca de la universidad:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="renta_uni" id="renta_uni1" value="option1" checked>
+                    <label class="form-check-label" for="renta_uni1">
+                        Si
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="renta_uni" id="renta_uni2" value="option2">
+                    <label class="form-check-label" for="renta_uni2">
+                        No
+                    </label>
+                </div>
+            </div>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Calle:</label>
+                    <input type="text" class="form-control" id="calle" name="calle" placeholder="Ingrese la calle de su domicilio...">
+                </div>
+            </div>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Número Exterior:</label>
+                    <input type="text" class="form-control" id="no_exterior" name="no_exterior" placeholder="Ingrese el número exterior de su domicilio...">
+                </div>
+            </div>
+            <div class="col-4 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Número Interior:</label>
+                    <input type="text" class="form-control" id="no_interior" name="no_interior" placeholder="Ingrese el número interior de su domicilio...">
+                </div>
+            </div>
+            <div class="col-3 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Colonia:</label>
+                    <input type="text" class="form-control" id="colonia" name="colonia" placeholder="Ingrese la colonia de su domicilio...">
+                </div>
+            </div>
+            <div class="col-3 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Localidad:</label>
+                    <input type="text" class="form-control" id="localidad" name="localidad" placeholder="Ingrese la localidad de su domicilio...">
+                </div>
+            </div>
+            <div class="col-3 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Municipio:</label>
+                    <input type="text" class="form-control" id="municipio" name="municipio" placeholder="Ingrese el municipio de su domicilio...">
+                </div>
+            </div>
+            <div class="col-3 mt-3">
+                <div class="mb-3">
+                    <label for="correo_personal" class="form-label"> <strong style="color: red;">*</strong> Código Postal:</label>
+                    <input type="text" class="form-control" id="cp" name="cp" placeholder="Ingrese su código postal...">
+                </div>
+            </div>
+            <div class="col-12 mt-2">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                    <label for="floatingTextarea"><strong style="color: red;">*</strong> Menciona 2 referencias cerca de su domicilio (Tienda, Escuela, Parque, etc.)</label>
+                </div>
+            </div>
         </div>
         <div class="col-12 mt-2 d-flex justify-content-center">
             <nav aria-label="Page navigation example">
