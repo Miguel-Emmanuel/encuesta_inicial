@@ -104,10 +104,20 @@ $conexion->close();
 // $conexion->close();
 ?>
 
-Bienvenido alumno
-
-<a href="../../../app/Controllers/sessiondestroy_controller.php">
-    <center>
-        <input type="submit" name="btningresar" class="btn btn-success" value="Cerrar sesión">
-    </center>
-</a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Contestación</title>
+    <link rel="stylesheet" href="../../../public/css/encuesta_c.css">
+</head>
+<body>
+    <div class="container">
+        <p>Gracias por contestar el formulario</p>
+        <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn">
+            <input type="submit" name="btningresar" class="btn btn-success" value="Cerrar sesión">
+        </a>
+    </div>
+</body>
+</html>

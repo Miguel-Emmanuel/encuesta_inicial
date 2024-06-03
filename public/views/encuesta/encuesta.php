@@ -4,9 +4,9 @@ session_start();
 if (empty($_SESSION["id"])){
     header("location: ../sesiones/login.php");
 }
-// if($_SESSION["id"] != 3){
-//     header("location: ../sesiones/inicio.php");
-// }
+if($_SESSION["id"] != 3){
+    header("location: ../sesiones/inicio.php");
+}
 
 $sql = $conexion->query("SELECT * FROM preguntas");
 
