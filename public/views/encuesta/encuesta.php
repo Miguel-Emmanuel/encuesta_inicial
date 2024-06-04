@@ -1,16 +1,8 @@
 <?php
+// (Restante código del formulario)
+// Código de conexión y sesión...
 include("../../../database/conexion.php");
-session_start();
-if (empty($_SESSION["id"])){
-    header("location: ../sesiones/login.php");
-    exit;
-}
-if($_SESSION["id"] != 3){
-    header("location: ../sesiones/inicio.php");
-    exit;
-}
-
-$sql = $conexion->query("SELECT * FROM preguntas ");
+$sql = $conexion->query("SELECT * FROM preguntas where id = 89");
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +38,9 @@ $sql = $conexion->query("SELECT * FROM preguntas ");
                         echo "<table>";
                         echo "<tr><th>Opción</th></tr>";
                         while ($opcion = $opciones_respuesta->fetch_object()) {
+                            $opcionId = $opcion->id;
                             $nombreOpcion = $opcion->opcion1;
-                            echo "<tr><td><input type='checkbox' name='respuestas[$idPregunta][]' value='$nombreOpcion'> $nombreOpcion</td></tr>";
+                            echo "<tr><td><input type='checkbox' name='respuestas[$idPregunta][$opcionId]' value='$nombreOpcion'> $nombreOpcion</td></tr>";
                         }
                         echo "</table>";
                         echo "</div>";
@@ -61,8 +54,9 @@ $sql = $conexion->query("SELECT * FROM preguntas ");
                     if ($opciones_respuesta->num_rows > 0) {
                         echo "<select name='respuestas[$idPregunta]' class='respuesta-select'>";
                         while ($opcion = $opciones_respuesta->fetch_object()) {
+                            $opcionId = $opcion->id;
                             $nombreOpcion = $opcion->opcion1;
-                            echo "<option value='$nombreOpcion'>$nombreOpcion</option>";
+                            echo "<option value='$opcionId'>$nombreOpcion</option>";
                         }
                         echo "</select>";
                     } else {

@@ -15,15 +15,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     foreach ($respuestas as $idPregunta => $respuesta) {
         if (is_array($respuesta)) {
-            foreach ($respuesta as $opcion1 => $opcion2Array) {
-                if (is_array($opcion2Array)) {
-                    foreach ($opcion2Array as $opcion2 => $valor) {
-                        $respuestaTexto = "$opcion1 - $opcion2";
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuestaTexto);
+            foreach ($respuesta as $opcionId => $opcionRespuesta) {
+                if (is_array($opcionRespuesta)) {
+                    foreach ($opcionRespuesta as $opcion2 => $valor) {
+                        $opcionId2 = obtenerOpcionId($conexion, $idPregunta, $opcionId, $opcion2);
+                        if ($opcionId2 !== null) {
+                            $respuestaTexto = "$opcionId - $opcion2";
+                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId2, $respuestaTexto);
+                        }
                     }
                 } else {
-                    $respuestaTexto = $opcion1;
-                    guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuestaTexto);
+                    $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
+                    if ($opcionId1 !== null) {
+                        $respuestaTexto = $opcionRespuesta;
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $respuestaTexto);
+                    }
                 }
             }
         } else {
@@ -32,11 +38,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $respuestaTexto) {
-    $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {
+    if ($opcion2 === null) {
+        $stmt = $conexion->prepare("SELECT id FROM opciones_respuesta WHERE pregunta_id = ? AND opcion1 = ?");
+        $stmt->bind_param("is", $idPregunta, $opcion1);
+    } else {
+        $stmt = $conexion->prepare("SELECT id FROM opciones_respuesta WHERE pregunta_id = ? AND opcion1 = ? AND opcion2 = ?");
+        $stmt->bind_param("iss", $idPregunta, $opcion1, $opcion2);
+    }
+    
+    $stmt->execute();
+    $stmt->bind_result($id);
+    $stmt->fetch();
+    $stmt->close();
+    
+    return $id ? $id : null;
+}
 
-    // Aquí estamos usando cinco parámetros: dos enteros, un entero o NULL, y dos strings
-    $stmtUsuarioRespuesta->bind_param("iiiss", $idUsuario, $idPregunta, $opcionId, $respuestaTexto, $respuestaTexto);
+function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $respuestaTexto) {
+    if ($opcionId === null) {
+        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+        $stmtUsuarioRespuesta->bind_param("iis", $idUsuario, $idPregunta, $respuestaTexto);
+    } else {
+        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+        $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $opcionId, $respuestaTexto);
+    }
+    
     $stmtUsuarioRespuesta->execute();
 
     if ($stmtUsuarioRespuesta->affected_rows <= 0) {
