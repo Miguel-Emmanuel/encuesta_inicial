@@ -72,6 +72,18 @@ function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $respue
     $stmtUsuarioRespuesta->close();
 }
 
+// Verificar si se ha enviado el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $seccionActual = $_POST['seccionActual'];
+    // $nuevaSeccion = $_POST['nuevaSeccion'];
+
+    // Redirigir a la página de visualización de la sección actual
+    header("Location: ../../public/views/encuesta/encuesta.php?seccion=$seccionActual");
+
+    exit;
+}
+
+
 // Cerrar la conexión
 $conexion->close();
 ?>
@@ -87,6 +99,7 @@ $conexion->close();
 <body>
     <div class="container">
         <p>Gracias por contestar el formulario</p>
+        
         <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn">
             <input type="submit" name="btningresar" class="btn btn-success" value="Cerrar sesión">
         </a>

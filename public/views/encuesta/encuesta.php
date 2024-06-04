@@ -53,7 +53,7 @@ $respuestasGuardadas = isset($_SESSION['respuestas']) ? $_SESSION['respuestas'] 
             <div class="col-12">
                 <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
             </div>
-            <form id="formEncuesta" action="../../../app/Controllers/encuesta_controller.php" method="post" style="padding: 0px;">
+            <form id="formEncuesta" action="../../../app/Controllers/encuesta_controller.php"  onsubmit="return validarCampos();" method="post" style="padding: 0px;">
                 <input type="hidden" id="seccionActual" name="seccionActual" value="<?php echo $seccionActual; ?>">
                 <div class='col-12 row shadow p-3 mb-5 bg-body-tertiary rounded'>
                     <!-- Título de la sección actual -->
@@ -244,6 +244,30 @@ $respuestasGuardadas = isset($_SESSION['respuestas']) ? $_SESSION['respuestas'] 
             window.location.href = "?seccion=" + encodeURIComponent(nuevaSeccion);
         }
     </script>
+    <script>
+    function validarCampos() {
+        // Obtener todos los campos de la sección actual
+        var campos = document.querySelectorAll('input[name^="respuestas"]');
+        var seccionCompleta = true;
+
+        // Verificar si todos los campos están llenos
+        campos.forEach(function(campo) {
+            if (campo.value.trim() === "") {
+                seccionCompleta = false;
+            }
+        });
+
+        // Si algún campo está vacío, mostrar un mensaje de alerta y evitar que el formulario se envíe
+        if (!seccionCompleta) {
+            alert("Por favor complete todos los campos de la sección actual antes de enviar el formulario.");
+            return false;
+        }
+
+        // Si todos los campos están llenos, permitir que el formulario se envíe
+        return true;
+    }
+</script>
+
 </body>
 
 </html>
