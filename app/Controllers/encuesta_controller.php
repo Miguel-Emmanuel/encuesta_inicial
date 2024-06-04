@@ -2,112 +2,51 @@
 include("../../database/conexion.php");
 
 session_start();
-if (empty($_SESSION["id"])){
+if (empty($_SESSION["id"])) {
     header("location: ../../view/sesiones/login.php");
-    exit; // Termina la ejecución del script después de redirigir
+    exit;
 }
-$idUsuario = $_SESSION["id"];
 
-///////////////////DAR DE ALTA VARIAS RESPUESTAS////////////////////
-// if ($preguntas = $sql -> fetch_object()) {
-//     $id= $preguntas->id;
-//     $preguntaa = $preguntas->pregunta;
-//     $tipo = $preguntas->tipo;
-//     $seccion = $preguntas->seccion;
-//     $activo = $preguntas->activo;
-// }
+$idUsuario = $_SESSION["id"];
 
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener las respuestas del formulario
     $respuestas = $_POST['respuestas'];
-    // Recorrer todas las respuestas y dar de alta en la base de datos
-    foreach ($respuestas as $idPregunta => $respuestaTexto) {
-        // Insertar la respuesta en la tabla respuestas
-        $stmtRespuesta = $conexion->prepare("INSERT INTO respuestas (respuesta, pregunta_id) VALUES (?, ?)");
-        $stmtRespuesta->bind_param("si", $respuestaTexto, $idPregunta);
-        $stmtRespuesta->execute();
-        // Verificar si la inserción en respuestas fue exitosa
-        if ($stmtRespuesta->affected_rows > 0) {
-            // Obtener el ID de la respuesta recién creada
-            // echo "La respuesta se registró correctamente.";
-            $idRespuesta = $stmtRespuesta->insert_id;
-            // Insertar la relación entre el usuario y la respuesta en la tabla usuario_respuesta
-            $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, respuesta_id) VALUES (?, ?)");
-            $stmtUsuarioRespuesta->bind_param("ii", $idUsuario, $idRespuesta);
-            $stmtUsuarioRespuesta->execute();
-            // Verificar si la inserción en usuario_respuesta fue exitosa
-            if ($stmtUsuarioRespuesta->affected_rows <= 0) {
-                echo "Error al registrar la respuesta del usuario.";
+
+    foreach ($respuestas as $idPregunta => $respuesta) {
+        if (is_array($respuesta)) {
+            foreach ($respuesta as $opcion1 => $opcion2Array) {
+                if (is_array($opcion2Array)) {
+                    foreach ($opcion2Array as $opcion2 => $valor) {
+                        $respuestaTexto = "$opcion1 - $opcion2";
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuestaTexto);
+                    }
+                } else {
+                    $respuestaTexto = $opcion1;
+                    guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuestaTexto);
+                }
             }
         } else {
-            echo "Error al registrar la respuesta.";
+            guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuesta);
         }
-        // Cerrar la sentencia de inserción de respuesta
-        $stmtRespuesta->close();
     }
-    // if ($stmtRespuesta->affected_rows > 0) {
-    //     // Obtener el ID de la respuesta recién creada
-    //     echo "La respuesta se registró correctamente.";
-    // }
+}
+
+function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $respuestaTexto) {
+    $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+
+    // Aquí estamos usando cinco parámetros: dos enteros, un entero o NULL, y dos strings
+    $stmtUsuarioRespuesta->bind_param("iiiss", $idUsuario, $idPregunta, $opcionId, $respuestaTexto, $respuestaTexto);
+    $stmtUsuarioRespuesta->execute();
+
+    if ($stmtUsuarioRespuesta->affected_rows <= 0) {
+        echo "Error al registrar la respuesta del usuario.";
+    }
+    $stmtUsuarioRespuesta->close();
 }
 
 // Cerrar la conexión
 $conexion->close();
-
-
-
-
-
-
-
-
-
-/////*****PARA DAR DE ALTA UNA SOLA PREGUNTA Y RESPUESA********************** */
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// // Obtener el ID de usuario de la sesión
-// $idUsuario = $_SESSION["id"];
-
-// // Obtener el ID de la pregunta específica
-// $sql = $conexion->query("SELECT * FROM preguntas WHERE id = 1");
-// if ($pregunta = $sql->fetch_object()) {
-//     $idPregunta = $pregunta->id;
-//     $preguntaa = $pregunta->pregunta;
-// }
-
-// // Verificar si se ha enviado el formulario
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     // Obtener la respuesta del formulario
-//     $respuestaTexto = $_POST['respuesta']; 
-//     // Insertar la respuesta en la tabla respuestas
-//     $stmtRespuesta = $conexion->prepare("INSERT INTO respuestas (respuesta, pregunta_id) VALUES (?, ?)");
-//     $stmtRespuesta->bind_param("si", $respuestaTexto, $idPregunta);
-//     $stmtRespuesta->execute();
-
-//     // Verificar si la inserción en respuestas fue exitosa
-//     if ($stmtRespuesta->affected_rows > 0) {
-//         // Obtener el ID de la respuesta recién creada
-//         $idRespuesta = $stmtRespuesta->insert_id;
-//         // Insertar la relación entre el usuario y la respuesta en la tabla usuario_respuesta
-//         $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, respuesta_id) VALUES (?, ?)");
-//         $stmtUsuarioRespuesta->bind_param("ii", $idUsuario, $idRespuesta);
-//         $stmtUsuarioRespuesta->execute();
-
-//         // Verificar si la inserción en usuario_respuesta fue exitosa
-//         if ($stmtUsuarioRespuesta->affected_rows > 0) {
-//             echo "La respuesta se registró correctamente.";
-//         } else {
-//             echo "Error al registrar la respuesta del usuario.";
-//         }
-//     } else {
-//         echo "Error al registrar la respuesta.";
-//     }
-// }
-
-// // Cerrar las conexiones
-// $stmtRespuesta->close();
-// $stmtUsuarioRespuesta->close();
-// $conexion->close();
 ?>
 
 <!DOCTYPE html>
