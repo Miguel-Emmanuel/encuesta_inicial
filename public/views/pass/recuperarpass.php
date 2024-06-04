@@ -22,7 +22,7 @@
                 include("../../../app/controllers/correos_controller.php");
                 ?>
                     <!-- Email input -->
-                    <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3">
+                    <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3" required>
                     <div class="form-text" id="basic-addon3">Verifica el dominio y datos de tu correo para poder identificarlo.</div>
 
                     <br>
