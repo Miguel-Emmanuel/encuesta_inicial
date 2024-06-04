@@ -25,6 +25,9 @@ $sql->bind_param("s", $seccionActual);
 $sql->execute();
 $resultado = $sql->get_result();
 
+// Obtener respuestas guardadas de sesiones anteriores
+$respuestasGuardadas = isset($_SESSION['respuestas']) ? $_SESSION['respuestas'] : array();
+
 ?>
 
 <!DOCTYPE html>
@@ -39,9 +42,6 @@ $resultado = $sql->get_result();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/letters.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Passion+One:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -53,7 +53,8 @@ $resultado = $sql->get_result();
             <div class="col-12">
                 <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
             </div>
-            <form action="../../../app/Controllers/encuesta_controller.php" method="post" style="padding: 0px;">
+            <form id="formEncuesta" action="../../../app/Controllers/encuesta_controller.php" method="post" style="padding: 0px;">
+                <input type="hidden" id="seccionActual" name="seccionActual" value="<?php echo $seccionActual; ?>">
                 <div class='col-12 row shadow p-3 mb-5 bg-body-tertiary rounded'>
                     <!-- Título de la sección actual -->
                     <div class="col-12 p-3">
@@ -66,11 +67,13 @@ $resultado = $sql->get_result();
                         $preguntaTexto = $preguntas->pregunta;
                         $tipoPregunta = $preguntas->tipo;
 
+                        $respuestaGuardada = isset($respuestasGuardadas[$idPregunta]) ? $respuestasGuardadas[$idPregunta] : '';
+
                         switch ($tipoPregunta) {
                             case 'texto':
                                 echo "<div class='col-4 mt-3'>";
                                 echo "<label for='respuestas[$idPregunta]' class='form-label'><strong style='color: red;'>*</strong> $idPregunta. $preguntaTexto:</label>";
-                                echo "<input type='text' name='respuestas[$idPregunta]' id='respuestas[$idPregunta]' class='form-control' placeholder='Ingrese su respuesta...'>";
+                                echo "<input type='text' name='respuestas[$idPregunta]' id='respuestas[$idPregunta]' class='form-control' placeholder='Ingrese su respuesta...' value='$respuestaGuardada'>";
                                 echo "</div>";
                                 break;
 
@@ -83,8 +86,9 @@ $resultado = $sql->get_result();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opcionId = $opcion->id;
                                         $nombreOpcion = $opcion->opcion1;
+                                        $checked = $respuestaGuardada == $opcionId ? 'checked' : '';
                                         echo "<div class='form-check'>";
-                                        echo "<input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='respuestas[$nombreOpcion]' value='$opcionId'>";
+                                        echo "<input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='respuestas[$nombreOpcion]' value='$opcionId' $checked>";
                                         echo "<label class='form-check-label' for='respuestas[$nombreOpcion]'>$nombreOpcion</label>";
                                         echo "</div>";
                                     }
@@ -104,7 +108,8 @@ $resultado = $sql->get_result();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opcionId = $opcion->id;
                                         $nombreOpcion = $opcion->opcion1;
-                                        echo "<option value='$opcionId'>$nombreOpcion</option>";
+                                        $selected = $respuestaGuardada == $opcionId ? 'selected' : '';
+                                        echo "<option value='$opcionId' $selected>$nombreOpcion</option>";
                                     }
                                     echo "</select>";
                                     echo "</div>";
@@ -112,6 +117,7 @@ $resultado = $sql->get_result();
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
+
                             case 'multi':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
@@ -135,7 +141,8 @@ $resultado = $sql->get_result();
                                             echo "<tr>";
                                             echo "<td>$opcion1</td>";
                                             foreach ($valoresOpcion2 as $opcion2) {
-                                                echo "<td class='text-center'><input class='form-check-input' type='checkbox' id='respuestas[$idPregunta]' name='respuestas[$idPregunta][$opcion1][$opcion2]' value='1'></td>";
+                                                $checked = isset($respuestaGuardada[$opcion1][$opcion2]) ? 'checked' : '';
+                                                echo "<td class='text-center'><input class='form-check-input' type='checkbox' id='respuestas[$idPregunta]' name='respuestas[$idPregunta][$opcion1][$opcion2]' value='1' $checked></td>";
                                             }
                                             echo "</tr>";
                                         }
@@ -150,7 +157,6 @@ $resultado = $sql->get_result();
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-
 
                             default:
                                 echo "Tipo de pregunta no soportado";
@@ -170,17 +176,16 @@ $resultado = $sql->get_result();
             <div class="col-12 mt-2 d-flex justify-content-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="cambiarSeccion('anterior')">Anterior</a></li>
                         <?php
                         $index = 1;
-                        // Mostrar enlaces a las diferentes secciones
                         foreach ($secciones as $seccion) {
-                            // Agregar evento onclick para la validación
-                            echo "<li class='page-item'><a class='page-link' href='javascript:void(0);' onclick='cambiarSeccion(\"$seccion\")'>$index</a></li>";
+                            $activeClass = $seccion == $seccionActual ? 'active' : '';
+                            echo "<li class='page-item $activeClass'><a class='page-link' href='javascript:void(0);' onclick='cambiarSeccion(\"$seccion\")'>$index</a></li>";
                             $index++;
                         }
                         ?>
-                        <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="cambiarSeccion('siguiente')">Siguiente</a></li>
                     </ul>
                 </nav>
             </div>
@@ -192,11 +197,9 @@ $resultado = $sql->get_result();
     </div>
 
     <script>
-        function cambiarSeccion(seccion) {
-            // Obtener todos los campos de respuesta de la sección actual
+        function cambiarSeccion(direccion) {
+            var seccionActual = "<?php echo $seccionActual; ?>";
             var inputs = document.querySelectorAll('input[name^="respuestas"]');
-
-            // Verificar si todas las preguntas de la sección actual están completas
             var seccionCompleta = true;
             inputs.forEach(function(input) {
                 if (input.value.trim() === "") {
@@ -204,36 +207,41 @@ $resultado = $sql->get_result();
                 }
             });
 
-            // Si la sección está completa, permitir el cambio de sección
-            if (seccionCompleta) {
-                window.location.href = "?seccion=" + encodeURIComponent(seccion);
-            } else {
-                // Si la sección no está completa, mostrar un mensaje de error
-                alert("Por favor complete todas las preguntas de la sección actual antes de cambiar.");
-            }
-        }
-    </script>
-    <script>
-        function enviarRespuestas() {
-            var seccionActual = document.getElementById("seccionActual").value;
-            var form = document.getElementById("formEncuesta");
-            var inputs = form.getElementsByTagName("input");
+            var secciones = <?php echo json_encode($secciones); ?>;
+            var indexSeccionActual = secciones.indexOf(seccionActual);
+            var nuevaSeccion = seccionActual;
 
-            var seccionCompleta = true;
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].name.startsWith("respuestas") && inputs[i].value.trim() === "") {
-                    seccionCompleta = false;
-                    break;
+            if (direccion === 'anterior') {
+                if (indexSeccionActual > 0) {
+                    nuevaSeccion = secciones[indexSeccionActual - 1];
                 }
+            } else if (direccion === 'siguiente') {
+                if (indexSeccionActual < secciones.length - 1 && seccionCompleta) {
+                    nuevaSeccion = secciones[indexSeccionActual + 1];
+                } else if (!seccionCompleta) {
+                    alert("Por favor complete todas las preguntas de la sección actual antes de continuar.");
+                    return;
+                }
+            } else {
+                nuevaSeccion = direccion;
             }
 
-            if (seccionCompleta) {
-                // Si la sección está completa, enviar el formulario
-                form.submit();
-            } else {
-                // Si la sección no está completa, mostrar un mensaje de error
-                alert("Por favor complete todos los campos de la sección " + seccionActual);
-            }
+            // Guardar respuestas en sesión antes de cambiar de sección
+            var respuestas = {};
+            inputs.forEach(function(input) {
+                respuestas[input.name] = input.value;
+            });
+            var respuestasJSON = JSON.stringify(respuestas);
+
+            // Crear un formulario temporal para enviar las respuestas a la sesión
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'guardar_respuestas.php';
+            form.innerHTML = '<input type="hidden" name="respuestas" value="' + respuestasJSON + '">';
+            document.body.appendChild(form);
+            form.submit();
+
+            window.location.href = "?seccion=" + encodeURIComponent(nuevaSeccion);
         }
     </script>
 </body>
