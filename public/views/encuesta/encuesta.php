@@ -1,8 +1,16 @@
 <?php
-// (Restante código del formulario)
-// Código de conexión y sesión...
 include("../../../database/conexion.php");
-$sql = $conexion->query("SELECT * FROM preguntas where id = 89");
+session_start();
+if (empty($_SESSION["id"])){
+    header("location: ../sesiones/login.php");
+    exit;
+}
+if($_SESSION["id"] != 3){
+    header("location: ../sesiones/inicio.php");
+    exit;
+}
+
+$sql = $conexion->query("SELECT * FROM preguntas ");
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +48,7 @@ $sql = $conexion->query("SELECT * FROM preguntas where id = 89");
                         while ($opcion = $opciones_respuesta->fetch_object()) {
                             $opcionId = $opcion->id;
                             $nombreOpcion = $opcion->opcion1;
-                            echo "<tr><td><input type='checkbox' name='respuestas[$idPregunta][$opcionId]' value='$nombreOpcion'> $nombreOpcion</td></tr>";
+                            echo "<tr><td><input type='radio' name='respuestas[$idPregunta]' value='$opcionId'> $nombreOpcion</td></tr>";
                         }
                         echo "</table>";
                         echo "</div>";
