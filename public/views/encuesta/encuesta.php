@@ -138,13 +138,14 @@ $resultado = $sql->get_result();
         
         <!-- Paginación -->
         <div class="paginacion">
-            <?php
-            // Mostrar enlaces a las diferentes secciones
-            foreach ($secciones as $seccion) {
-                echo "<a href='?seccion=$seccion'>$seccion</a>";
-            }
-            ?>
-        </div>
+    <?php
+    // Mostrar enlaces a las diferentes secciones
+    foreach ($secciones as $seccion) {
+        // Agregar evento onclick para la validación
+        echo "<a href='javascript:void(0);' onclick='cambiarSeccion(\"$seccion\")'>$seccion</a>";
+    }
+    ?>
+</div>
 
         <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion">
             <center>
@@ -153,6 +154,28 @@ $resultado = $sql->get_result();
         </a>
     </div>
 
+    <script>
+    function cambiarSeccion(seccion) {
+        // Obtener todos los campos de respuesta de la sección actual
+        var inputs = document.querySelectorAll('input[name^="respuestas"]');
+
+        // Verificar si todas las preguntas de la sección actual están completas
+        var seccionCompleta = true;
+        inputs.forEach(function(input) {
+            if (input.value.trim() === "") {
+                seccionCompleta = false;
+            }
+        });
+
+        // Si la sección está completa, permitir el cambio de sección
+        if (seccionCompleta) {
+            window.location.href = "?seccion=" + encodeURIComponent(seccion);
+        } else {
+            // Si la sección no está completa, mostrar un mensaje de error
+            alert("Por favor complete todas las preguntas de la sección actual antes de cambiar.");
+        }
+    }
+</script>
     <script>
         function enviarRespuestas() {
             var seccionActual = document.getElementById("seccionActual").value;
