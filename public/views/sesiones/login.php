@@ -1,3 +1,15 @@
+<?php
+    include("../../../app/Models/conexion.php");
+    // Verificar si la sesión ya está activa
+  
+
+    // Verificar si la clave 'rol' existe en la sesión
+    if (isset($_SESSION['rol'])) {
+        $rol = $_SESSION['rol'];
+    } else {
+        $rol = ''; // Valor predeterminado si no existe
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,18 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-    include("../../../app/Models/conexion.php");
-    // Verificar si la sesión ya está activa
-    session_start();
 
-    // Verificar si la clave 'rol' existe en la sesión
-    if (isset($_SESSION['rol'])) {
-        $rol = $_SESSION['rol'];
-    } else {
-        $rol = ''; // Valor predeterminado si no existe
-    }
-
+<?php
     //en ESTA LINEA ES PARA OMITIR EL O=PROBLEMA DE ARRAY INDEFINIDO -->
 
     // $rol =$_SESSION["rol"] ;
