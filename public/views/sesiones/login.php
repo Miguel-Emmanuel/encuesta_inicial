@@ -60,7 +60,7 @@
 
                     <!-- Submit -->
 
-                    <a href="../pass/recuperarpass.php">Olvidaste tu contraseña?</a>
+                    <a href="../pass/recuperarpass.php">¿Olvidaste tu contraseña?</a>
 
                     <br>
 
