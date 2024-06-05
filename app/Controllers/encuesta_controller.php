@@ -86,16 +86,26 @@ function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccio
     $stmtUsuarioRespuesta->close();
 }
 
-// Verificar si se ha enviado el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $seccionActual = $_POST['seccionActual'];
-    // $nuevaSeccion = $_POST['nuevaSeccion'];
 
-    // Redirigir a la página de visualización de la sección actual
-    header("Location: ../../public/views/encuesta/encuesta.php?seccion=$seccionActual");
-
-    exit;
+if ($seccionId !== null) {
+    $nombreSeccion = null;
+    $consultaSeccion = "SELECT nombre FROM secciones WHERE id = ?";
+    $stmtSeccion = $conexion->prepare($consultaSeccion);
+    $stmtSeccion->bind_param("i", $seccionId);
+    $stmtSeccion->execute();
+    $stmtSeccion->bind_result($nombreSeccion);
+    $stmtSeccion->fetch();
+    $stmtSeccion->close();
 }
+// Puedes personalizar el mensaje de la notificación aquí
+$mensaje = "¡Redirección exitosa!";
+
+// Codificar el mensaje para que pueda pasar por la URL
+$mensajeCodificado = urlencode($mensaje.$nombreSeccion);
+
+// Redirigir a la página de destino junto con el mensaje de notificación
+header("Location: ../../public/views/encuesta/menu_secciones.php");
+exit; // Asegúrate de salir del script después de la redirección
 
 
 // Cerrar la conexión
@@ -113,7 +123,6 @@ $conexion->close();
 <body>
     <div class="container">
         <p>Gracias por contestar el formulario</p>
-        
         <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn">
             <input type="submit" name="btningresar" class="btn btn-success" value="Cerrar sesión">
         </a>
