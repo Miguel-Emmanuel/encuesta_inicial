@@ -46,13 +46,16 @@ CREATE TABLE `preguntas` (
 CREATE TABLE `opciones_respuesta` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pregunta_id` BIGINT(20) UNSIGNED NOT NULL,
+  `seccion_id` BIGINT(20) UNSIGNED NOT NULL,
   `opcion1` TEXT NOT NULL,
   `opcion2` TEXT  NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `opciones_respuesta_pregunta_id_foreign` (`pregunta_id`),
-  CONSTRAINT `opciones_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
+  KEY `opciones_respuesta_seccion_id_foreign` (`seccion_id`),
+  CONSTRAINT `opciones_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `opciones_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`) ON DELETE CASCADE
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `programa_edu` */
@@ -110,6 +113,7 @@ INSERT  INTO `roles`(`id`,`nombre`,`descripcion`,`created_at`,`updated_at`) VALU
 /*Table structure for table `usuario_respuesta` */
 
 DROP TABLE IF EXISTS `usuario_respuesta`;
+
 
 CREATE TABLE `usuario_respuesta` (
   `id` BIGINT(200) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -172,6 +176,7 @@ VALUES
     ('salud', 'Condiciones de Salud'),
     ('escolar', 'Rendimiento Escolar'),
     ('habitos', 'Habitos de Estudio y Practicas Escolares');
+    ('expectativas', 'Expectativas Educativas y Ocupacionales');
 
 INSERT INTO preguntas (id, pregunta, tipo, seccion_id, activo, created_at, updated_at) VALUES
 (1, 'Correo', 'texto', 1, 1, NOW(), NOW()),
