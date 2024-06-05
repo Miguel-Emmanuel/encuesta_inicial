@@ -1,4 +1,8 @@
 /*Universal*/
+body{
+    margin-top: 8%;       
+    
+}
 .bg{
     background-image: url("../img/rectoria.png");
     background-position: center center;
@@ -6,12 +10,12 @@
     background-size: 500px;
     
 }
-
-.container {
+.contenedor {
     margin-top: 100px;
     width: 55%;
     border: 2px solid;
     border-radius: 1px;
+    margin:0 auto;
 }
 .form-control{
     border-radius: 0;
