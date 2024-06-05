@@ -14,6 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $respuestas = $_POST['respuestas'];
 
     foreach ($respuestas as $idPregunta => $respuesta) {
+        // Obtener el valor de seccion_id de la pregunta
+        $seccionId = obtenerSeccionId($conexion, $idPregunta);
+
         if (is_array($respuesta)) {
             foreach ($respuesta as $opcionId => $opcionRespuesta) {
                 if (is_array($opcionRespuesta)) {
@@ -21,19 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $opcionId2 = obtenerOpcionId($conexion, $idPregunta, $opcionId, $opcion2);
                         if ($opcionId2 !== null) {
                             $respuestaTexto = "$opcionId - $opcion2";
-                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId2, $respuestaTexto);
+                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId2, $seccionId, $respuestaTexto);
                         }
                     }
                 } else {
                     $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
                     if ($opcionId1 !== null) {
                         $respuestaTexto = $opcionRespuesta;
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $respuestaTexto);
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $respuestaTexto);
                     }
                 }
             }
         } else {
-            guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $respuesta);
+            guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuesta);
         }
     }
 }
@@ -55,13 +58,24 @@ function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {
     return $id ? $id : null;
 }
 
-function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $respuestaTexto) {
+function obtenerSeccionId($conexion, $idPregunta) {
+    $stmt = $conexion->prepare("SELECT seccion_id FROM preguntas WHERE id = ?");
+    $stmt->bind_param("i", $idPregunta);
+    $stmt->execute();
+    $stmt->bind_result($seccionId);
+    $stmt->fetch();
+    $stmt->close();
+    
+    return $seccionId;
+}
+
+function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto) {
     if ($opcionId === null) {
-        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
-        $stmtUsuarioRespuesta->bind_param("iis", $idUsuario, $idPregunta, $respuestaTexto);
+        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+        $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $seccionId, $respuestaTexto);
     } else {
-        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
-        $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $opcionId, $respuestaTexto);
+        $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmtUsuarioRespuesta->bind_param("iiiis", $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
     }
     
     $stmtUsuarioRespuesta->execute();
