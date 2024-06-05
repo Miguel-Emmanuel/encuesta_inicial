@@ -180,7 +180,7 @@ INSERT INTO preguntas (id, pregunta, tipo, seccion_id, activo, created_at, updat
 (4, 'Apellido Paterno', 'texto', 1, 1, NOW(), NOW()),
 (5, 'Apellido Materno', 'texto', 1, 1, NOW(), NOW()),
 (6, 'CURP', 'texto', 1, 1, NOW(), NOW()),
-(7, 'RFC', 'texto', 2, 1, NOW(), NOW()),
+(7, 'RFC', 'texto', 1, 1, NOW(), NOW()),
 (8, 'Sexo', 'texto', 1, 1, NOW(), NOW()),
 (9, 'Estado Civil', 'opcion', 1, 1, NOW(), NOW()),
 (10, 'Numero de Hijos', 'opcion', 1, 1, NOW(), NOW()),
