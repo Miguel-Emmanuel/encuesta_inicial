@@ -1,28 +1,34 @@
 <?php
 include("../../../database/conexion.php");
 session_start();
-if (empty($_SESSION["id"])){
+if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
     exit;
 }
-if($_SESSION["id"] != 3){
+if ($_SESSION["id"] != 3) {
     header("location: ../sesiones/inicio.php");
     exit;
 }
 
-$sql = $conexion->query("SELECT * FROM preguntas ");
-?>
+// Recibir el parámetro de la sección
+$seccion = $_GET['seccion'];
 
+// Consultar las preguntas de la sección desde la base de datos
+$sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'");
+
+// Incluir la vista de la sección
+// include("vistas/seccion.php");
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Encuesta</title>
+    <title>Encuesta - <?php echo ucfirst($seccion); ?></title>
     <link rel="stylesheet" href="../../css/encuesta.css">
 </head>
 <body>
-    <div class="container">
+<div class="container">
         <form action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
         <?php
         while ($preguntas = $sql->fetch_object()) {
@@ -94,7 +100,7 @@ $sql = $conexion->query("SELECT * FROM preguntas ");
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]' value='1'></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]' value='$opcion2'></td>";
                                 }
                                 echo "</tr>";
                             }
