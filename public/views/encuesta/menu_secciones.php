@@ -18,7 +18,7 @@ if ($conexion->connect_error) {
 }
 
 // Obtener secciones
-$sql = "SELECT s.id, s.nombre, COUNT(ur.id) as completado
+$sql = "SELECT s.id, s.nombre, s.descripcion,  COUNT(ur.id) as completado
         FROM secciones s
         LEFT JOIN preguntas p ON s.id = p.seccion_id
         LEFT JOIN usuario_respuesta ur ON p.id = ur.pregunta_id AND ur.usuario_id = 1  -- Reemplaza 1 con el ID del usuario actual
@@ -39,7 +39,7 @@ $result = $conexion->query($sql);
     while($row = $result->fetch_assoc()) {
         $completado = $row['completado'] > 0 ? '✅' : '❌';
         // Reemplazar seccion_id con seccion
-        echo "<li><a href='seccion.php?seccion=" . urlencode($row["id"]) . "'>" . $row["nombre"] . "</a> " . $completado . "</li>";
+        echo "<li><a href='seccion.php?seccion=" . urlencode($row["id"]) . "'>" . $row["descripcion"] . "</a> " . $completado . "</li>";
     }
 } else {
     echo "0 resultados";

@@ -94,7 +94,7 @@ $sql = $conexion->query("SELECT * FROM preguntas ");
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='checkbox' name='respuestas[$idPregunta][$opcion1][$opcion2]' value='1'></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]' value='1'></td>";
                                 }
                                 echo "</tr>";
                             }
