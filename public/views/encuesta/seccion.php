@@ -22,13 +22,30 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
     <title>Encuesta - <?php echo ucfirst($seccion); ?></title>
     <link rel="stylesheet" href="../../css/encuesta.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta Inicial | Inicio</title>
+    <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/letters.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Passion+One:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
+<div class="col-12 text-center">
+                <h1 class="bebas-neue-regular" style="font-size: 100px;">Encuesta Inicial</h1>
+            </div>
+            <h1>SECCION - <?php echo ucfirst($seccion); ?></h1>
+            <div class="col-12">
+                <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
+            </div>
         <form action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
         <?php
         while ($preguntas = $sql->fetch_object()) {
@@ -141,7 +158,9 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
             echo "</div>";
         }
         ?>
-            <input type="submit" value="Enviar respuestas" class="btn-enviar">
+        <center>
+                    <input type="submit"  value="Enviar respuestas" class="btn-enviar">
+                    </center>
         </form>
         <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion">
             <center>
