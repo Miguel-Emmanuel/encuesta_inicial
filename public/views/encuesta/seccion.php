@@ -135,7 +135,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][]' value='$opcion2'></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]' ></td>";
                                 }
                                 echo "</tr>";
                             }
