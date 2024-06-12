@@ -27,26 +27,42 @@ $result = $conexion->query($sql);
 ?>
 
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Menu de Secciones</title>
-</head>
-<body>
-    <h1>Menu de Secciones</h1>
-    <ul>
-    <?php
-   if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $completado = $row['completado'] > 0 ? '✅' : '❌';
-        // Reemplazar seccion_id con seccion
-        echo "<li><a href='seccion.php?seccion=" . urlencode($row["id"]) . "'>" . $row["descripcion"] . "</a> " . $completado . "</li>";
-    }
-} else {
-    echo "0 resultados";
-}
+    <html>
+        <head>
+            <title>Menu de Secciones</title>
+            <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="../../css/menusecciones.css">
+        </head>
+        <body>
+            <div class="contenedor rounded shadow">
+            <h1>Menu de Secciones</h1>
+                <table>
+                    <thead>
+                        <th>Seccion</th>
+                        <th>Acciones</th>
+                        <th>Estado</th>
+                    </thead>
+                    <tbody>
+                        <?php
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    $completado = $row['completado'] > 0 ? '✅' : '❌';
+                                    echo "<tr>";
+                                    echo "<td>" . $row["descripcion"] . "</td>";
+                                    echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\">Responder</button></td>";                                    echo "<td class='centrar'>" . $completado . "</td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='3'>0 resultados</td></tr>";
+                            }
+                            $conexion->close();
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
-    $conexion->close();
-    ?>
-    </ul>
-</body>
+
+            
+            <script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
+        </body>
 </html>
