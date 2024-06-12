@@ -12,6 +12,7 @@ $idUsuario = $_SESSION["id"];
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $respuestas = $_POST['respuestas'];
+    var_dump($respuestas);
 
     foreach ($respuestas as $idPregunta => $respuesta) {
         // Obtener el valor de seccion_id de la pregunta

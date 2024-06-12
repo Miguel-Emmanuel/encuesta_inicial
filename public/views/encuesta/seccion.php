@@ -49,14 +49,32 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                     if ($opciones_respuesta->num_rows > 0) {
                         echo "<div class='pregunta'>";
                         echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
-                        echo "<table>";
-                        echo "<tr><th>Opción</th></tr>";
+                        $opciones = array();
                         while ($opcion = $opciones_respuesta->fetch_object()) {
-                            $opcionId = $opcion->id;
-                            $nombreOpcion = $opcion->opcion1;
-                            echo "<tr><td><input type='radio' name='respuestas[$idPregunta]' value='$opcionId'> $nombreOpcion</td></tr>";
+                            $opciones[$opcion->opcion1][] = $opcion->opcion2;
                         }
-                        echo "</table>";
+
+                        if (!empty($opciones)) {
+                            echo "<table>";
+                            echo "<tr><th>Opción 1</th>";
+                            foreach ($opciones[array_key_first($opciones)] as $opcion2) {
+                                echo "<th>$opcion2</th>";
+                                
+                            }
+                            echo "</tr>";
+
+                            foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                echo "<tr>";
+                                echo "<td>$opcion1</td>";
+                                foreach ($valoresOpcion2 as $opcion2) {
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]'></td>";
+                                }
+                                echo "</tr>";
+                            }
+                            echo "</table>";
+                        } else {
+                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                        }
                         echo "</div>";
                     } else {
                         echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
@@ -100,10 +118,11 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]' value='$opcion2'></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][]' value='$opcion2'></td>";
                                 }
                                 echo "</tr>";
                             }
+                            
                             echo "</table>";
                         } else {
                             echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
