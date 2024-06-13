@@ -109,3 +109,7 @@ h1{
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-style: oblique;
 }
+.error-message {
+    color: red;
+    display: none;
+}
