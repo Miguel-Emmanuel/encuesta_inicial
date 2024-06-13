@@ -58,6 +58,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                 $idPregunta = $preguntas->id;
                 $preguntaTexto = $preguntas->pregunta;
                 $tipoPregunta = $preguntas->tipo;
+                $dependeDe = $preguntas->depende_p;
 
                 echo "<div class='pregunta'>";
                 echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b></p>";
@@ -72,10 +73,10 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                     case 'correo':
                         echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' required>";
                         break;
-                        case 'curp':
-                            echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta'  required>";
-                            break;
-                        
+                    case 'curp':
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta'  required>";
+                        break;
+
                     case 'rfc':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' required>";
                         break;
@@ -92,104 +93,126 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                         echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' required></textarea>";
                         break;
 
-                        case 'opcion':
-                            $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                            if ($opciones_respuesta->num_rows > 0) {
-                                echo "<div class='pregunta'>";
-                                echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
-                                $opciones = array();
-                                while ($opcion = $opciones_respuesta->fetch_object()) {
-                                    $opciones[$opcion->opcion1][] = $opcion->opcion2;
-                                }
-    
-                                if (!empty($opciones)) {
-                                    echo "<table>";
-                                    echo "<tr><th>Opción 1</th>";
-                                    foreach ($opciones[array_key_first($opciones)] as $opcion2) {
-                                        echo "<th>$opcion2</th>";
-                                    }
-                                    echo "</tr>";
-    
-                                    foreach ($opciones as $opcion1 => $valoresOpcion2) {
-                                        echo "<tr>";
-                                        echo "<td>$opcion1</td>";
-                                        $cont = 0;
-                                        $cont++;
-    
-                                        foreach ($valoresOpcion2 as $opcion2) {
-                                            echo "<td><input type='radio' name='respuestas[$idPregunta]-$cont value='[$opcion2]'></td>";
-                                        }
-                                        echo "</tr>";
-                                    }
-                                    echo "</table>";
-                                } else {
-                                    echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
-                                }
-                                echo "</div>";
-                            } else {
-                                echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                    case 'opcion':
+                        $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+                        if ($opciones_respuesta->num_rows > 0) {
+                            echo "<div class='pregunta'>";
+                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            $opciones = array();
+                            while ($opcion = $opciones_respuesta->fetch_object()) {
+                                $opciones[$opcion->opcion1][] = $opcion->opcion2;
                             }
-                            break;
-    
-                        case 'select':
-                            $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                            if ($opciones_respuesta->num_rows > 0) {
-                                echo "<select name='respuestas[$idPregunta]' class='respuesta-select'>";
-                                while ($opcion = $opciones_respuesta->fetch_object()) {
-                                    $opcionId = $opcion->id;
-                                    $nombreOpcion = $opcion->opcion1;
-                                    echo "<option value='$opcionId'>$nombreOpcion</option>";
+
+                            if (!empty($opciones)) {
+                                echo "<table>";
+                                echo "<tr><th>Opción 1</th>";
+                                foreach ($opciones[array_key_first($opciones)] as $opcion2) {
+                                    echo "<th>$opcion2</th>";
                                 }
-                                echo "</select>";
-                            } else {
-                                echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
-                            }
-                            break;
-    
-                        case 'multi':
-                            $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                            if ($opciones_respuesta->num_rows > 0) {
-                                echo "<div class='pregunta'>";
-                                echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
-                                $opciones = array();
-                                while ($opcion = $opciones_respuesta->fetch_object()) {
-                                    $opciones[$opcion->opcion1][] = $opcion->opcion2;
-                                }
-    
-                                if (!empty($opciones)) {
-                                    echo "<table>";
-                                    echo "<tr><th>Opción 1</th>";
-                                    foreach ($opciones[array_key_first($opciones)] as $opcion2) {
-                                        echo "<th>$opcion2</th>";
-                                    }
-                                    echo "</tr>";
+                                echo "</tr>";
+
+                                foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                    echo "<tr>";
+                                    echo "<td>$opcion1</td>";
                                     $cont = 0;
-                                    foreach ($opciones as $opcion1 => $valoresOpcion2) {
-                                        $cont = $cont + 1;
-                                        echo "<tr>";
-                                        echo "<td>$opcion1</td>";
-                                        foreach ($valoresOpcion2 as $opcion2) {
-                                            echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' ></td>";
-                                        }
-                                        echo "</tr>";
+                                    $cont++;
+
+                                    foreach ($valoresOpcion2 as $opcion2) {
+                                        echo "<td><input type='radio' name='respuestas[$idPregunta]-$cont value='[$opcion2]'></td>";
                                     }
-    
-                                    echo "</table>";
-                                } else {
-                                    echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                                    echo "</tr>";
                                 }
-                                echo "</div>";
+                                echo "</table>";
                             } else {
                                 echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                             }
-                            break;
-    
+                            echo "</div>";
+                        } else {
+                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                        }
+                        break;
+
+                    case 'select':
+                        $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+                        if ($opciones_respuesta->num_rows > 0) {
+                            echo "<select name='respuestas[$idPregunta]' class='respuesta-select'>";
+                            while ($opcion = $opciones_respuesta->fetch_object()) {
+                                $opcionId = $opcion->id;
+                                $nombreOpcion = $opcion->opcion1;
+                                echo "<option value='$opcionId'>$nombreOpcion</option>";
+                            }
+                            echo "</select>";
+                        } else {
+                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                        }
+                        break;
+
+                    case 'multi':
+                        $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+                        if ($opciones_respuesta->num_rows > 0) {
+                            echo "<div class='pregunta'>";
+                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            $opciones = array();
+                            while ($opcion = $opciones_respuesta->fetch_object()) {
+                                $opciones[$opcion->opcion1][] = $opcion->opcion2;
+                            }
+
+                            if (!empty($opciones)) {
+                                echo "<table>";
+                                echo "<tr><th>Opción 1</th>";
+                                foreach ($opciones[array_key_first($opciones)] as $opcion2) {
+                                    echo "<th>$opcion2</th>";
+                                }
+                                echo "</tr>";
+                                $cont = 0;
+                                foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                    $cont = $cont + 1;
+                                    echo "<tr>";
+                                    echo "<td>$opcion1</td>";
+                                    foreach ($valoresOpcion2 as $opcion2) {
+                                        echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' ></td>";
+                                    }
+                                    echo "</tr>";
+                                }
+
+                                echo "</table>";
+                            } else {
+                                echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                            }
+                            echo "</div>";
+                        } else {
+                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+                        }
+                        break;
+
 
 
                     default:
                         echo "Tipo de pregunta no soportado";
                         break;
                 }
+             
+    // Si la pregunta tiene dependencias
+    if ($dependeDe) {
+        // Obtener las preguntas dependientes desde la base de datos según el ID de la pregunta
+        $sqlDependientes = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' AND depende_p = '$idPregunta'");
+        
+        if ($sqlDependientes->num_rows > 0) {
+            echo "<div class='preguntas-dependientes' id='dependientes-$idPregunta' style='display:none;'>";
+            echo "<p>Preguntas dependientes...</p>";
+
+            // Bucle para mostrar preguntas dependientes
+            while ($preguntaDependiente = $sqlDependientes->fetch_object()) {
+                $idDependiente = $preguntaDependiente->id;
+                $textoDependiente = $preguntaDependiente->pregunta;
+
+                echo "<p>$idDependiente. <b>$textoDependiente</b></p>";
+                // Aquí puedes añadir el código HTML para las preguntas dependientes según su tipo
+            }
+
+            echo "</div>";
+        }
+    }
                 echo "<input type='hidden' name='preguntas[$idPregunta]' value='$preguntaTexto'>";
                 echo "</div>";
             }
@@ -349,7 +372,39 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                 '<p class="mb-0">Por favor corrige los errores y vuelve a intentarlo.</p>';
             return alert;
         }
+
+
+
+        // Ejemplo de JavaScript para controlar la visibilidad de las preguntas dependientes
+
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(function(input) {
+    input.addEventListener('change', function() {
+        var preguntaId = this.name.match(/\[(\d+)\]/)[1]; // Extraer el ID de la pregunta del nombre del input
+
+        // Verificar si esta pregunta tiene preguntas dependientes
+        var dependientes = document.getElementById('dependientes-' + preguntaId);
+        if (dependientes) {
+            // Mostrar o ocultar las preguntas dependientes según la respuesta seleccionada
+            if (this.type === 'radio' || this.type === 'checkbox') {
+                if (this.checked && this.value === 'si') {
+                    dependientes.style.display = 'block';
+                } else {
+                    dependientes.style.display = 'none';
+                }
+            } else if (this.tagName === 'SELECT') {
+                var selectedOption = this.options[this.selectedIndex];
+                if (selectedOption.value === 'si') {
+                    dependientes.style.display = 'block';
+                } else {
+                    dependientes.style.display = 'none';
+                }
+            }
+        }
+    });
+});
+
     </script>
+
 </body>
 
 </html>
