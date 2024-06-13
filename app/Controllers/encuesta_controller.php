@@ -12,14 +12,16 @@ $idUsuario = $_SESSION["id"];
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $respuestas = $_POST['respuestas'];
-    var_dump($respuestas);
+    //var_dump($respuestas);
 
     foreach ($respuestas as $idPregunta => $respuesta) {
+        //var_dump($respuesta);
         // Obtener el valor de seccion_id de la pregunta
         $seccionId = obtenerSeccionId($conexion, $idPregunta);
 
         if (is_array($respuesta)) {
             foreach ($respuesta as $opcionId => $opcionRespuesta) {
+                // print_r($opcionRespuesta);
                 if (is_array($opcionRespuesta)) {
                     foreach ($opcionRespuesta as $opcion2 => $valor) {
                         $opcionId2 = obtenerOpcionId($conexion, $idPregunta, $opcionId, $opcion2);

@@ -1,5 +1,5 @@
 <?php
-include("../../../database/conexion.php");
+require("../../../database/conexion.php");
 session_start();
 if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
@@ -83,8 +83,11 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                             foreach ($opciones as $opcion1 => $valoresOpcion2) {
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
+                                $cont = 0;
+                                $cont++;
+
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]'></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta]-$cont value='[$opcion2]'></td>";
                                 }
                                 echo "</tr>";
                             }
@@ -130,12 +133,13 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion'")
                                 echo "<th>$opcion2</th>";
                             }
                             echo "</tr>";
-
+                            $cont = 0;
                             foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                $cont = $cont+1;
                                 echo "<tr>";
                                 echo "<td>$opcion1</td>";
                                 foreach ($valoresOpcion2 as $opcion2) {
-                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1][$opcion2]' ></td>";
+                                    echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' ></td>";
                                 }
                                 echo "</tr>";
                             }
