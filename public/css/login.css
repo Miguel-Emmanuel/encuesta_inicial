@@ -10,7 +10,8 @@ body{
     background-size: 500px;
     
 }
-.contenedor {
+.contenedor{
+    margin: 0 auto;
     margin-top: 100px;
     width: 55%;
     border: 2px solid;
