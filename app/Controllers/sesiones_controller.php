@@ -22,13 +22,13 @@ if (!empty($_POST["btningresar"])){  /*SI EL BOTON HA SIDO PULSADO*/
                 case 1:
                     header("Location: inicio.php");
                     exit();
-                case 1:
+                case 2:
                     header("Location: inicio.php");
                     exit();
                 case 3:
                     header("Location: ../encuesta/menu_secciones.php");
                     exit();
-                case 3:
+                case 4:
                     header("Location: ../encuesta/menu_secciones.php");
                     exit();
             }

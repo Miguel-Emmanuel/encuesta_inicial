@@ -3,7 +3,7 @@ require '../Models/conexion.php';
 
 $id = $conexion->real_escape_string($_POST['id']);
 
-$sql = "SELECT id, nombre From programa_edu WHERE id=$id LIMIT 1";
+$sql = "SELECT id, grado, nombre, clave From programa_edu WHERE id=$id LIMIT 1";
 $resultado = $conexion->query($sql);
 $rows = $resultado->num_rows;
 
