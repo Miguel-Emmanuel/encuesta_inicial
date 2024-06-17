@@ -16,6 +16,16 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta001` /*!40100 DEFAULT CHARACTER
 
 USE `encuesta001`;
 
+
+
+CREATE TABLE links(
+id BIGINT(20) NOT NULL AUTO_INCREMENT,
+id_usuario INT,
+activo INT,
+created_at TIMESTAMP NULL DEFAULT NULL,
+updated_at TIMESTAMP NULL DEFAULT NULL,
+PRIMARY KEY (id)
+);
 /*Table structure for table `dependencias_preguntas` */
 
 DROP TABLE IF EXISTS `dependencias_preguntas`;
