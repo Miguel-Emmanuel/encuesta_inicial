@@ -9,8 +9,18 @@
             <div class="modal-body">
                 <form action="../../../app/Educativo/registro_educativo.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Grado del programa educativo:</label>
+                        <input class="form-control" name="grado" id="grado" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Nombre del programa educativo:</label>
                         <input class="form-control" name="nombre" id="nombre" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Clave:</label>
+                        <input class="form-control" name="clave" id="clave" required>
                     </div>
 
                     <div class="">

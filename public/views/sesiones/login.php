@@ -21,26 +21,6 @@
 
 <?php
     //en ESTA LINEA ES PARA OMITIR EL O=PROBLEMA DE ARRAY INDEFINIDO -->
-
-    // $rol =$_SESSION["rol"] ;
-
-    if (!empty($_SESSION["id"])) {
-
-        switch ($rol) {
-            case 1:
-                header("Location: inicio.php");
-                exit();
-            case 2:
-                header("Location: inicio.php");
-                exit();
-            case 3:
-                header("Location: ../encuesta/encuesta.php");
-                exit();
-            case 3:
-                header("Location: ../encuesta/encuesta.php");
-                exit();
-        }
-    }
     ?>
 
     <link rel="stylesheet" href="../../css/login.css">

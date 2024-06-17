@@ -5,10 +5,6 @@ if (empty($_SESSION["id"])){
     header("location: ../sesiones/login.php");
     exit;
 }
-if($_SESSION["id"] != 3){
-    header("location: ../sesiones/inicio.php");
-    exit;
-}
 
 // Crear conexión
 
@@ -34,6 +30,12 @@ $result = $conexion->query($sql);
             <link rel="stylesheet" href="../../css/menusecciones.css">
         </head>
         <body>
+        <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Navbar</span>
+            <a href="../../../app/Controllers/sessiondestroy_controller.php"><button class="btn btn-danger" name="">Cerrar Sesion</button></a>
+        </div>
+        </nav>
             <div class="contenedor rounded shadow">
             <h1>Menu de Secciones</h1>
                 <table>

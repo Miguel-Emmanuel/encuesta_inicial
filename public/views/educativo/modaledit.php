@@ -10,8 +10,18 @@
                 <form action="../../../app/Educativo/actualiza.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="id" name="id">
                     <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Grado del programa educativo:</label>
+                        <input class="form-control" name="grado" id="grado" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Nombre del programa educativo:</label>
                         <input class="form-control" name="nombre" id="nombre" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Clave:</label>
+                        <input class="form-control" name="clave" id="clave" required>
                     </div>
 
                     <div class="">
