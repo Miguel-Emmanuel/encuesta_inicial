@@ -51,8 +51,7 @@ $result = $conexion->query($sql);
                                     $completado = $row['completado'] > 0 ? '✅' : '❌';
                                     echo "<tr>";
                                     echo "<td>" . $row["descripcion"] . "</td>";
-                                    echo "<td class='centrar'><button class='btn btn-success'>Responder</button></td>";
-                                    echo "<td class='centrar'>" . $completado . "</td>";
+                                    echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\">Responder</button></td>";                                    echo "<td class='centrar'>" . $completado . "</td>";
                                     echo "</tr>";
                                 }
                             } else {

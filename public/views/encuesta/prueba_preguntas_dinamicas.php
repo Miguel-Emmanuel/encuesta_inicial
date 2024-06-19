@@ -133,7 +133,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                                     $cont++;
 
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion2' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion2' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
                                     }
                                     echo "</tr>";
                                 }
@@ -209,6 +209,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
        
 
                 echo "<div class='preguntas-dependientes' id='dependientes-$idPregunta' style='display:none;'>";
+                echo "<p>Preguntas dependientes, Solo en caso de aplicar...</p>";
 
                 // Consulta para obtener las preguntas dependientes de la pregunta actual
               // Consulta para obtener las preguntas dependientes de la pregunta actual
@@ -361,7 +362,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                
                     }
                 } else {
-                    // echo "No hay preguntas dependientes para esta pregunta.";
+                    echo "No hay preguntas dependientes para esta pregunta.";
                 }
 
                 echo "</div>"; // Cierre de preguntas-dependientes
