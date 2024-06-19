@@ -12,6 +12,7 @@ if (!empty($_POST["btncambiarpass"])) {
     }else{
         $sql="UPDATE usuarios SET pass = '$password1' WHERE id = '$id' ";
         $conexion->query($sql);
+        $conexion->query("DELETE FROM links WHERE id_usuario = '$id'");
         echo '<script>alert("La contraseña ha sido actualizada, intente iniciar sesion."); window.location.href = "../sesiones/login.php";</script>';
     }
     }
