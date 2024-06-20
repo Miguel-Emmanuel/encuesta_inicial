@@ -112,7 +112,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
                             echo "<div class='pregunta'>";
-                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                             $opciones = array();
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
@@ -120,7 +120,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
 
                             if (!empty($opciones)) {
                                 echo "<table>";
-                                echo "<tr><th>Opción 1</th>";
+                                echo "<tr><th></th>";
                                 foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                     echo "<th>$opcion2</th>";
                                 }
@@ -166,7 +166,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
                             echo "<div class='pregunta'>";
-                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                             $opciones = array();
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
@@ -174,7 +174,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
 
                             if (!empty($opciones)) {
                                 echo "<table>";
-                                echo "<tr><th>Opción 1</th>";
+                                echo "<tr><th></th>";
                                 foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                     echo "<th>$opcion2</th>";
                                 }
@@ -264,7 +264,8 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    // echo "<p class='pregunta-texto'>Opciones para pregunta <b>$preguntaTexto</b></p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
@@ -318,7 +319,8 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
