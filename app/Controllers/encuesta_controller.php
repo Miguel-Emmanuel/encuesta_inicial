@@ -12,13 +12,16 @@ $idUsuario = $_SESSION["id"];
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $respuestas = $_POST['respuestas'];
+    //var_dump($respuestas);
 
     foreach ($respuestas as $idPregunta => $respuesta) {
+        //var_dump($respuesta);
         // Obtener el valor de seccion_id de la pregunta
         $seccionId = obtenerSeccionId($conexion, $idPregunta);
 
         if (is_array($respuesta)) {
             foreach ($respuesta as $opcionId => $opcionRespuesta) {
+                // print_r($opcionRespuesta);
                 if (is_array($opcionRespuesta)) {
                     foreach ($opcionRespuesta as $opcion2 => $valor) {
                         $opcionId2 = obtenerOpcionId($conexion, $idPregunta, $opcionId, $opcion2);
@@ -85,6 +88,28 @@ function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccio
     }
     $stmtUsuarioRespuesta->close();
 }
+
+
+if ($seccionId !== null) {
+    $nombreSeccion = null;
+    $consultaSeccion = "SELECT nombre FROM secciones WHERE id = ?";
+    $stmtSeccion = $conexion->prepare($consultaSeccion);
+    $stmtSeccion->bind_param("i", $seccionId);
+    $stmtSeccion->execute();
+    $stmtSeccion->bind_result($nombreSeccion);
+    $stmtSeccion->fetch();
+    $stmtSeccion->close();
+}
+// Puedes personalizar el mensaje de la notificación aquí
+$mensaje = "¡Redirección exitosa!";
+
+// Codificar el mensaje para que pueda pasar por la URL
+$mensajeCodificado = urlencode($mensaje.$nombreSeccion);
+
+// Redirigir a la página de destino junto con el mensaje de notificación
+header("Location: ../../public/views/encuesta/menu_secciones.php");
+exit; // Asegúrate de salir del script después de la redirección
+
 
 // Cerrar la conexión
 $conexion->close();

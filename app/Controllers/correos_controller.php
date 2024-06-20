@@ -18,8 +18,18 @@ if (!empty($_POST["btnenviarcorreo"])) {
         if ($datos = $sql->fetch_object()) {
             $row = $sql->fetch_assoc();
             $id=$datos->id;
-            $url = "http://127.0.0.1:8000/public/views/pass/cambiarpass.php?id=" . $id;
+            $random="0123456709qwertyuiopasdfghjklzxcvbnm";
+            $i=0;
+            $cantidad=28;
+            while ($i < $cantidad) {
+                $char = substr($random, mt_rand(0, strlen($random)-1), 1);
+                $token .= $char;
+                $i++;
+              }
 
+            $url = "http://127.0.0.1:8000/public/views/pass/cambiarpass.php?id=" . $id . $token;
+            
+            $conexion->query("INSERT INTO links (id_usuario, activo) VALUES ('$id', 1)");
 
             // Configurar y enviar el correo
             $mail = new PHPMailer(true);
