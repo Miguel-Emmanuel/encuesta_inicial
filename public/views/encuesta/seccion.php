@@ -15,6 +15,29 @@ $seccion = $_GET['seccion'];
 
 // Consultar las preguntas de la sección desde la base de datos
 $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' and depende_p is null");
+// Consultar las preguntas de la sección desde la base de datos
+
+// Ejecutar la consulta
+$result = $conexion->query("
+    SELECT p.*, s.nombre AS seccion_nombre, s.descripcion AS seccion_descripcion
+    FROM preguntas p
+    INNER JOIN secciones s ON p.seccion_id = s.id
+    WHERE p.seccion_id = '$seccion' AND p.depende_p IS NULL
+");
+
+// Obtener la primera fila del resultado
+$row = $result->fetch_assoc();
+
+// Verificar si se encontraron resultados
+if ($row) {
+    $seccion_nombre = $row['seccion_nombre'];
+    $seccion_descripcion = $row['seccion_descripcion'];
+} else {
+    // Manejar el caso en que no se encuentran preguntas para la sección dada
+    $seccion_nombre = "Sección no encontrada";
+    $seccion_descripcion = "";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -63,7 +86,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
         <div class="col-12 text-center">
             <h1 class="bebas-neue-regular" style="font-size: 100px;">Encuesta Inicial</h1>
         </div>
-        <h1>SECCION - <?php echo ucfirst($seccion); ?></h1>
+        <h1>SECCION - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p></h1>
         <div class="col-12">
             <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
         </div>
@@ -117,7 +140,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
                             }
-
+ 
                             if (!empty($opciones)) {
                                 echo "<table>";
                                 echo "<tr><th></th>";

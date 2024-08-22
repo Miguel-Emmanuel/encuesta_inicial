@@ -60,8 +60,12 @@ $result = $conexion->query($sql);
                     </tbody>
                 </table>
             </div>
-
-
+<br><br>
+            <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion">
+            <center>
+                <input type="submit" name="btningresar" class="btn btn-danger" value="Cerrar sesión">
+            </center>
+        </a>
             
             <script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
         </body>
