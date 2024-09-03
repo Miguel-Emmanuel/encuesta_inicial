@@ -1,5 +1,6 @@
 <?php
 require("../../../database/conexion.php");
+
 session_start();
 if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
@@ -15,6 +16,29 @@ $seccion = $_GET['seccion'];
 
 // Consultar las preguntas de la sección desde la base de datos
 $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' and depende_p is null");
+// Consultar las preguntas de la sección desde la base de datos
+
+// Ejecutar la consulta
+$result = $conexion->query("
+    SELECT p.*, s.nombre AS seccion_nombre, s.descripcion AS seccion_descripcion
+    FROM preguntas p
+    INNER JOIN secciones s ON p.seccion_id = s.id
+    WHERE p.seccion_id = '$seccion' AND p.depende_p IS NULL
+");
+
+// Obtener la primera fila del resultado
+$row = $result->fetch_assoc();
+
+// Verificar si se encontraron resultados
+if ($row) {
+    $seccion_nombre = $row['seccion_nombre'];
+    $seccion_descripcion = $row['seccion_descripcion'];
+} else {
+    // Manejar el caso en que no se encuentran preguntas para la sección dada
+    $seccion_nombre = "Sección no encontrada";
+    $seccion_descripcion = "";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -63,64 +87,89 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
         <div class="col-12 text-center">
             <h1 class="bebas-neue-regular" style="font-size: 100px;">Encuesta Inicial</h1>
         </div>
-        <h1>SECCION - <?php echo ucfirst($seccion); ?></h1>
+        <h1>SECCION - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p></h1>
         <div class="col-12">
             <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
         </div>
         <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
             <?php
-            while ($preguntas = $sql->fetch_object()) {
+
+function obtenerRespuestasUsuario($conexion, $idUsuario) {
+    $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
+    $stmt->bind_param("i", $idUsuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $respuestas = array();
+    
+    while ($row = $result->fetch_assoc()) {
+        $respuestas[$row['pregunta_id']] = $row['respuesta_texto'];
+    }
+    
+    $stmt->close();
+    return $respuestas;
+}
+
+
+
+$idUsuario = $_SESSION["id"];
+$respuestasUsuario = obtenerRespuestasUsuario($conexion, $idUsuario);
+
+// $idPregunta = 1; // ID de la pregunta, esto normalmente vendría de la base de datos
+
+
+while ($preguntas = $sql->fetch_object()) {
                 $idPregunta = $preguntas->id;
                 $preguntaTexto = $preguntas->pregunta;
                 $tipoPregunta = $preguntas->tipo;
                 $dependeDe = $preguntas->depende_p;
-
+                $respuestaTexto = isset($respuestasUsuario[$idPregunta]) ? htmlspecialchars($respuestasUsuario[$idPregunta]) : '';
+                
                 echo "<div class='pregunta'>";
                 echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b></p>";
 
                 switch ($tipoPregunta) {
                     case 'texto':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta'>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta' value='$respuestaTexto'>";
                         break;
                     case 'fecha':
-                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta'>";
+                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto'>";
                         break;
                     case 'correo':
-                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'curp':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta'  required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
 
                     case 'rfc':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'numero':
-                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' pattern='\d+' required>";
+                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
                         break;
                     case 'r_social':
-                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' required></textarea>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
                         break;
                     case 'c_postal':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'texto_a':
-                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' required></textarea>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
                         break;
 
                     case 'opcion':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
                             echo "<div class='pregunta'>";
-                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                             $opciones = array();
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
                             }
-
+ 
                             if (!empty($opciones)) {
                                 echo "<table>";
-                                echo "<tr><th>Opción 1</th>";
+                                echo "<tr><th></th>";
                                 foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                     echo "<th>$opcion2</th>";
                                 }
@@ -133,7 +182,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                                     $cont++;
 
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion2' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
                                     }
                                     echo "</tr>";
                                 }
@@ -166,7 +215,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
                             echo "<div class='pregunta'>";
-                            echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                            // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                             $opciones = array();
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
@@ -174,7 +223,7 @@ $sql = $conexion->query("SELECT * FROM preguntas WHERE seccion_id = '$seccion' a
 
                             if (!empty($opciones)) {
                                 echo "<table>";
-                                echo "<tr><th>Opción 1</th>";
+                                echo "<tr><th></th>";
                                 foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                     echo "<th>$opcion2</th>";
                                 }
@@ -264,7 +313,8 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    // echo "<p class='pregunta-texto'>Opciones para pregunta <b>$preguntaTexto</b></p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
@@ -272,7 +322,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         
                                     if (!empty($opciones)) {
                                         echo "<table>";
-                                        echo "<tr><th>Opción 1</th>";
+                                        // echo "<tr><th>Opción 1</th>";
                                         foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                             echo "<th>$opcion2</th>";
                                         }
@@ -285,7 +335,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             $cont++;
         
                                             foreach ($valoresOpcion2 as $opcion2) {
-                                                echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion2' ></td>";
+                                                echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion1' ></td>";
                                             }
                                             echo "</tr>";
                                         }
@@ -318,7 +368,8 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
