@@ -156,7 +156,7 @@ if ($row) {
                                     $cont++;
 
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion2' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
                                     }
                                     echo "</tr>";
                                 }
@@ -296,7 +296,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         
                                     if (!empty($opciones)) {
                                         echo "<table>";
-                                        echo "<tr><th>Opción 1</th>";
+                                        // echo "<tr><th>Opción 1</th>";
                                         foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                             echo "<th>$opcion2</th>";
                                         }
@@ -309,7 +309,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             $cont++;
         
                                             foreach ($valoresOpcion2 as $opcion2) {
-                                                echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion2' ></td>";
+                                                echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion1' ></td>";
                                             }
                                             echo "</tr>";
                                         }
