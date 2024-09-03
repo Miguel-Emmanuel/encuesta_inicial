@@ -10,11 +10,11 @@
         $idUsuario = $_SESSION["id"];
 
 
-        // Inspeccionar el contenido de $_POST
-        echo "<pre>";
-        var_dump($_POST);  // Muestra toda la información enviada en el formulario
-        echo "</pre>";
-        // exit;
+        // // Inspeccionar el contenido de $_POST
+        // echo "<pre>";
+        // var_dump($_POST);  // Muestra toda la información enviada en el formulario
+        // echo "</pre>";
+        // // exit;
 
 
 

@@ -1,5 +1,6 @@
 <?php
 require("../../../database/conexion.php");
+
 session_start();
 if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
@@ -92,43 +93,68 @@ if ($row) {
         </div>
         <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
             <?php
-            while ($preguntas = $sql->fetch_object()) {
+
+function obtenerRespuestasUsuario($conexion, $idUsuario) {
+    $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
+    $stmt->bind_param("i", $idUsuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $respuestas = array();
+    
+    while ($row = $result->fetch_assoc()) {
+        $respuestas[$row['pregunta_id']] = $row['respuesta_texto'];
+    }
+    
+    $stmt->close();
+    return $respuestas;
+}
+
+
+
+$idUsuario = $_SESSION["id"];
+$respuestasUsuario = obtenerRespuestasUsuario($conexion, $idUsuario);
+
+// $idPregunta = 1; // ID de la pregunta, esto normalmente vendría de la base de datos
+
+
+while ($preguntas = $sql->fetch_object()) {
                 $idPregunta = $preguntas->id;
                 $preguntaTexto = $preguntas->pregunta;
                 $tipoPregunta = $preguntas->tipo;
                 $dependeDe = $preguntas->depende_p;
-
+                $respuestaTexto = isset($respuestasUsuario[$idPregunta]) ? htmlspecialchars($respuestasUsuario[$idPregunta]) : '';
+                
                 echo "<div class='pregunta'>";
                 echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b></p>";
 
                 switch ($tipoPregunta) {
                     case 'texto':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta'>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta' value='$respuestaTexto'>";
                         break;
                     case 'fecha':
-                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta'>";
+                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto'>";
                         break;
                     case 'correo':
-                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'curp':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta'  required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
 
                     case 'rfc':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'numero':
-                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' pattern='\d+' required>";
+                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
                         break;
                     case 'r_social':
-                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' required></textarea>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
                         break;
                     case 'c_postal':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'texto_a':
-                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' required></textarea>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
                         break;
 
                     case 'opcion':
