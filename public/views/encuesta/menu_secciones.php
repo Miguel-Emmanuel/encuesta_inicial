@@ -32,7 +32,7 @@ $result = $conexion->query($sql);
         <body>
         <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Navbar</span>
+            <span class="navbar-brand mb-0 h1">Bienvenido</span>
             <a href="../../../app/Controllers/sessiondestroy_controller.php"><button class="btn btn-danger" name="">Cerrar Sesion</button></a>
         </div>
         </nav>
