@@ -4,9 +4,6 @@ session_start();
 if (empty($_SESSION["id"])) {
     header("location: login.php");
 }
-if($_SESSION["id"] == 3){
-    header("location: ../encuesta/encuesta.php");
-}
 
 
 ?>
