@@ -53,21 +53,21 @@ if ($row) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Passion+One:wght@400;700;900&display=swap" rel="stylesheet">
-      <!-- Incluir jQuery -->
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Incluir jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Incluir tu script personalizado -->
     <script>
-    function obtenerValor(opcion, idPregunta) {
-        console.log('El valor del radio button es: ' + opcion);
-        console.log('Valor de idPregunta:', idPregunta);
+        function obtenerValor(opcion, idPregunta) {
+            console.log('El valor del radio button es: ' + opcion);
+            console.log('Valor de idPregunta:', idPregunta);
 
-        if (opcion === 'Si') {
-            $('#dependientes-' + idPregunta).slideDown();
-        } else {
-            $('#dependientes-' + idPregunta).slideUp();
+            if (opcion === 'Si') {
+                $('#dependientes-' + idPregunta).slideDown();
+            } else {
+                $('#dependientes-' + idPregunta).slideUp();
+            }
         }
-    }
-</script>
+    </script>
     <style>
         .error-message {
             color: red;
@@ -83,45 +83,52 @@ if ($row) {
         <div class="col-12 text-center">
             <h1 class="bebas-neue-regular" style="font-size: 100px;">Encuesta Inicial</h1>
         </div>
-        <h1>SECCION - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p></h1>
+        <h1>SECCION - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p>
+        </h1>
         <div class="col-12">
             <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
         </div>
         <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
             <?php
 
-function obtenerRespuestasUsuario($conexion, $idUsuario) {
-    $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
-    $stmt->bind_param("i", $idUsuario);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $respuestas = array();
-    
-    while ($row = $result->fetch_assoc()) {
-        $respuestas[$row['pregunta_id']] = $row['respuesta_texto'];
-    }
-    
-    $stmt->close();
-    return $respuestas;
-}
+            function obtenerRespuestasUsuario($conexion, $idUsuario)
+            {
+                $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
+                $stmt->bind_param("i", $idUsuario);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $respuestas = array();
+
+                while ($row = $result->fetch_assoc()) {
+                    $respuestas[$row['pregunta_id']] = $row['respuesta_texto'];
+                }
+
+                $stmt->close();
+                return $respuestas;
+            }
 
 
 
-$idUsuario = $_SESSION["id"];
-$respuestasUsuario = obtenerRespuestasUsuario($conexion, $idUsuario);
+            $idUsuario = $_SESSION["id"];
+            $respuestasUsuario = obtenerRespuestasUsuario($conexion, $idUsuario);
 
-// $idPregunta = 1; // ID de la pregunta, esto normalmente vendría de la base de datos
+            // $idPregunta = 1; // ID de la pregunta, esto normalmente vendría de la base de datos
 
 
-while ($preguntas = $sql->fetch_object()) {
+            while ($preguntas = $sql->fetch_object()) {
                 $idPregunta = $preguntas->id;
                 $preguntaTexto = $preguntas->pregunta;
                 $tipoPregunta = $preguntas->tipo;
                 $dependeDe = $preguntas->depende_p;
                 $respuestaTexto = isset($respuestasUsuario[$idPregunta]) ? htmlspecialchars($respuestasUsuario[$idPregunta]) : '';
-                
+                $ayu = $preguntas->ayuda;
+
                 echo "<div class='pregunta'>";
-                echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b></p>";
+                echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b>";
+                if ($ayu !== null) {
+                    echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
+                }
+                echo "</p>";
 
                 switch ($tipoPregunta) {
                     case 'texto':
@@ -162,7 +169,7 @@ while ($preguntas = $sql->fetch_object()) {
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opciones[$opcion->opcion1][] = $opcion->opcion2;
                             }
- 
+
                             if (!empty($opciones)) {
                                 echo "<table>";
                                 echo "<tr><th></th>";
@@ -251,13 +258,13 @@ while ($preguntas = $sql->fetch_object()) {
                         echo "Tipo de pregunta no soportado";
                         break;
                 }
-       
+
 
                 echo "<div class='preguntas-dependientes' id='dependientes-$idPregunta' style='display:none;'>";
 
                 // Consulta para obtener las preguntas dependientes de la pregunta actual
-              // Consulta para obtener las preguntas dependientes de la pregunta actual
-$sqlDependientes = "SELECT pd.id, pd.pregunta, pd.tipo
+                // Consulta para obtener las preguntas dependientes de la pregunta actual
+                $sqlDependientes = "SELECT pd.id, pd.pregunta, pd.tipo
 FROM preguntas pd
 JOIN dependencias_preguntas dp ON pd.id = dp.pregunta_id
 WHERE dp.depende_de_pregunta_id = $idPregunta";
@@ -276,7 +283,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 echo "<div class='pregunta dependiente' data-pregunta-id='$idPregunta'>";
                                 echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta'>";
-     
+
                                 echo "</div>";
                                 break;
                             case 'fecha':
@@ -288,7 +295,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                             case 'curp':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta'  required>";
                                 break;
-        
+
                             case 'rfc':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' required>";
                                 break;
@@ -304,18 +311,18 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                             case 'texto_a':
                                 echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' required></textarea>";
                                 break;
-        
+
                             case 'opcion':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
                                     // echo "<p class='pregunta-texto'>Opciones para pregunta <b>$preguntaTexto</b></p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
                                     }
-        
+
                                     if (!empty($opciones)) {
                                         echo "<table>";
                                         // echo "<tr><th>Opción 1</th>";
@@ -323,13 +330,13 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             echo "<th>$opcion2</th>";
                                         }
                                         echo "</tr>";
-        
+
                                         foreach ($opciones as $opcion1 => $valoresOpcion2) {
                                             echo "<tr>";
                                             echo "<td>$opcion1</td>";
                                             $cont = 0;
                                             $cont++;
-        
+
                                             foreach ($valoresOpcion2 as $opcion2) {
                                                 echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' value='$opcion1' ></td>";
                                             }
@@ -344,7 +351,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-        
+
                             case 'select':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
@@ -359,18 +366,18 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-        
+
                             case 'multi':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                    echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
                                     // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
                                     }
-        
+
                                     if (!empty($opciones)) {
                                         echo "<table>";
                                         echo "<tr><th>Opción 1</th>";
@@ -388,7 +395,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             }
                                             echo "</tr>";
                                         }
-        
+
                                         echo "</table>";
                                     } else {
                                         echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
@@ -398,14 +405,13 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-        
-        
-        
+
+
+
                             default:
                                 echo "Tipo de pregunta no soportado";
                                 break;
                         }
-               
                     }
                 } else {
                     // echo "No hay preguntas dependientes para esta pregunta.";
@@ -416,15 +422,15 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
 
                 echo "</div>"; // Cierre de pregunta principal
             }
-      
 
-        // Cerrar conexión
-        // $conn->close();
-                // echo "</div>"; // Cierre de preguntas-dependientes
-                // // echo "</div>"; // Cierre de pregunta principal
-                // echo "<input type='hidden' name='preguntas[$idPregunta]' value='$preguntaTexto'>";
-                // echo "</div>";
-            
+
+            // Cerrar conexión
+            // $conn->close();
+            // echo "</div>"; // Cierre de preguntas-dependientes
+            // // echo "</div>"; // Cierre de pregunta principal
+            // echo "<input type='hidden' name='preguntas[$idPregunta]' value='$preguntaTexto'>";
+            // echo "</div>";
+
             ?>
             <center>
                 <div id="alert-container"></div>
@@ -581,10 +587,6 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                 '<p class="mb-0">Por favor corrige los errores y vuelve a intentarlo.</p>';
             return alert;
         }
-
-
-
-
     </script>
 
 </body>
