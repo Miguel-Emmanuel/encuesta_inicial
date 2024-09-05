@@ -40,11 +40,11 @@ if ($row) {
 <html lang="es">
 
 <head>
-    <title>Encuesta - <?php echo ucfirst($seccion); ?></title>
+    <title>Entrevista - <?php echo ucfirst($seccion); ?></title>
     <link rel="stylesheet" href="../../css/encuesta.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta Inicial | Inicio</title>
+    <title>Entrevista Inicial | Inicio</title>
     <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,9 +81,9 @@ if ($row) {
     <div class="container">
 
         <div class="col-12 text-center">
-            <h1 class="bebas-neue-regular" style="font-size: 100px;">Encuesta Inicial</h1>
+            <h1 class="bebas-neue-regular" style="font-size: 100px;">Entrevista Inicial</h1>
         </div>
-        <h1>SECCION - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p>
+        <h1>SECCIÓN - <?php echo ucfirst($seccion); ?> <p><?php echo ucfirst($seccion_descripcion); ?></p>
         </h1>
         <div class="col-12">
             <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
@@ -132,10 +132,10 @@ if ($row) {
 
                 switch ($tipoPregunta) {
                     case 'texto':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta' value='$respuestaTexto'>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta' value='$respuestaTexto' required>";
                         break;
                     case 'fecha':
-                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto'>";
+                        echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'correo':
                         echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
@@ -185,7 +185,7 @@ if ($row) {
                                     $cont++;
 
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)'></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' required></td>";
                                     }
                                     echo "</tr>";
                                 }
@@ -206,7 +206,7 @@ if ($row) {
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opcionId = $opcion->id;
                                 $nombreOpcion = $opcion->opcion1;
-                                echo "<option value='$opcionId'>$nombreOpcion</option>";
+                                echo "<option value='$opcionId' >$nombreOpcion</option>";
                             }
                             echo "</select>";
                         } else {
@@ -380,7 +380,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
 
                                     if (!empty($opciones)) {
                                         echo "<table>";
-                                        echo "<tr><th>Opción 1</th>";
+                                        // echo "<tr><th>Opción 1</th>";
                                         foreach ($opciones[array_key_first($opciones)] as $opcion2) {
                                             echo "<th>$opcion2</th>";
                                         }
@@ -556,7 +556,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         }
 
         function validateNumber(number) {
-            var numberPattern = /^\d+$/;
+            var numberPattern = /^\d{10}$/;
             return numberPattern.test(number);
         }
 
