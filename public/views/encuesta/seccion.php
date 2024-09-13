@@ -438,12 +438,18 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
             </center>
         </form>
 
+        <div class="botones">
+    <a href="menu_secciones.php" class="">
+  
+            <input type="submit" name="btningresar" class="btn-menu " value="Secciones">
+        </center>
+    </a>
         <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion">
             <center>
                 <input type="submit" name="btningresar" class="btn btn-success" value="Cerrar sesión">
-            </center>
+         
         </a>
-
+        </div>
     </div>
     <script>
         document.getElementById('encuestaForm').addEventListener('submit', function(event) {

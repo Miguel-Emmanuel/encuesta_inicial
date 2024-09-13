@@ -1,0 +1,139 @@
+MODIFICACIONES DE  ENCUESTA INICIAL✅
+////////////////////////////////
+11. ¿Económicamente, alguien depende de ti?
+si  /  no
+12 quienes?
+
+////////////////////////////////////////✅
+13. Grupo Sanguíneo
+bd para desplegar opciones|validar grupo sanguíneo
+
+////////////////////////////////////////
+30. Menciona 2 referencias cerca de su domicilio
+38. Domicilio Completo
+39. Menciona dos referencias cerca de su 
+47. Domicilio
+48. Menciona 2 referencias cerca de su domicilio
+(el campo de texto es muy pequeño )
+modificar el input|Text area amobos modificados
+
+///////////////////////////////////////////
+BOTON DE REGRESAR - MENU SECCIONES
+(en el formulario al acceder a cada seccion)
+
+////////////////////////////////////////
+11. ¿Económicamente, alguien depende de ti?
+34. Parentesco
+43. Parentesco
+62. ¿Cuál es tu lugar de residencia mientras estudias la carrera?
+70. ¿Tus papás o tus abuelos entienden o hablan alguna lengua 
+71. ¿Tú hablas o entiendes alguna lengua indígena?
+106. ¿Dentro de tus planes futuros piensas realizar estudios de 
+si no 
+Otro:
+|cuando de click a \ o tro:  \ si / no (70), desplegar un campo|
+
+/////////////////////////////////////
+50. ¿Cuántas horas trabajas a la semana?
+No Aplica:
+|borrar opción|
+
+////////////////////////////////////////
+53. ¿Días de trabajo?
+|modificar radio -css- checkbox(intuitivo)|
+
+////////////////////
+54. ¿Horarios de trabajo?
+|tooltip detallado de como ingresar la información \
+\crear opciones con horarios(propuesta)|
+
+/////////////////////////////////
+58. ¿Aportas al gasto familiar?
+	Si	No
+Padre 		
+Madre 		
+Hermanos 		
+Abuelos maternos 
+|mala redaccion de la pregunta|
+
+/////////////////////////////////////////////////////////////////
+59. ¿Ingreso mensual de todos los integrantes de la familia?
+|MALA redacción , (ingreso menusal total / suma )|
+
+////////////////////////////////////////////////////////////////////
+60. ¿Edad de los integrantes de la familia?
+1 a 5 años	6 a 10 años	11 a 15 años	15 a 20 años	
+Hermano 1										
+Hermano 2										
+Hermano 3										
+Hermano 4
+
+|Mas opcions de hermanos / alternativa?|
+
+/////////////////////////////////////////////////////////////////
+62. ¿Cuál es tu lugar de residencia mientras estudias la carrera?
+
+Casa de tus padres (propia)	
+Casa de tus padres (rentada)	
+Casa de tus padres (prestada)	
+Otro:
+
+|Mas opciones - renta cerca de la u
+otro- agg campo de texto |
+
+///////////////////////////////////////////////////////////////////
+64. En la casa donde vives hay
+Drenaje	
+Agua Potable	
+Luz
+|Reformular pregunta - SERVICIOS?|
+
+//////////////////////////////////////////////////////////
+67. Análisis relación Padre
+68. Análisis relación Madre
+Si	No
+Actualmente vive con usted		
+Recibe apoyo económico		
+Falleció		
+Actualmente mantengo una buena relación con mi padre
+
+|DINAMISMO - opciones (fallecio)|
+
+/////////////////////////////////////////////////////////////
+84. ¿En qué tipo de escuela realizaste tus estudios previos a la educación superior?
+Escolarizada	Abierta
+|reformulaicon de pregunta -MODALIDAD?|
+
+////////////////////////////////////////////////////////
+89. ¿Cuál fue la escolaridad máxima alcanzada por tu madre?
+90. ¿Cuál fue la escolaridad máxima alcanzada por tu padre?
+Completa	Incompleta	No aplica
+Sin estudio			
+Primaria			
+Secundaria			
+Bachillerato			
+Estudios técnicos			
+Licenciatura			
+Postgrado
+|Solo seleccionar una opcion por fila (no varias \ a considerar)|
+
+/////////////////////////////////////////////////////////////////
+MENU SECCIONES - CAMMBIAR NOMBRE 
+6 | Rendimiento Escolar- ANALISIS ACADEMICO 
+
+//////////////////////////////////////////////////////////////
+101. En promedio, ¿cuántas horas dedicas a la semana a la preparación de tus trabajos? (comprende lecturas y preparación de trabajos y tareas)
+|reformular - lecturra de comprensión (comprende lecruras)|
+
+
+
+
+
+
+
+
+
+
+
+
+
