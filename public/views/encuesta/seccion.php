@@ -57,16 +57,39 @@ if ($row) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Incluir tu script personalizado -->
     <script>
-        function obtenerValor(opcion, idPregunta) {
-            console.log('El valor del radio button es: ' + opcion);
-            console.log('Valor de idPregunta:', idPregunta);
+      function obtenerValor(opcion, idPregunta) {
+    console.log('El valor del radio button es: ' + opcion);
+    console.log('Valor de idPregunta:', idPregunta);
 
-            if (opcion === 'Si') {
-                $('#dependientes-' + idPregunta).slideDown();
-            } else {
-                $('#dependientes-' + idPregunta).slideUp();
-            }
-        }
+    if (opcion === 'Si') {
+        $('#dependientes-' + idPregunta).slideDown();
+    } else if (opcion === 'Otro:') {
+        mostrarCampoOtro(idPregunta);
+    } else {
+        $('#dependientes-' + idPregunta).slideUp();
+    }
+}
+
+function mostrarCampoOtro(idPregunta) {
+    // Encuentra el campo asociado a la pregunta
+    var campoOtro = $('#campo_otro_' + idPregunta);
+
+    if (campoOtro.length) {
+        campoOtro.slideDown(); // Muestra el campo 'Otro:'
+    }
+}
+
+// Opcional: Si el usuario selecciona otra opción diferente de 'Otro:', oculta el campo
+$(document).on('change', 'input[type="radio"]', function() {
+    var valorSeleccionado = $(this).val();
+    var idPregunta = $(this).attr('id');
+    var campoOtro = $('#campo_otro_' + idPregunta);
+
+    if (valorSeleccionado !== 'Otro:') {
+        campoOtro.slideUp();
+    }
+});
+
     </script>
     <style>
         .error-message {
@@ -182,13 +205,22 @@ if ($row) {
                                     echo "<tr>";
                                     echo "<td>$opcion1</td>";
                                     $cont = 0;
-                                    $cont++;
-
+                    
                                     foreach ($valoresOpcion2 as $opcion2) {
+                                        $cont++;
+                                        // Verificamos si la opción es "Otro:" para agregar un evento onclick
                                         echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' required></td>";
                                     }
+                    
                                     echo "</tr>";
                                 }
+                                // Aquí se genera el campo oculto que aparecerá solo si selecciona "Otro:"
+                                echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
+                                          <td colspan='2'>
+                                              <label for='otro_texto'>Especifica:</label>
+                                              <input type='text' id='otro_texto_$idPregunta' name='otro_texto_$idPregunta'>
+                                          </td>
+                                      </tr>";
                                 echo "</table>";
                             } else {
                                 echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
