@@ -114,4 +114,66 @@ h1{
 .error-message {
     color: red;
     display: none;
+    
 }
+
+
+
+/* Ocultar el radio button original */
+.custom-radio {
+    display: none;
+}
+
+/* Estilo del contenedor del radio button */
+.custom-radio-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Estilo de la etiqueta personalizada */
+.custom-radio-label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Estilo para el estado seleccionado */
+.custom-radio:checked + .custom-radio-label {
+    background-color: #000;
+    border-color: #000;
+}
+
+/* Estilo del marcador dentro del checkbox */
+.custom-radio-label::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* Estilo para el estado seleccionado */
+.custom-radio:checked + .custom-radio-label::after {
+    opacity: 1;
+}
+
+/* Estilo del texto */
+.custom-radio-text {
+    font-size: 16px;
+}
+
