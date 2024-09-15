@@ -84,7 +84,7 @@ CREATE TABLE `opciones_respuesta` (
   KEY `opciones_respuesta_seccion_id_foreign` (`seccion_id`),
   CONSTRAINT `opciones_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `opciones_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=324 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=334 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `opciones_respuesta` */
 
@@ -112,7 +112,6 @@ insert  into `opciones_respuesta`(`id`,`pregunta_id`,`seccion_id`,`opcion1`,`opc
 (21,43,3,'Otro:','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (22,49,4,'Si','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (23,49,4,'No','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
-(24,50,4,'No Aplica:','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (25,50,4,'Menos de 10 horas a la semana','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (26,50,4,'De 10 a 20 horas a la semana','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (27,50,4,'De 21 a 40 horas a la semana','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
@@ -222,7 +221,7 @@ insert  into `opciones_respuesta`(`id`,`pregunta_id`,`seccion_id`,`opcion1`,`opc
 (131,62,4,'Casa de tus padres (propia)','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (132,62,4,'Casa de tus padres (rentada)','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (133,62,4,'Casa de tus padres (prestada)','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
-(134,62,4,'Otro:','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
+(134,62,4,'Departamento cerca de la Universidad','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (135,64,4,'Drenaje','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (136,64,4,'Agua Potable','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (137,64,4,'Luz','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
@@ -410,7 +409,17 @@ insert  into `opciones_respuesta`(`id`,`pregunta_id`,`seccion_id`,`opcion1`,`opc
 (319,105,8,'Similar','En cuanto al prestigio social','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (320,105,8,'Inferior','En cuanto al prestigio social','2024-06-05 10:28:09','2024-06-05 10:28:09'),
 (321,106,8,'Si','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
-(322,106,8,'No','','2024-06-05 10:28:09','2024-06-05 10:28:09');
+(322,106,8,'No','','2024-06-05 10:28:09','2024-06-05 10:28:09'),
+(324,13,1,'A+',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(325,13,1,'A-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(326,13,1,'B+',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(327,13,1,'B-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(328,13,1,'AB+',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(329,13,1,'AB-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(330,13,1,'O+',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(331,13,1,'O-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(332,8,1,'Otro:',NULL,'2024-10-01 08:49:01','2024-09-13 08:49:09'),
+(333,62,4,'Otro:',NULL,NULL,NULL);
 
 /*Table structure for table `preguntas` */
 
@@ -444,7 +453,7 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (10,'Número de Hijos',NULL,'opcion','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (11,'¿Económicamente, alguien depende de ti?',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (12,'Religión',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(13,'Grupo Sanguíneo',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(13,'Grupo Sanguíneo',NULL,'select','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (14,'Fecha de Nacimiento',NULL,'fecha','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (15,'Edad',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (16,'País de Nacimiento',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -485,17 +494,17 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (51,'¿Lugar de trabajo?','49\r\n','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (52,'¿Domicilio del lugar de trabajo?','49','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (53,'¿Días de trabajo?','49','multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(54,'¿Horarios de trabajo?','49','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(55,'¿Ingreso mensual?','49','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(54,'¿Horarios de trabajo?','49','texto','4',1,'Introduce los horarios separados por comas y usa el formato de 24 horas.     Ejemplo: Lunes 08:00 - 16:00, Martes 11:00 -  20:00, etc.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(55,'¿Ingreso mensual?','49','texto','4',1,'Cuanto ganas mensualmente.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (56,'¿De quién dependes económicamente?',NULL,'opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (57,'¿Con quién vives actualmente?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(58,'¿Aportas al gasto familiar?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(59,'¿Ingreso mensual de todos los integrantes de la familia?',NULL,'texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(58,'¿Quién aporta al gasto familiar?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(59,'¿Ingreso mensual total de todos los integrantes de la familia?',NULL,'texto','4',1,'Suma total de los ingresos de todos los integrantes','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (60,'¿Edad de los integrantes de la familia?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (61,'Ocupación de quien aporta la mayor parte del gasto familiar',NULL,'texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (62,'¿Cuál es tu lugar de residencia mientras estudias la carrera?',NULL,'opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (63,'Tiempo de residencia en el domicilio',NULL,'texto','4',1,'2 años, 5 años, 10 años, etc.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(64,'En la casa donde vives hay',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(64,' ¿Qué servicios están disponibles en la casa donde vives?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (65,'¿Cuál es el medio de transporte que utilizas regularmente para trasladarte a la escuela?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (66,'¿Cuánto tiempo haces diariamente para trasladarte de tu lugar de residencia a la escuela?',NULL,'opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (67,'Análisis relación Padre',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -515,12 +524,12 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (81,'¿Ha estado alguna vez hospitalizado(a)?',NULL,'opcion','5',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (82,'Especifica el motivo de la hospitalización','81','texto_a','5',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (83,'¿En qué tipo de escuela realizaste tus estudios previos a la educación superior?',NULL,'opcion','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(84,'¿En qué tipo de escuela realizaste tus estudios previos a la educación superior?',NULL,'opcion','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(84,'¿Cuál fue el tipo de modalidad educativa en la que completaste tus estudios previos a la educación superior?',NULL,'opcion','6',1,'Escolarizada: Educación tradicional con clases en un aula física.\nEducación Abierta/No Escolarizada: Incluye educación en línea, a distancia, o programas flexibles sin clases presenciales regulares.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (85,'Nombre de la institución de nivel medio superior',NULL,'texto','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (86,'Especialidad que cursó en el nivel medio superior',NULL,'texto','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (87,'Municipio donde se ubica la institución de nivel medio superior',NULL,'texto','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (88,'Estado donde se ubica la institución de nivel medio superior',NULL,'texto','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(89,'¿Cuál fue la escolaridad máxima alcanzada por tu madre?',NULL,'multi','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(89,'¿Cuál fue la escolaridad máxima alcanzada por tu madre?',NULL,'opcion','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (90,'¿Cuál fue la escolaridad máxima alcanzada por tu padre?',NULL,'multi','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (91,'¿Tienes hermanos que estén cursando una carrera de licenciatura?',NULL,'opcion','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (92,'En el proceso para que decidieras cursar tu carrera, ¿qué factores fueron de mayor importancia?',NULL,'multi','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -532,7 +541,7 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (98,'Nombre de la institución de la carrera que cursaste antes de entrar a la UTVT','96','texto','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (99,'¿A qué factores se debió tu cambio de carrera?','96','multi','6',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (100,'¿Qué tipo de lecturas acostumbras a utilizar al cursar tus estudios?',NULL,'multi','7',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(101,'En promedio, ¿cuántas horas dedicas a la semana a la preparación de tus trabajos? (comprende lecturas y preparación de trabajos y tareas)',NULL,'opcion','7',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(101,'En promedio, ¿cuántas horas dedicas a la semana a la preparación de tus trabajos? (Lectura de comprensión y preparación de trabajos y tareas)',NULL,'opcion','7',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (102,'¿Cuáles son las formas de estudio y/o realización de trabajos escolares que empleas regularmente?',NULL,'multi','7',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (103,'De acuerdo con la carrera que cursas actualmente, ¿en qué espacio laboral pretenderías preferentemente desarrollar tu actividad profesional?',NULL,'opcion','8',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (104,'Una vez concluidos tus estudios, ¿cómo consideras tus posibilidades de encontrar trabajo relacionado con tu profesión?',NULL,'opcion','8',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -636,7 +645,7 @@ insert  into `secciones`(`id`,`nombre`,`descripcion`,`created_at`,`updated_at`) 
 (3,'emergencia2','Datos de Emergencia (2)',NULL,NULL),
 (4,'socioeconomico','Aspectos Socioeconómicos',NULL,NULL),
 (5,'salud','Condiciones de Salud',NULL,NULL),
-(6,'escolar','Rendimiento Escolar',NULL,NULL),
+(6,'escolar','Análisis Académico',NULL,NULL),
 (7,'habitos','Hábitos de Estudio y Prácticas Escolares',NULL,NULL),
 (8,'expectativas','Expectativas Educativas y Ocupacionales',NULL,NULL);
 
@@ -662,7 +671,7 @@ CREATE TABLE `usuario_respuesta` (
   CONSTRAINT `usuario_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`),
   CONSTRAINT `usuario_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`),
   CONSTRAINT `usuario_respuesta_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2188 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2218 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `usuario_respuesta` */
 
@@ -1060,7 +1069,37 @@ insert  into `usuario_respuesta`(`id`,`usuario_id`,`pregunta_id`,`opcion_id`,`se
 (2184,3,68,166,4,'Actualmente mantengo una buena relación con mi padre','2024-09-05 08:16:54','2024-09-05 08:16:54'),
 (2185,3,69,171,4,'Si','2024-09-05 08:16:54','2024-09-05 08:16:54'),
 (2186,3,70,174,4,'No','2024-09-05 08:16:54','2024-09-05 08:16:54'),
-(2187,3,71,176,4,'No','2024-09-05 08:16:54','2024-09-05 08:16:54');
+(2187,3,71,176,4,'No','2024-09-05 08:16:54','2024-09-05 08:16:54'),
+(2188,3,1,NULL,1,'A@HOTMAIL.COM','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2189,3,2,NULL,1,'1','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2190,3,3,NULL,1,'MIGUEL EMMANUEL','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2191,3,4,NULL,1,'ARRIOLA','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2192,3,5,NULL,1,'ORTEGA','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2193,3,6,NULL,1,'AIOM020605HMCRRGA5','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2194,3,7,NULL,1,'AIOM0206058V0','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2195,3,8,332,1,'Otro:','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2196,3,9,8,1,'Casado(a)','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2197,3,10,11,1,'1 hijo(a)','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2198,3,11,NULL,1,'cynhg','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2199,3,12,NULL,1,'Ninguna','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2200,3,13,NULL,1,'324','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2201,3,14,NULL,1,'2024-09-20','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2202,3,15,NULL,1,'45','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2203,3,16,NULL,1,'México','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2204,3,17,NULL,1,'MEXICO','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2205,3,18,NULL,1,'LERMA','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2206,3,19,NULL,1,'7226395654','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2207,3,20,NULL,1,'7226395654','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2208,3,21,NULL,1,'al222010230@gmail.com','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2209,3,22,NULL,1,'https://facebook.com/','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2210,3,23,NULL,1,'CARRETERA TOLUCA-NAUCALPAN KM32.8','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2211,3,24,NULL,1,'S/N','2024-09-13 10:22:59','2024-09-13 10:22:59'),
+(2212,3,25,NULL,1,'7','2024-09-13 10:23:00','2024-09-13 10:23:00'),
+(2213,3,26,NULL,1,'Conocido','2024-09-13 10:23:00','2024-09-13 10:23:00'),
+(2214,3,27,NULL,1,'SAN AGUSTIN','2024-09-13 10:23:00','2024-09-13 10:23:00'),
+(2215,3,28,NULL,1,'Lerma','2024-09-13 10:23:00','2024-09-13 10:23:00'),
+(2216,3,29,NULL,1,'52050','2024-09-13 10:23:00','2024-09-13 10:23:00'),
+(2217,3,30,NULL,1,'al lado de la olaza naraja','2024-09-13 10:23:00','2024-09-13 10:23:00');
 
 /*Table structure for table `usuarios` */
 
@@ -1071,8 +1110,10 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(50) NOT NULL,
   `apellido_paterno` varchar(50) NOT NULL,
   `apellido_materno` varchar(50) NOT NULL,
+  `i_genero` varchar(255) DEFAULT NULL,
   `matricula` int(11) DEFAULT NULL,
   `carrera` varchar(255) DEFAULT NULL,
+  `grupos_v` varchar(255) DEFAULT NULL,
   `email` text NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `pass` text NOT NULL,
@@ -1088,23 +1129,23 @@ CREATE TABLE `usuarios` (
 
 /*Data for the table `usuarios` */
 
-insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`matricula`,`carrera`,`email`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`created_at`,`updated_at`) values 
-(1,'Director','UTVT','UTVT',NULL,NULL,'director@gmail.com',NULL,'1234',NULL,1,NULL,NULL),
-(2,'Mike','UTVT','UTVT',NULL,NULL,'ptc@gmail.com',NULL,'1234',NULL,2,NULL,NULL),
-(3,'Mike','Arriola','Ortega',NULL,NULL,'estudiante@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(4,'Jimena','Diaz','Diaz',NULL,NULL,'psicologia@gmail.com',NULL,'1234',NULL,4,NULL,NULL),
-(5,'Eduh','Olvera','Aldama',NULL,NULL,'eduholvera@gmail.com',NULL,'1234',NULL,2,NULL,NULL),
-(6,'Fernanda','Gomez','Alcantara',222110811,'Ingenieria en Desarrollo y Gestión de Sofware','fernanda@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(7,'Ángel','Camacho','Linares',222220022,'Ingenieria en Desarrollo y Gestión de Sofware','angel@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(8,'Arturo','De Jesús','Gonzales',222222222,'Ingenieria en Desarrollo y Gestión de Sofware','arturo@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(9,'Rodrigo','Castillo','Ortega',112233445,'Ingenieria en Desarrollo y Gestión de Sofware','rodrigo@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(10,'Diego','Castañeda','Ramirez',9988776,'Ingenieria en Desarrollo y Gestión de Sofware','diego@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(11,'Jesús','Buen','Día',663990893,'Ingenieria en Desarrollo y Gestión de Sofware','jesus@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(12,'Emiliano','Bermudez','Olivares',98923411,'Ingenieria en Desarrollo y Gestión de Sofware','emi@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(13,'Carolina','Garcia','Garcia',754971370,'Ingenieria en Desarrollo y Gestión de Sofware','caro@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(14,'Jorge','Castañeda','Campuzano',543794323,'Ingenieria en Desarrollo y Gestión de Sofware','jorge@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(15,'Ian','Gonzales','Gomez',280168753,'Ingenieria en Desarrollo y Gestión de Sofware','ian@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
-(16,'Eduardo','edu','edu',222010230,'TICS','eduard@gmail.com',NULL,'1234',NULL,3,NULL,NULL);
+insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`i_genero`,`matricula`,`carrera`,`grupos_v`,`email`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`created_at`,`updated_at`) values 
+(1,'Director','UTVT','UTVT',NULL,NULL,NULL,NULL,'director@gmail.com',NULL,'1234',NULL,1,NULL,NULL),
+(2,'Mike','UTVT','UTVT',NULL,NULL,NULL,NULL,'ptc@gmail.com',NULL,'1234',NULL,2,NULL,NULL),
+(3,'Mike','Arriola','Ortega',NULL,NULL,NULL,NULL,'estudiante@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(4,'Jimena','Diaz','Diaz',NULL,NULL,NULL,NULL,'psicologia@gmail.com',NULL,'1234',NULL,4,NULL,NULL),
+(5,'Eduh','Olvera','Aldama',NULL,NULL,NULL,NULL,'eduholvera@gmail.com',NULL,'1234',NULL,2,NULL,NULL),
+(6,'Fernanda','Gomez','Alcantara',NULL,222110811,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'fernanda@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(7,'Ángel','Camacho','Linares',NULL,222220022,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'angel@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(8,'Arturo','De Jesús','Gonzales',NULL,222222222,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'arturo@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(9,'Rodrigo','Castillo','Ortega',NULL,112233445,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'rodrigo@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(10,'Diego','Castañeda','Ramirez',NULL,9988776,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'diego@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(11,'Jesús','Buen','Día',NULL,663990893,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'jesus@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(12,'Emiliano','Bermudez','Olivares',NULL,98923411,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'emi@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(13,'Carolina','Garcia','Garcia',NULL,754971370,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'caro@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(14,'Jorge','Castañeda','Campuzano',NULL,543794323,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'jorge@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(15,'Ian','Gonzales','Gomez',NULL,280168753,'Ingenieria en Desarrollo y Gestión de Sofware',NULL,'ian@gmail.com',NULL,'1234',NULL,3,NULL,NULL),
+(16,'Eduardo','edu','edu',NULL,222010230,'TICS',NULL,'eduard@gmail.com',NULL,'1234',NULL,3,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

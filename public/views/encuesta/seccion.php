@@ -269,8 +269,12 @@ $(document).on('change', 'input[type="radio"]', function() {
                                     echo "<tr>";
                                     echo "<td>$opcion1</td>";
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                        echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' ></td>";
-                                    }
+                                        $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
+   echo "<td>
+            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2'>
+            <label for='$radioId' class='custom-radio-label'></label>
+            <span class='custom-radio-text'></span>
+          </td>";                                    }
                                     echo "</tr>";
                                 }
 
@@ -296,7 +300,7 @@ $(document).on('change', 'input[type="radio"]', function() {
 
                 // Consulta para obtener las preguntas dependientes de la pregunta actual
                 // Consulta para obtener las preguntas dependientes de la pregunta actual
-                $sqlDependientes = "SELECT pd.id, pd.pregunta, pd.tipo
+                $sqlDependientes = "SELECT pd.id, pd.pregunta, pd.tipo, pd.ayuda
 FROM preguntas pd
 JOIN dependencias_preguntas dp ON pd.id = dp.pregunta_id
 WHERE dp.depende_de_pregunta_id = $idPregunta";
@@ -309,11 +313,21 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                         $idPregunta = $rowDependiente['id'];
                         $textoPreguntaDependiente = $rowDependiente['pregunta'];
                         $pregunta_tipo = $rowDependiente['tipo'];
+                        $ayu = $rowDependiente['ayuda'];
+                                
+                        
 
                         switch ($pregunta_tipo) {
                             case 'texto':
+                                
                                 echo "<div class='pregunta dependiente' data-pregunta-id='$idPregunta'>";
-                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
+                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b>";
+                                if ($ayu !== null) {
+                                    echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
+                                    echo "</p>";
+                                }
+
+
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta'>";
 
                                 echo "</div>";
