@@ -39,7 +39,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                cursor: pointer;
                 position: relative;
             }
             .dropdown {
@@ -62,6 +61,10 @@
                 padding: 10px;
                 border-bottom: 1px solid #ccc;
             }
+            .dropdown li:hover{
+                background-color: grey;
+                color: white;
+            }
             .dropdown li:last-child {
                 border-bottom: none;
             }
@@ -71,6 +74,10 @@
             .filtro4:hover .dropdown {
                 display: block;
             }
+            a{
+                color: inherit;
+            }
+            
 
         </style>
 
@@ -85,7 +92,7 @@
                 <div class="dropdown">
                     <ul>
                         <?php foreach ($opciones as $item): ?>
-                                <li><?php echo htmlspecialchars($item['nombregv']); ?> </li>
+                                <a href= <?php echo "../filtros/GV.php"  ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
                         <?php endforeach; ?>
                     </ul>
                 </div>
