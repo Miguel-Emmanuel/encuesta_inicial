@@ -5,6 +5,10 @@
     $consulta = mysqli_query($conexion, $GV);
     $opciones = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
+    $PE = "SELECT * FROM programa_edu;";
+    $consulta2 = mysqli_query($conexion, $PE);
+    $programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
+
 
 ?>
 <!DOCTYPE html>
@@ -31,10 +35,11 @@
                 gap: 30px;
             }
             .filtro1, .filtro2, .filtro3, .filtro4{
-                height: 100px;
-                width: 200px;
-                background-color: lightblue;
+                height: 120px;
+                width: 250px;
+                background-color: ;
                 margin: 30px;
+                font-size: larger;
                 text-align: center;
                 display: flex;
                 justify-content: center;
@@ -42,15 +47,19 @@
                 position: relative;
             }
             .dropdown {
-            display: none;
-            position: absolute;
-            top: 0%;
-            left: 100%;
-            width: 200px;
-            background-color: white;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            z-index: 10;
+                max-height: 400px; /* Ajusta según el tamaño deseado */
+                overflow-y: auto; /* Activa la barra de desplazamiento vertical */
+                display: none;
+                position: absolute;
+                top: 0%;
+                left: 100%;
+                width: 200px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border: 2px solid #007bff; /* Color del borde */
+                border-radius: 8px; /* Bordes redondeados */
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                z-index: 10;
             }
             .dropdown ul {
                 list-style: none;
@@ -77,6 +86,21 @@
             a{
                 color: inherit;
             }
+
+            /* Estilo minimalista para el scrollbar en WebKit */
+        .dropdown::-webkit-scrollbar {
+            width: 5px; /* Ancho del scrollbar */
+        }
+        .dropdown::-webkit-scrollbar-track {
+            background: blue; /* Fondo del track */
+        }
+        .dropdown::-webkit-scrollbar-thumb {
+            background: #007bff; /* Color del thumb */
+            border-radius: 4px; /* Bordes redondeados del thumb */
+        }
+        .dropdown::-webkit-scrollbar-thumb:hover {
+            background: #0056b3; /* Color del thumb al pasar el mouse */
+        }
             
 
         </style>
@@ -85,6 +109,13 @@
 
             <div class="filtro1">
                 Programas Educativos
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($programas as $item): ?>
+                                <a href=""><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
 
             <div class="filtro2" id="filtro">
@@ -92,7 +123,7 @@
                 <div class="dropdown">
                     <ul>
                         <?php foreach ($opciones as $item): ?>
-                                <a href= <?php echo "../filtros/GV.php"  ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
+                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] . "&nombre=" . urlencode($item['nombregv']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
                         <?php endforeach; ?>
                     </ul>
                 </div>
