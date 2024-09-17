@@ -1,4 +1,4 @@
-        <?php
+<?php
         include("../../database/conexion.php");
 
         session_start();
@@ -25,33 +25,34 @@
             //var_dump($respuestas);
 
             foreach ($respuestas as $idPregunta => $respuesta) {
-                //var_dump($respuesta);
-                // Obtener el valor de seccion_id de la pregunta
                 $seccionId = obtenerSeccionId($conexion, $idPregunta);
-
+            
                 if (is_array($respuesta)) {
+                    // Caso de múltiples opciones, incluso si solo hay una opción seleccionada
                     foreach ($respuesta as $opcionId => $opcionRespuesta) {
-                        // print_r($opcionRespuesta);
-                        if (is_array($opcionRespuesta)) {
-                            foreach ($opcionRespuesta as $opcion2 => $valor) {
-                                $opcionId2 = obtenerOpcionId($conexion, $idPregunta, $opcionId, $opcion2);
-                                if ($opcionId2 !== null) {
-                                    $respuestaTexto = "$opcionId - $opcion2";
-                                    guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId2, $seccionId, $respuestaTexto);
-                                }
-                            }
-                        } else {
-                            $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
-                            if ($opcionId1 !== null) {
-                                $respuestaTexto = $opcionRespuesta;
-                                guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $respuestaTexto);
-                            }
+                        // En este caso, las claves son los textos de las opciones (por ejemplo, "Lunes")
+                        // Si los valores están vacíos, todavía necesitamos procesarlos
+            
+                        $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
+            
+                        if ($opcionId1 !== null) {
+                            // Guardar tanto en `opcion_id` como en `respuesta_texto` la clave (por ejemplo, "Lunes")
+                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $opcionId);
                         }
                     }
                 } else {
-                    guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuesta);
+                    // Caso de una sola opción (radio button o select simple)
+                    $opcionId = obtenerOpcionId($conexion, $idPregunta, $respuesta);
+                    if ($opcionId !== null) {
+                        // Guardar tanto en `opcion_id` como en `respuesta_texto`
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuesta);
+                    } else {
+                        // Fallback en caso de no encontrar un `opcion_id`, guarda el texto en `respuesta_texto`
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuesta);
+                    }
                 }
             }
+            
         }
 
         function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {

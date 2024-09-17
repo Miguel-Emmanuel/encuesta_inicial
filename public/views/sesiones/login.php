@@ -30,7 +30,7 @@
     <div class="contenedor rounded shadow"> <!-- CUERPO DE LA PAGINA -->
         <div class="row m-2 align-items-stretch"> <!-- CUERPO DEL LOGIN -->
             <!-- COLUMNAS -->
-            <div class="bg col d-none d-lg-block col-md-6 col-lg-6 col-xl-6 rounded">
+            <div class="bg col d-none d-lg-block col-md-6 col-lg-6 col-xl-6 rounded">
                 <!-- ESTE ES LA IMAGEN PORTADA DE LA DERECHA -->
             </div>
             <div class="col form">

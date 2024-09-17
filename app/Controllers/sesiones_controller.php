@@ -20,10 +20,10 @@ if (!empty($_POST["btningresar"])){  /*SI EL BOTON HA SIDO PULSADO*/
 
             switch($rol) {
                 case 1:
-                    header("Location: inicio.php");
+                    header("Location: ../sesiones/index.php");
                     exit();
                 case 2:
-                    header("Location: inicio.php");
+                    header("Location: ../sesiones/index.php");
                     exit();
                 case 3:
                     header("Location: ../encuesta/menu_secciones.php");

@@ -1,94 +1,143 @@
 <?php
-include("../../../app/Models/conexion.php");
-session_start();
-if (empty($_SESSION["id"])) {
-    header("location: login.php");
-}
+    require '../../../app/Models/conexion.php';
+
+    $GV = "SELECT * FROM gruposv;";
+    $consulta = mysqli_query($conexion, $GV);
+    $opciones = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
+
+    $PE = "SELECT * FROM programa_edu;";
+    $consulta2 = mysqli_query($conexion, $PE);
+    $programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
 
 
 ?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <style>
+            body {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                height: 100vh;
+                align-items: center;
+            }
+            .container {
+                padding-top: 15%;
+                padding-left: 10%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            .filtro1, .filtro2, .filtro3, .filtro4{
+                height: 120px;
+                width: 250px;
+                background-color: ;
+                margin: 30px;
+                font-size: larger;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            .dropdown {
+                max-height: 400px; /* Ajusta según el tamaño deseado */
+                overflow-y: auto; /* Activa la barra de desplazamiento vertical */
+                display: none;
+                position: absolute;
+                top: 0%;
+                left: 100%;
+                width: 200px;
+                background-color: white;
+                border: 1px solid #ccc;
+                border: 2px solid #007bff; /* Color del borde */
+                border-radius: 8px; /* Bordes redondeados */
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                z-index: 10;
+            }
+            .dropdown ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .dropdown li {
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+            }
+            .dropdown li:hover{
+                background-color: grey;
+                color: white;
+            }
+            .dropdown li:last-child {
+                border-bottom: none;
+            }
+            .filtro1:hover .dropdown, 
+            .filtro2:hover .dropdown, 
+            .filtro3:hover .dropdown, 
+            .filtro4:hover .dropdown {
+                display: block;
+            }
+            a{
+                color: inherit;
+            }
 
-<head>
-    <title>Encuesta Inicial | UTVT</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            /* Estilo minimalista para el scrollbar en WebKit */
+        .dropdown::-webkit-scrollbar {
+            width: 5px; /* Ancho del scrollbar */
+        }
+        .dropdown::-webkit-scrollbar-track {
+            background: blue; /* Fondo del track */
+        }
+        .dropdown::-webkit-scrollbar-thumb {
+            background: #007bff; /* Color del thumb */
+            border-radius: 4px; /* Bordes redondeados del thumb */
+        }
+        .dropdown::-webkit-scrollbar-thumb:hover {
+            background: #0056b3; /* Color del thumb al pasar el mouse */
+        }
+            
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+        </style>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../css/style.css">
-</head>
+        <div class="container">
 
-<body>
-    <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar">
-            <div class="custom-menu">
-                <button type="button" id="sidebarCollapse" class="btn btn-secondary">
-                    <i class="fa fa-bars"></i>
-                    <span class="sr-only">Toggle Menu</span>
-                </button>
+            <div class="filtro1">
+                Programas Educativos
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($programas as $item): ?>
+                                <a href=""><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
-            <div class="p-4 pt-5">
-                <h1><a href="index.html" class="logo">Encuesta Inical</a></h1>
-                <ul class="list-unstyled components mb-5">
-                    <li id="inicio" class="active">
-                        <a href="#">Inicio</a>
-                    </li>
-                    <li>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li>
-                                <a href="/public/views/roles/index.php">Roles</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/educativo/index.php">Programas Educativos</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/usuarios/index.php">Usuarios</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apartados extra</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li>
-                                <a href="#">Home 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 3</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Gráficos</a>
-                    </li>
-                    <li>
-                        <a href="../../../app/Controllers/sessiondestroy_controller.php">Cerrar Sesión</a>
-                    </li>
-                </ul>
+
+            <div class="filtro2" id="filtro">
+                Grupos Vulnerables
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($opciones as $item): ?>
+                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] . "&nombre=" . urlencode($item['nombregv']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
-        </nav>
+            
+            <div class="filtro3">
+                Grupo Tutor
+            </div>
+            
+            <div class="filtro4">
+                Padecimientos de Salud
+            </div>
+            
 
-        <!-- Page Content  -->
-        <div id="content" class="p-4 p-md-5 pt-5">
-           
-
-            <h2 class="mb-4">Sidebar #02</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
-    </div>
-
-    <script src="../../js/jquery.min.js"></script>
-    <script src="../../js/popper.js"></script>
-    <script src="../../js/bootstrap.min.js"></script>
-    <script src="../../js/main.js"></script>
-</body>
-
+    </body>
 </html>
