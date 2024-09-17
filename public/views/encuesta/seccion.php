@@ -58,15 +58,24 @@ if ($row) {
     <!-- Incluir tu script personalizado -->
     <script>
       function obtenerValor(opcion, idPregunta) {
-    console.log('El valor del radio button es: ' + opcion);
-    console.log('Valor de idPregunta:', idPregunta);
-
+    // console.log('El valor del radio button es: ' + opcion);
+    // console.log('Valor de idPregunta:', idPregunta);
+    var campoOtro = $('#campo_otro_' + idPregunta);
+    console.log(campoOtro);
+    ///////desplegar preguntas dependientes///////
     if (opcion === 'Si') {
         $('#dependientes-' + idPregunta).slideDown();
+        ////////desplegar campo dinamico para Otro://////////////
     } else if (opcion === 'Otro:') {
         mostrarCampoOtro(idPregunta);
-    } else {
+    }
+    else if (opcion === 'si') {
+        mostrarCampoOtro(idPregunta);
+    }  else {
+        $('#campo_otro_' + idPregunta).slideUp();
+
         $('#dependientes-' + idPregunta).slideUp();
+
     }
 }
 
@@ -76,20 +85,30 @@ function mostrarCampoOtro(idPregunta) {
 
     if (campoOtro.length) {
         campoOtro.slideDown(); // Muestra el campo 'Otro:'
+        console.log("desplegado")
     }
-}
+    else if(campoOtro.length == 0) {
+        campoOtro.slideUp();
+        console.log("oculto");
+
+    }
+
 
 // Opcional: Si el usuario selecciona otra opción diferente de 'Otro:', oculta el campo
-$(document).on('change', 'input[type="radio"]', function() {
-    var valorSeleccionado = $(this).val();
-    var idPregunta = $(this).attr('id');
-    var campoOtro = $('#campo_otro_' + idPregunta);
-
-    if (valorSeleccionado !== 'Otro:') {
-        campoOtro.slideUp();
-    }
-});
-
+// $(document).on('change', 'input[type="radio"]', function() {
+//     var valorSeleccionado = $(this).val();
+//     var idPregunta = $(this).attr('id');
+//     var campoOtro = $('#campo_otro_' + idPregunta); // Asegúrate de que este ID exista en el DOM
+// console.log(valorSeleccionado == 'Otro:')
+//     if (valorSeleccionado === 'Otro:') {
+//         campoOtro.slideDown();
+//         console.log('si')
+//     } else if(valorSeleccionado !== 'Otro:') {
+//        console.log('no')
+//         campoOtro.slideUp(); // Esto desplegaría el campo si la opción "Otro:" es seleccionada
+//     }
+// });
+}
     </script>
     <style>
         .error-message {
@@ -180,7 +199,7 @@ $(document).on('change', 'input[type="radio"]', function() {
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'texto_a':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
+                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></textarea>";
                         break;
 
                     case 'opcion':
@@ -208,8 +227,9 @@ $(document).on('change', 'input[type="radio"]', function() {
                     
                                     foreach ($valoresOpcion2 as $opcion2) {
                                         $cont++;
-                                        // Verificamos si la opción es "Otro:" para agregar un evento onclick
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' required></td>";
+                                        // Verifica si la opción seleccionada anteriormente es igual al valor del radio actual
+                                        $checked = ($respuestaTexto == $opcion1) ? 'checked' : '';
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' $checked required></td>";
                                     }
                     
                                     echo "</tr>";
@@ -218,7 +238,7 @@ $(document).on('change', 'input[type="radio"]', function() {
                                 echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
                                           <td colspan='2'>
                                               <label for='otro_texto'>Especifica:</label>
-                                              <input type='text' id='otro_texto_$idPregunta' name='otro_texto_$idPregunta'>
+                                              <input type='text' id='otro_texto_$idPregunta' name='otro_texto_$idPregunta' value='$respuestaTexto' >
                                           </td>
                                       </tr>";
                                 echo "</table>";
