@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="../../css/login.css">
 </head>
 <body>
+    <?php 
+    $id=$_GET["id"];
+
+    $sql = $conexion->query("SELECT * FROM links WHERE id_usuario = '$id'");
+
+    if ($datos = $sql->fetch_object()) {
+    ?>
     <div class="contenedor rounded shadow"> <!-- CUERPO DE LA PAGINA -->
         <div class="row m-2 align-items-stretch"> <!-- CUERPO DEL LOGIN -->
         <!-- COLUMNAS -->
@@ -22,7 +29,7 @@
                     include("../../../app/controllers/cambiarpass_controller.php");
                 ?>
                     <!-- id del usuario -->
-                    <input type="hidden" name="id" aria-describedby="basic-addon3" value='<?php echo $_GET["id"] ?>'>
+                    <input type="hidden" name="id" aria-describedby="basic-addon3" value='<?php echo $id ?>'>
                     <!-- Email input -->
                     <input type="password" name="pass1" class="form-control form-control-sm" placeholder="Nueva Contraseña" aria-describedby="basic-addon3" required>
                     <br>
@@ -38,6 +45,11 @@
             </div>
         </div> 
     </div>
+
+    <?php  }else{
+        echo "NO SE ENCONTRO UNA SOLICITUD PROVENIENTE EN NUESTROS SERVIDORES";
+    }  ?>
+
 
 
 
