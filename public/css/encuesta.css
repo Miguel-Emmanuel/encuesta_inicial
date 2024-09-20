@@ -1,7 +1,10 @@
 /* ESTILOS PARA TEXTAREA */
 textarea{
-    columns: 5;
-    grid-row-start: 5;
+
+        width: 100%; /* Puedes usar píxeles (px), porcentajes (%) u otras unidades */
+        height: 200px; /* Ajusta la altura según tus necesidades */
+        resize: both; /* Permite al usuario redimensionar el campo (puede ser 'none', 'vertical', 'horizontal', o 'both') */
+    
 }
 
 

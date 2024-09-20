@@ -130,7 +130,7 @@ function mostrarCampoOtro(idPregunta) {
         <div class="col-12">
             <p><strong style="color: red;">*</strong> Indica que la pregunta es obligatoria.</p>
         </div>
-        <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta">
+        <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta" onsubmit="limpiarStorage();">
             <?php
 
             function obtenerRespuestasUsuario($conexion, $idUsuario)
@@ -229,7 +229,7 @@ function mostrarCampoOtro(idPregunta) {
                                         $cont++;
                                         // Verifica si la opción seleccionada anteriormente es igual al valor del radio actual
                                         $checked = ($respuestaTexto == $opcion1) ? 'checked' : '';
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' $checked required></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' required></td>";
                                     }
                     
                                     echo "</tr>";
@@ -238,7 +238,7 @@ function mostrarCampoOtro(idPregunta) {
                                 echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
                                           <td colspan='2'>
                                               <label for='otro_texto'>Especifica:</label>
-                                              <input type='text' id='otro_texto_$idPregunta' name='otro_texto_$idPregunta' value='$respuestaTexto' >
+                                              <input type='text' id='otro_texto_$idPregunta' name='respuestas[$idPregunta]' value='$respuestaTexto data-idpregunta='$idPregunta'' >
                                           </td>
                                       </tr>";
                                 echo "</table>";
@@ -254,11 +254,12 @@ function mostrarCampoOtro(idPregunta) {
                     case 'select':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
-                            echo "<select name='respuestas[$idPregunta]' class='respuesta-select'>";
+                            echo "<select name='respuestas[$idPregunta]' class='respuesta-select' data-idpregunta='$idPregunta'>";
                             while ($opcion = $opciones_respuesta->fetch_object()) {
                                 $opcionId = $opcion->id;
                                 $nombreOpcion = $opcion->opcion1;
-                                echo "<option value='$opcionId' >$nombreOpcion</option>";
+                                $selected = ($opcionId == $respuestaTexto) ? 'selected' : '';
+                                echo "<option value='$opcionId' $selected >$nombreOpcion</option>";
                             }
                             echo "</select>";
                         } else {
@@ -290,11 +291,12 @@ function mostrarCampoOtro(idPregunta) {
                                     echo "<td>$opcion1</td>";
                                     foreach ($valoresOpcion2 as $opcion2) {
                                         $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
-   echo "<td>
-            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2'>
-            <label for='$radioId' class='custom-radio-label'></label>
-            <span class='custom-radio-text'></span>
-          </td>";                                    }
+                                        echo "<td>
+                                                <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2'>
+                                                <label for='$radioId' class='custom-radio-label'></label>
+                                                <span class='custom-radio-text'></span>
+                                              </td>";
+                                                                 }
                                     echo "</tr>";
                                 }
 
@@ -457,8 +459,13 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             echo "<tr>";
                                             echo "<td>$opcion1</td>";
                                             foreach ($valoresOpcion2 as $opcion2) {
-                                                echo "<td><input type='radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' ></td>";
-                                            }
+                                                $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
+           echo "<td>
+                    <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2'>
+                    <label for='$radioId' class='custom-radio-label'></label>
+                    <span class='custom-radio-text'></span>
+                  </td>";                                    }
+        
                                             echo "</tr>";
                                         }
 
@@ -659,6 +666,60 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                 '<p class="mb-0">Por favor corrige los errores y vuelve a intentarlo.</p>';
             return alert;
         }
+
+
+//////////Funcion para mantener las respuestas ingresadas al cambiar de pagina///////////////
+// Función para cargar los valores desde localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
+    
+    // Cargar valores de localStorage
+    inputs.forEach(function(input) {
+        let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
+        if (storedValue) {
+            if (input.type === 'radio') {
+                // Marcar el radio como 'checked' si su valor coincide con el almacenado
+                if (input.value === storedValue) {
+                    input.checked = true;
+                }
+            } else {
+                // Restaurar otros tipos de input (text, select, etc.)
+                input.value = storedValue;
+            }
+        }
+
+        // Guardar el valor en localStorage cuando el usuario interactúe
+        input.addEventListener('input', function() {
+            if (input.type === 'radio') {
+                // Para radios, almacenar el valor cuando se selecciona
+                if (input.checked) {
+                    localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                }
+            } else {
+                // Para otros inputs
+                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+            }
+        });
+
+        // Para selects, también escuchar el evento 'change'
+        if (input.tagName === 'SELECT') {
+            input.addEventListener('change', function() {
+                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+            });
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
     </script>
 
 </body>
