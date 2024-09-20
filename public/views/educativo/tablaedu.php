@@ -1,7 +1,7 @@
 <?php
-require '../../../app/Models/conexion.php';
+require '../../../database/conexion.php';
 
-$sqlEducativo = "SELECT id, nombre FROM programa_edu";
+$sqlEducativo = "SELECT id, nombre, clave FROM programa_edu";
 $educa = $conexion->query($sqlEducativo);
 ?>
 <div class="container py-3">
@@ -16,6 +16,7 @@ $educa = $conexion->query($sqlEducativo);
             <tr>
                 <th>#</th>
                 <th>Nombre</th>
+                <th>Clave</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@ $educa = $conexion->query($sqlEducativo);
                 <tr>
                     <td><?= $row_educa['id']; ?></td>
                     <td><?= $row_educa['nombre']; ?></td>
+                    <td><?= $row_educa['clave']; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-trash"></i></a>
@@ -46,13 +48,15 @@ $educa = $conexion->query($sqlEducativo);
     let eliminamodal = document.getElementById('eliminamodal')
 
     nuevomodal.addEventListener('hide.bs.modal', event => {
+        nuevomodal.querySelector('.modal-body #grado').value = ""
         nuevomodal.querySelector('.modal-body #nombre').value = ""
-        nuevomodal.querySelector('.modal-body #descripcion').value = ""
+        nuevomodal.querySelector('.modal-body #clave').value = ""
     })
 
     editarmodal.addEventListener('hide.bs.modal', event => {
+        editarmodal.querySelector('.modal-body #grado').value = ""
         editarmodal.querySelector('.modal-body #nombre').value = ""
-        editarmodal.querySelector('.modal-body #descripcion').value = ""
+        editarmodal.querySelector('.modal-body #clave').value = ""
     })
 
     editarmodal.addEventListener('shown.bs.modal', event => {
@@ -60,7 +64,9 @@ $educa = $conexion->query($sqlEducativo);
         let id = button.getAttribute('data-bs-id')
 
         let inputId = editarmodal.querySelector('.modal-body #id')
+        let inputGrado = editarmodal.querySelector('.modal-body #grado')
         let inputNombre = editarmodal.querySelector('.modal-body #nombre')
+        let inputClave = editarmodal.querySelector('.modal-body #clave')
 
         let url = "../../../app/Educativo/getEduca.php"
         let formData = new FormData()
@@ -73,7 +79,9 @@ $educa = $conexion->query($sqlEducativo);
             .then(data => {
 
                 inputId.value = data.id
+                inputGrado.value = data.grado
                 inputNombre.value = data.nombre
+                inputClave.value = data.clave
             }).catch(err => console.log(err))
     })
 
