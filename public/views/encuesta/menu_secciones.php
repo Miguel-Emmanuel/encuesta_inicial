@@ -5,10 +5,6 @@ if (empty($_SESSION["id"])){
     header("location: ../sesiones/login.php");
     exit;
 }
-if($_SESSION["id"] != 3){
-    header("location: ../sesiones/inicio.php");
-    exit;
-}
 
 // Verificar conexión
 if ($conexion->connect_error) {
@@ -58,7 +54,10 @@ $result = $conexion->query($sql);
 </head>
 <body>
     <div class="contenedor rounded shadow">
-        <h1>Menu de Secciones</h1>
+        <center>
+        <h1>ENTREVISTA</h1>
+        </center>
+        <br>
         <table>
             <thead>
                 <th>Sección</th>
@@ -73,7 +72,7 @@ $result = $conexion->query($sql);
                         $completado = seccionCompletada($conexion, $row["id"], $_SESSION["id"]) ? '✅' : '❌';
 
                         echo "<tr>";
-                        echo "<td>" . $row["descripcion"] . "</td>";
+                        echo "<td>" . $row["id"]  . '   |   '.$row["descripcion"] . "</td>";
                         echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\">Responder</button></td>";
                         echo "<td class='centrar'>" . $completado . "</td>";
                         echo "</tr>";

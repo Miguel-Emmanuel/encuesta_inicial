@@ -21,26 +21,6 @@
 
 <?php
     //en ESTA LINEA ES PARA OMITIR EL O=PROBLEMA DE ARRAY INDEFINIDO -->
-
-    // $rol =$_SESSION["rol"] ;
-
-    if (!empty($_SESSION["id"])) {
-
-        switch ($rol) {
-            case 1:
-                header("Location: inicio.php");
-                exit();
-            case 2:
-                header("Location: inicio.php");
-                exit();
-            case 3:
-                header("Location: ../encuesta/encuesta.php");
-                exit();
-            case 3:
-                header("Location: ../encuesta/encuesta.php");
-                exit();
-        }
-    }
     ?>
 
     <link rel="stylesheet" href="../../css/login.css">
@@ -50,7 +30,7 @@
     <div class="contenedor rounded shadow"> <!-- CUERPO DE LA PAGINA -->
         <div class="row m-2 align-items-stretch"> <!-- CUERPO DEL LOGIN -->
             <!-- COLUMNAS -->
-            <div class="bg col d-none d-lg-block col-md-6 col-lg-6 col-xl-6 rounded">
+            <div class="bg col d-none d-lg-block col-md-6 col-lg-6 col-xl-6 rounded">
                 <!-- ESTE ES LA IMAGEN PORTADA DE LA DERECHA -->
             </div>
             <div class="col form">

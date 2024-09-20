@@ -1,4 +1,4 @@
 <?php
-$content = 'tablaedu.php';
+$content = 'inicio.php';
 include('../dashboard/dashboard.php');
 ?>
