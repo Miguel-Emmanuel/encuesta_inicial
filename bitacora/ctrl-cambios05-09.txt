@@ -21,7 +21,7 @@ modificar el input|Text area amobos modificados
 BOTON DE REGRESAR - MENU SECCIONES
 (en el formulario al acceder a cada seccion)
 
-////////////////////////////////////////✅(pendientes 70 71 106)
+////////////////////////////////////////✅
 11. ¿Económicamente, alguien depende de ti?
 34. Parentesco
 43. Parentesco
@@ -88,7 +88,7 @@ Agua Potable
 Luz
 |Reformular pregunta - SERVICIOS?|
 
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////(Cambiar a opción|solo seleccionaruna opción \checkbox delete|)
 67. Análisis relación Padre
 68. Análisis relación Madre
 Si	No
@@ -126,7 +126,7 @@ MENU SECCIONES - CAMMBIAR NOMBRE
 |reformular - lecturra de comprensión (comprende lecruras)|
 
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////✅
 FILTRADO DE GRUPOS VULNERABLES
 Personas mayores
 Infancia en riesgo

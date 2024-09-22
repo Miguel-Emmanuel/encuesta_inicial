@@ -1,13 +1,3 @@
-<?php
-include("../../../app/Models/conexion.php");
-session_start();
-if (empty($_SESSION["id"])) {
-    header("location: login.php");
-}
-
-
-?>
-
 <!doctype html>
 <html lang="en">
 
