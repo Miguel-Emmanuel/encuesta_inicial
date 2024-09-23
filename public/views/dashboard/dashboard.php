@@ -13,6 +13,13 @@
 </head>
 
 <body>
+    <style>
+        input.form-control {
+        border: 1px solid grey; /* Grosor y color del borde */
+        border-radius: 3px; /* Bordes redondeados */
+        padding: 10px; /* Espaciado interno */
+    }
+    </style>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
