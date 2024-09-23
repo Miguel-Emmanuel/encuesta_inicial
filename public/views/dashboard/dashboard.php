@@ -39,6 +39,15 @@
                             <li>
                                 <a href="/public/views/usuarios/index.php">Usuarios</a>
                             </li>
+                            <li>
+                                <a href="/public/views/tutores/index.php">Tutores</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/periodos/index.php">Periodos Escolares</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/grupos/index.php">Grupos</a>
+                            </li>
                         </ul>
                     </li>
                     <li>
