@@ -8,10 +8,15 @@ $charset = 'utf8mb4';
 
 try {
     $conexion = new mysqli($host, $user, $pass, $db);
+    
     // Verificar la conexión
     if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
+    
+    // Establecer la codificación de caracteres UTF-8
+    $conexion->set_charset($charset);
+
 } catch (\Exception $e) {
     die("Error al conectar a la base de datos: " . $e->getMessage());
 }
@@ -27,6 +32,6 @@ if ($result->num_rows > 0) {
     }
 }
 
-
 // echo json_encode($dependencias);
 ?>
+
