@@ -1,3 +1,13 @@
+/* ESTILOS PARA TEXTAREA */
+textarea{
+
+        width: 100%; /* Puedes usar píxeles (px), porcentajes (%) u otras unidades */
+        height: 200px; /* Ajusta la altura según tus necesidades */
+        resize: both; /* Permite al usuario redimensionar el campo (puede ser 'none', 'vertical', 'horizontal', o 'both') */
+    
+}
+
+
 /* Estilos generales del formulario */
 .form-encuesta {
     margin: 20px;
@@ -17,6 +27,7 @@
     font-weight: bold;
     margin-bottom: 10px;
 }
+
 
 /* Estilos del input de texto */
 .respuesta-input {
