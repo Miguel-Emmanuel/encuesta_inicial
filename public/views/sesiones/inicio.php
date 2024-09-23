@@ -3,7 +3,7 @@
 
     $GV = "SELECT * FROM gruposv;";
     $consulta = mysqli_query($conexion, $GV);
-    $opciones = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
+    $grupos_v = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
     $PE = "SELECT * FROM programa_edu;";
     $consulta2 = mysqli_query($conexion, $PE);
@@ -37,9 +37,12 @@
             .filtro1, .filtro2, .filtro3, .filtro4{
                 height: 120px;
                 width: 250px;
-                background-color: ;
+                background-color: #28a745;
+                color: white;
+                border-radius: 3px;
+                border: solid 1px black;
                 margin: 30px;
-                font-size: larger;
+                font-size:large;
                 text-align: center;
                 display: flex;
                 justify-content: center;
@@ -52,14 +55,16 @@
                 display: none;
                 position: absolute;
                 top: 0%;
-                left: 100%;
-                width: 200px;
+                left: 50%;
+                width: 350px;
                 background-color: white;
-                border: 1px solid #ccc;
-                border: 2px solid #007bff; /* Color del borde */
+                border: 2px solid #708090; /* Color del borde */
                 border-radius: 8px; /* Bordes redondeados */
                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
                 z-index: 10;
+            }
+            .filtro2 .dropdown{
+                width: 200px;
             }
             .dropdown ul {
                 list-style: none;
@@ -68,14 +73,15 @@
             }
             .dropdown li {
                 padding: 10px;
-                border-bottom: 1px solid #ccc;
+                color: black;
+                font-size:small     ;
             }
             .dropdown li:hover{
                 background-color: grey;
                 color: white;
             }
             .dropdown li:last-child {
-                border-bottom: none;
+                border-bottom: 0.5px solid black;
             }
             .filtro1:hover .dropdown, 
             .filtro2:hover .dropdown, 
@@ -92,10 +98,10 @@
             width: 5px; /* Ancho del scrollbar */
         }
         .dropdown::-webkit-scrollbar-track {
-            background: blue; /* Fondo del track */
+            background: #EAEAEA; /* Fondo del track */
         }
         .dropdown::-webkit-scrollbar-thumb {
-            background: #007bff; /* Color del thumb */
+            background: #2F4F4F; /* Color del thumb */
             border-radius: 4px; /* Bordes redondeados del thumb */
         }
         .dropdown::-webkit-scrollbar-thumb:hover {
@@ -112,7 +118,7 @@
                 <div class="dropdown">
                     <ul>
                         <?php foreach ($programas as $item): ?>
-                                <a href=""><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
+                                <a href="<?php echo "../filtros/index.php?id=" . $item['id'] ."&f=1". "&nombre=" . urlencode($item['nombre']); ?>"><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -122,8 +128,8 @@
                 Grupos Vulnerables
                 <div class="dropdown">
                     <ul>
-                        <?php foreach ($opciones as $item): ?>
-                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] . "&nombre=" . urlencode($item['nombregv']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
+                        <?php foreach ($grupos_v as $item): ?>  
+                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] ."&f=2". "&nombre=" . urlencode($item['nombregv']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
                         <?php endforeach; ?>
                     </ul>
                 </div>
