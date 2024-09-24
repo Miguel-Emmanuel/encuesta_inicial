@@ -22,22 +22,19 @@
         // Verificar si se ha enviado el formulario
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $respuestas = $_POST['respuestas'];
-            //var_dump($respuestas);
-
+            $respuestas_otro = $_POST['respuestas_otro'] ?? []; // Capturamos las respuestas dinámicas
+        
             foreach ($respuestas as $idPregunta => $respuesta) {
                 $seccionId = obtenerSeccionId($conexion, $idPregunta);
-            
+        
+                // Obtener si existe un campo dinámico para la misma pregunta
+                $respuestaTexto = $respuestas_otro[$idPregunta] ?? null; 
+        
                 if (is_array($respuesta)) {
-                    // Caso de múltiples opciones, incluso si solo hay una opción seleccionada
                     foreach ($respuesta as $opcionId => $opcionRespuesta) {
-                        // En este caso, las claves son los textos de las opciones (por ejemplo, "Lunes")
-                        // Si los valores están vacíos, todavía necesitamos procesarlos
-            
                         $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
-            
                         if ($opcionId1 !== null) {
-                            // Guardar tanto en `opcion_id` como en `respuesta_texto` la clave (por ejemplo, "Lunes")
-                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $opcionId);
+                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $respuestaTexto ?: $opcionId);
                         }
                     }
                 } else {
@@ -45,16 +42,15 @@
                     $opcionId = obtenerOpcionId($conexion, $idPregunta, $respuesta);
                     if ($opcionId !== null) {
                         // Guardar tanto en `opcion_id` como en `respuesta_texto`
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuesta);
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto ?: $respuesta);
                     } else {
                         // Fallback en caso de no encontrar un `opcion_id`, guarda el texto en `respuesta_texto`
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuesta);
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuestaTexto ?: $respuesta);
                     }
                 }
             }
-            
         }
-
+        
         function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {
             if ($opcion2 === null) {
                 $stmt = $conexion->prepare("SELECT id FROM opciones_respuesta WHERE pregunta_id = ? AND opcion1 = ?");

@@ -57,41 +57,38 @@ if ($row) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Incluir tu script personalizado -->
     <script>
-function obtenerValor(opcion, idPregunta) {
-    console.log('El valor del radio button es: ' + opcion);
-    console.log('Valor de idPregunta:', idPregunta);
+        function obtenerValor(opcion, idPregunta) {
+            console.log('El valor del radio button es: ' + opcion);
+            console.log('Valor de idPregunta:', idPregunta);
 
-    var campoOtro = $('#campo_otro_' + idPregunta); // Campo de texto "Otro"
-    var dependientes = $('#dependientes-' + idPregunta); // Preguntas dependientes
-    
-    // Convertir 'opcion' a minúsculas para simplificar comparaciones
-    var opcionNormalizada = opcion.toLowerCase();
+            var campoOtro = $('#campo_otro_' + idPregunta); // Campo de texto "Otro"
+            var dependientes = $('#dependientes-' + idPregunta); // Preguntas dependientes
 
-    /////// Desplegar preguntas dependientes si la opción es "Si" ///////
-    if (opcion === 'Si') {
-        dependientes.slideDown(); // Mostrar preguntas dependientes si se selecciona "Si"
-        campoOtro.slideUp(); // Asegurarse de que el campo 'Otro' esté oculto si se selecciona "Si"
-        campoOtro.find('input').prop('required', false); // Hacer opcional el campo
-        console.log("Preguntas dependientes desplegadas");
-    } else {
-        dependientes.slideUp(); // Ocultar preguntas dependientes si se selecciona otra opción
+            // Convertir 'opcion' a minúsculas para simplificar comparaciones
+            var opcionNormalizada = opcion.toLowerCase();
 
-        if (opcion === 'Otro:' || opcionNormalizada === 'si') {
-            campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
-            campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
-            console.log("Campo 'Otro' desplegado");
-        } else {
-            campoOtro.slideUp(); // Ocultar el campo de texto si se selecciona cualquier otra opción
-            campoOtro.find('input').prop('required', false); // Hacer opcional el campo
-            campoOtro.find('input').val(''); // Limpiar el valor del campo cuando se oculta
-            console.log("Campo 'Otro' oculto");
+            /////// Desplegar preguntas dependientes si la opción es "Si" ///////
+            if (opcion === 'Si') {
+                dependientes.slideDown(); // Mostrar preguntas dependientes si se selecciona "Si"
+                campoOtro.slideUp(); // Asegurarse de que el campo 'Otro' esté oculto si se selecciona "Si"
+                campoOtro.find('input').prop('required', false); // Hacer opcional el campo
+                console.log("Preguntas dependientes desplegadas");
+            } else {
+                dependientes.slideUp(); // Ocultar preguntas dependientes si se selecciona otra opción
+
+                if (opcion === 'Otro:' || opcionNormalizada === 'si') {
+                    campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
+                    campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
+                    console.log("Campo 'Otro' desplegado");
+                } else {
+                    campoOtro.slideUp(); // Ocultar el campo de texto si se selecciona cualquier otra opción
+                    campoOtro.find('input').prop('required', false); // Hacer opcional el campo
+                    campoOtro.find('input').val(''); // Limpiar el valor del campo cuando se oculta
+                    console.log("Campo 'Otro' oculto");
+                }
+            }
+
         }
-    }
-
-}
-
-
-
     </script>
     <style>
         .error-message {
@@ -177,8 +174,11 @@ function obtenerValor(opcion, idPregunta) {
                     case 'rfc':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
+                    case 'telefono':
+                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-telefono' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
+                        break;
                     case 'numero':
-                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
+                        echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
                     case 'r_social':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
@@ -218,18 +218,20 @@ function obtenerValor(opcion, idPregunta) {
 
                                         // Verifica si la opción seleccionada anteriormente es igual al valor del radio actual
                                         $checked = ($respuestaTexto == $opcion1) ? 'checked' : '';
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onclick='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' required></td>";
+                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onchange='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' required></td>";
                                     }
 
                                     echo "</tr>";
                                 }
                                 // Aquí se genera el campo oculto que aparecerá solo si selecciona "Otro:"
                                 echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
-                                          <td colspan='2'>
-                                              <label for='otro_texto'>Especifica:</label>
-                                              <input type='text' id='otro_texto_$idPregunta' name='respuestas[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta' >
-                                          </td>
-                                      </tr>";
+                                        <td colspan='2'>
+                                       <label for='otro_texto'>Especifica:</label>
+                                      <!-- Cambiar el name para que contenga 'otro' además del idPregunta -->
+                                                <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                            </td>
+                                        </tr>
+                                        ";
                                 echo "</table>";
                             } else {
                                 echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
@@ -328,20 +330,16 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
 
 
 
+                        echo "<div class='pregunta dependiente' data-pregunta-id='$idPregunta'>";
+                        echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b>";
+                        if ($ayu !== null) {
+                            echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
+                            echo "</p>";
+                        }
+                        echo "</div>";
                         switch ($pregunta_tipo) {
                             case 'texto':
-
-                                echo "<div class='pregunta dependiente' data-pregunta-id='$idPregunta'>";
-                                echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b>";
-                                if ($ayu !== null) {
-                                    echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
-                                    echo "</p>";
-                                }
-
-
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='Respuesta para la pregunta'>";
-
-                                echo "</div>";
                                 break;
                             case 'fecha':
                                 echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta'>";
@@ -356,8 +354,11 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                             case 'rfc':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' required>";
                                 break;
+                            case 'telefono':
+                                echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-telefono' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
+                                break;
                             case 'numero':
-                                echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' pattern='\d+' required>";
+                                echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                                 break;
                             case 'r_social':
                                 echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' required></textarea>";
@@ -373,7 +374,6 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
                                     // echo "<p class='pregunta-texto'>Opciones para pregunta <b>$preguntaTexto</b></p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
@@ -428,7 +428,6 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
                                     echo "<div class='pregunta'>";
-                                    echo "<p class='pregunta-texto'>$idPregunta. <b>$textoPreguntaDependiente</b></p>";
                                     // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
                                     $opciones = array();
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
@@ -566,7 +565,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                 }
             });
 
-            var numberInputs = form.querySelectorAll('input.respuesta-numero');
+            var numberInputs = form.querySelectorAll('input.respuesta-telefono');
             numberInputs.forEach(function(input) {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateNumber(input.value)) {
@@ -658,19 +657,19 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         }
 
 
-        //////////Funcion para mantener las respuestas ingresadas al cambiar de pagina///////////////
-        // Función para cargar los valores desde localStorage
         document.addEventListener('DOMContentLoaded', function() {
             const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
 
             // Cargar valores de localStorage
             inputs.forEach(function(input) {
                 let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
+
                 if (storedValue) {
                     if (input.type === 'radio') {
                         // Marcar el radio como 'checked' si su valor coincide con el almacenado
                         if (input.value === storedValue) {
-                            input.checked = true;
+                            input.checked = true; // Asegúrate de que el radio esté seleccionado
+                            obtenerValor(storedValue, input.dataset.idpregunta); // Ejecuta la función para desplegar el campo dinámico
                         }
                     } else {
                         // Restaurar otros tipos de input (text, select, etc.)
@@ -684,6 +683,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                         // Para radios, almacenar el valor cuando se selecciona
                         if (input.checked) {
                             localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                            obtenerValor(input.value, input.dataset.idpregunta); // Llama a la función al seleccionar
                         }
                     } else {
                         // Para otros inputs

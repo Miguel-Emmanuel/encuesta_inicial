@@ -69,18 +69,23 @@ $result = $conexion->query($sql);
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         // Verificar si la sección está completada
-                        $completado = seccionCompletada($conexion, $row["id"], $_SESSION["id"]) ? '✅' : '❌';
-
+                        $completado = seccionCompletada($conexion, $row["id"], $_SESSION["id"]);
+                        $iconoCompletado = $completado ? '✅' : '❌';
+                
+                        // Deshabilitar el botón si la sección está completada
+                        $botonEstado = $completado ? 'disabled' : '';
+                
                         echo "<tr>";
-                        echo "<td>" . $row["id"]  . '   |   '.$row["descripcion"] . "</td>";
-                        echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\">Responder</button></td>";
-                        echo "<td class='centrar'>" . $completado . "</td>";
+                        echo "<td>" . $row["id"]  . '   |   ' . $row["descripcion"] . "</td>";
+                        echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+                        echo "<td class='centrar'>" . $iconoCompletado . "</td>";
                         echo "</tr>";
                     }
                 } else {
                     echo "<tr><td colspan='3'>0 resultados</td></tr>";
                 }
                 $conexion->close();
+                
                 ?>
             </tbody>
         </table>
