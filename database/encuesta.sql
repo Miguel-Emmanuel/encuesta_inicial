@@ -460,7 +460,6 @@ insert  into `opciones_respuesta`(`id`,`pregunta_id`,`seccion_id`,`opcion1`,`opc
 (329,14,1,'AB-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (330,14,1,'O+',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (331,14,1,'O-',NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(332,8,1,'Otro:',NULL,'2024-10-01 08:49:01','2024-09-13 08:49:09'),
 (333,63,4,'Otro:',NULL,NULL,NULL),
 (334,9,1,'Masculino','','2024-09-17 12:00:00','2024-09-17 12:00:00'),
 (335,9,1,'Femenino','','2024-09-17 12:00:00','2024-09-17 12:00:00'),
@@ -475,6 +474,20 @@ insert  into `opciones_respuesta`(`id`,`pregunta_id`,`seccion_id`,`opcion1`,`opc
 (344,9,1,'Género no conforme','','2024-09-17 12:00:00','2024-09-17 12:00:00'),
 (345,17,1,'México',NULL,NULL,NULL),
 (346,17,1,'Otro:',NULL,NULL,NULL);
+
+/*Table structure for table `periodos_escolar` */
+
+DROP TABLE IF EXISTS `periodos_escolar`;
+
+CREATE TABLE `periodos_escolar` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `inicio` date DEFAULT NULL,
+  `fin` date DEFAULT NULL,
+  `activo` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `periodos_escolar` */
 
 /*Table structure for table `preguntas` */
 
@@ -511,12 +524,12 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (13,'Religión',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (14,'Grupo Sanguíneo',NULL,'select','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (15,'Fecha de Nacimiento',NULL,'fecha','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(16,'Edad',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(16,'Edad',NULL,'numero','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (17,'País de Nacimiento',NULL,'opcion','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (18,'Estado de Nacimiento',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (19,'Municipio de Nacimiento',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(20,'Teléfono Celular',NULL,'numero','1',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(21,'Teléfono Casa',NULL,'numero','1',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(20,'Teléfono Celular',NULL,'telefono','1',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(21,'Teléfono Casa',NULL,'telefono','1',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (22,'Correo Electrónico Personal',NULL,'correo','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (23,'Redes Sociales',NULL,'r_social','1',1,'Red Social que mas utilice.        Ejemplo: https://www.facebook.com/...','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (24,'Calle',NULL,'texto','1',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -532,8 +545,8 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (34,'Apellido Materno',NULL,'texto','2',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (35,'Parentesco',NULL,'opcion','2',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (36,'Correo Electrónico',NULL,'correo','2',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(37,'Teléfono Celular',NULL,'numero','2',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(38,'Teléfono de Casa',NULL,'numero','2',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(37,'Teléfono Celular',NULL,'telefono','2',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(38,'Teléfono de Casa',NULL,'telefono','2',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (39,'Domicilio Completo',NULL,'texto_a','2',1,'Calle, número ,código postal, colonia, localidad, municipio','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (40,'Menciona dos referencias cerca de su domicilio',NULL,'texto_a','2',1,'Debe de ser muy específico colocando ambas referencias\nEjemplo: Enfrente de la tienda “La paz”','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (41,'Nombre',NULL,'texto','3',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -541,19 +554,19 @@ insert  into `preguntas`(`id`,`pregunta`,`depende_p`,`tipo`,`seccion_id`,`activo
 (43,'Apellido Materno',NULL,'texto','3',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (44,'Parentesco',NULL,'opcion','3',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (45,'Correo Electrónico',NULL,'correo','3',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(46,'Teléfono Celular',NULL,'numero','3',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(47,'Teléfono de Casa',NULL,'numero','3',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(46,'Teléfono Celular',NULL,'telefono','3',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(47,'Teléfono de Casa',NULL,'telefono','3',1,'Deben ser 10 digitos','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (48,'Domicilio',NULL,'texto_a','3',1,'Calle, número ,código postal, colonia, localidad, municipio','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (49,'Menciona 2 referencias cerca de su domicilio',NULL,'texto_a','3',1,'Debe de ser muy específico colocando ambas referencias\nEjemplo: Enfrente de la tienda “La paz”','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (50,'¿Trabajas?',NULL,'opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(51,'¿Cuántas horas trabajas a la semana?','49','opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(52,'¿Nombre del lugar de trabajo?','49\r\n','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(53,'¿Dirección del lugar de trabajo?','49','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(54,'¿Días de trabajo?','49','multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(55,'¿Horarios de trabajo?','49','texto','4',1,'Introduce los horarios separados por comas y usa el formato de 24 horas.     Ejemplo: Lunes 08:00 - 16:00, Martes 11:00 -  20:00, etc.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(56,'¿Ingreso mensual?','49','texto','4',1,'Cuanto ganas mensualmente.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(51,'¿Cuántas horas trabajas a la semana?','50','opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(52,'¿Nombre del lugar de trabajo?','50','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(53,'¿Dirección del lugar de trabajo?','50','texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(54,'¿Días de trabajo?','50','multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(55,'¿Horarios de trabajo?','50','texto','4',1,'Introduce los horarios separados por comas y usa el formato de 24 horas.     Ejemplo: Lunes 08:00 - 16:00, Martes 11:00 -  20:00, etc.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(56,'¿Ingreso mensual?','50','numero','4',1,'Cuanto ganas mensualmente.','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (57,'¿De quién dependes económicamente?',NULL,'opcion','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
-(58,'¿Con quién vives actualmente?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
+(58,'¿Con quién vives actualmente?',NULL,'texto','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (59,'¿Quién aporta al gasto familiar?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (60,'¿Ingreso mensual total de todos los integrantes de la familia?',NULL,'numero','4',1,'Suma total de los ingresos de todos los integrantes','2024-06-05 16:28:09','2024-06-05 16:28:09'),
 (61,'¿Edad de los integrantes de la familia?',NULL,'multi','4',1,NULL,'2024-06-05 16:28:09','2024-06-05 16:28:09'),
@@ -705,6 +718,47 @@ insert  into `secciones`(`id`,`nombre`,`descripcion`,`created_at`,`updated_at`) 
 (7,'habitos','Hábitos de Estudio y Prácticas Escolares',NULL,NULL),
 (8,'expectativas','Expectativas Educativas y Ocupacionales',NULL,NULL);
 
+/*Table structure for table `t_grupos` */
+
+DROP TABLE IF EXISTS `t_grupos`;
+
+CREATE TABLE `t_grupos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` text DEFAULT NULL,
+  `programa_e` bigint(20) unsigned DEFAULT NULL,
+  `nomenclatura` varchar(15) DEFAULT NULL,
+  `tutor` bigint(20) unsigned DEFAULT NULL,
+  `periodo_e` bigint(20) unsigned DEFAULT NULL,
+  `activo` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `programa_e` (`programa_e`),
+  KEY `tutor` (`tutor`),
+  KEY `periodo_e` (`periodo_e`),
+  CONSTRAINT `t_grupos_ibfk_1` FOREIGN KEY (`programa_e`) REFERENCES `programa_edu` (`id`) ON DELETE NO ACTION,
+  CONSTRAINT `t_grupos_ibfk_2` FOREIGN KEY (`tutor`) REFERENCES `tutores` (`id`) ON DELETE NO ACTION,
+  CONSTRAINT `t_grupos_ibfk_3` FOREIGN KEY (`periodo_e`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `t_grupos` */
+
+/*Table structure for table `tutores` */
+
+DROP TABLE IF EXISTS `tutores`;
+
+CREATE TABLE `tutores` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` text DEFAULT NULL,
+  `apellido_p` text DEFAULT NULL,
+  `apellido_m` text DEFAULT NULL,
+  `clave_sp` text DEFAULT NULL,
+  `correo` text DEFAULT NULL,
+  `telefono` text DEFAULT NULL,
+  `activo` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tutores` */
+
 /*Table structure for table `usuario_respuesta` */
 
 DROP TABLE IF EXISTS `usuario_respuesta`;
@@ -727,7 +781,7 @@ CREATE TABLE `usuario_respuesta` (
   CONSTRAINT `usuario_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`),
   CONSTRAINT `usuario_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`),
   CONSTRAINT `usuario_respuesta_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2249 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `usuario_respuesta` */
 
@@ -1031,7 +1085,38 @@ insert  into `usuario_respuesta`(`id`,`usuario_id`,`pregunta_id`,`opcion_id`,`se
 (1808,10,28,NULL,1,'SAN AGUSTIN','2024-09-03 18:11:26','2024-09-03 18:11:26'),
 (1809,10,29,NULL,1,'Lerma','2024-09-03 18:11:26','2024-09-03 18:11:26'),
 (1810,10,30,NULL,1,'52058','2024-09-03 18:11:26','2024-09-03 18:11:26'),
-(1811,10,31,NULL,1,'al lado de la olaza naraja','2024-09-03 18:11:26','2024-09-03 18:11:26');
+(1811,10,31,NULL,1,'al lado de la olaza naraja','2024-09-03 18:11:26','2024-09-03 18:11:26'),
+(2280,3,1,NULL,1,'al222010230@gmail.com','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2281,3,2,NULL,1,'1','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2282,3,3,NULL,1,'MIGUEL EMMANUEL','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2283,3,4,NULL,1,'ARRIOLA','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2284,3,5,NULL,1,'ORTEGA','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2285,3,6,NULL,1,'AIOM020605HMCRRGA5','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2286,3,7,NULL,1,'AIOM0206058V0','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2287,3,8,4,1,'Masculino','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2288,3,9,335,1,'Femenino','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2289,3,10,5,1,'Soltero(a)','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2290,3,11,11,1,'1 hijo(a)','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2291,3,12,14,1,'hijo y hermano','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2292,3,13,NULL,1,'catolica','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2293,3,14,NULL,1,'324','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2294,3,15,NULL,1,'2024-09-17','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2295,3,16,NULL,1,'20','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2296,3,17,346,1,'Estados Unidos','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2297,3,18,NULL,1,'Chicago','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2298,3,19,NULL,1,'ilinois','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2299,3,20,NULL,1,'7226395654','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2300,3,21,NULL,1,'7226395654','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2301,3,22,NULL,1,'al222010230@gmail.com','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2302,3,23,NULL,1,'https://face.com','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2303,3,24,NULL,1,'CARRETERA TOLUCA-NAUCALPAN KM32.8','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2304,3,25,NULL,1,'S/N','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2305,3,26,NULL,1,'sn','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2306,3,27,NULL,1,'SAN AGUSTIN','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2307,3,28,NULL,1,'SAN AGUSTIN','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2308,3,29,NULL,1,'LERMA','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2309,3,30,NULL,1,'52050','2024-09-24 10:01:25','2024-09-24 10:01:25'),
+(2310,3,31,NULL,1,'entre la calle de las mesasy la calle del almacen , hay una banderin azul gran de de l lado  ixuqierdo de la carretera','2024-09-24 10:01:25','2024-09-24 10:01:25');
 
 /*Table structure for table `usuarios` */
 
