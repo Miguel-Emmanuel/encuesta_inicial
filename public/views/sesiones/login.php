@@ -1,28 +1,15 @@
 <?php
-    include("../../../app/Models/conexion.php");
-    // Verificar si la sesión ya está activa
-  
-
-    // Verificar si la clave 'rol' existe en la sesión
-    if (isset($_SESSION['rol'])) {
-        $rol = $_SESSION['rol'];
-    } else {
-        $rol = ''; // Valor predeterminado si no existe
-    }
-?>
+session_start();
+include("../../../app/Models/conexion.php");
+if (isset($_SESSION['id']) == "") { ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Encuesta Inicial | Inicio de Sesión</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-<?php
-    //en ESTA LINEA ES PARA OMITIR EL O=PROBLEMA DE ARRAY INDEFINIDO -->
-    ?>
-
     <link rel="stylesheet" href="../../css/login.css">
 </head>
 
@@ -34,43 +21,33 @@
                 <!-- ESTE ES LA IMAGEN PORTADA DE LA DERECHA -->
             </div>
             <div class="col form">
-                <h2 class="text-center bp-3"> Inicia Sesión </h2> <br>
-                <form method="post" action=""> <!-- ESTE ES EL FORMULARIO -->
-                    <?php
-                    include("../../../app/Controllers/sesiones_controller.php");
-                    ?>
+                <h2 class="text-center bp-3"> Inicia Sesión </h2>
+                <br>
+                <?php include('msj.php'); ?>
+                <form name="formulario" method="post" action="/app/Controllers/loginController.php"> <!-- ESTE ES EL FORMULARIO -->
                     <!-- Email input -->
                     <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3" required>
                     <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div>
-
                     <br>
-
                     <!-- Password input -->
                     <input type="password" name="password" class="form-control form-control-sm" placeholder="Contraseña" aria-describedby="basic-addon3" required>
                     <div class="form-text" id="basic-addon3">No olvides cambiar tu contraseña si es primera vez que ingresas.</div>
-
                     <br>
-
                     <!-- Submit -->
-
                     <a href="../pass/recuperarpass.php">¿Olvidaste tu contraseña?</a>
-
                     <br>
-
                     <center><input type="submit" name="btningresar" class="btn btn-success" value="Ingresar"></center>
                 </form>
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-    <script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
+<script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </html>
+
+<?php
+} else {
+	header("Location:  ../../../../app/Controllers/sesiones_controller.php");
+} ?>
