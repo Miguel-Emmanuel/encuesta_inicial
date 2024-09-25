@@ -189,6 +189,34 @@ if ($row) {
                     case 'texto_a':
                         echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></textarea>";
                         break;
+                        case 'pais':
+                            echo "<label for='pais_$idPregunta'>País de Nacimiento</label>";
+                            echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' required>";
+                            echo "<option value=''>Selecciona un país</option>";
+                        
+                            $resultPais = $conexion->query("SELECT * FROM paises");
+                            while ($pais = $resultPais->fetch_assoc()) {
+                                echo "<option value='{$pais['id']}'>{$pais['nombre']}</option>";
+                            }
+                        
+                            echo "</select>";
+                            break;
+                        
+                        case 'estado':
+                            echo "<label for='estado_$idPregunta'>Estado de Nacimiento</label>";
+                            echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' required>";
+                            echo "<option value=''>Selecciona un estado</option>"; // El contenido se llenará con AJAX
+                            echo "</select>";
+                            break;
+                        
+                        case 'municipio':
+                            echo "<label for='municipio_$idPregunta'>Municipio de Nacimiento</label>";
+                            echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' required>";
+                            echo "<option value=''>Selecciona un municipio</option>"; // El contenido se llenará con AJAX
+                            echo "</select>";
+                            break;
+                        
+                        
                         case 'genero':
                             $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
                             echo "<select name='respuestas[$idPregunta]' class='respuesta-genero' data-idpregunta='$idPregunta' required>";
@@ -716,6 +744,54 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         });
     });
 });
+
+
+////////////////////////////////////////////////////////////////
+/////////COMBO DINAMICO DE ESTADOS MUNICIPIOS///////////////////////
+function cargarEstados(selectPais, idPregunta) {
+    const paisId = selectPais.value;
+    const estadoSelect = document.getElementById("estado_" + idPregunta);
+
+    console.log("Buscando estado con ID:", "estado_" + idPregunta); // Agrega esta línea
+
+    if (estadoSelect) {
+        if (paisId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '../cargar_datos.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    estadoSelect.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send('accion=estados&pais_id=' + paisId);
+        } else {
+            estadoSelect.innerHTML = "<option value=''>Selecciona un estado</option>";
+        }
+    } else {
+        console.error("El elemento con ID 'estado_" + idPregunta + "' no existe en el DOM.");
+    }
+}
+
+
+function cargarMunicipios(selectEstado, idPregunta) {
+    const estadoId = selectEstado.value;
+
+    if (estadoId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'cargar_datos.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById("municipio_" + idPregunta).innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send('accion=municipios&estado_id=' + estadoId);
+    } else {
+        document.getElementById("municipio_" + idPregunta).innerHTML = "<option value=''>Selecciona un municipio</option>";
+    }
+}
+
 
     </script>
 
