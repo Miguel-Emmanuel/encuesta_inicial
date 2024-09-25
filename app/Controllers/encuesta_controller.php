@@ -83,12 +83,30 @@
             if ($opcionId === null) {
                 $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $seccionId, $respuestaTexto);
+
             } else {
                 $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiiis", $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
             }
             
             $stmtUsuarioRespuesta->execute();
+            if ($stmtUsuarioRespuesta->affected_rows <= 0) {
+                echo "Error al registrar la respuesta del usuario.";
+            }
+            
+            // Verificar si la pregunta es sobre género (por ejemplo, si la pregunta tiene ID 9)
+            if ($idPregunta == 9) {
+                // Actualizar la tabla usuarios con el género seleccionado
+                $stmtActualizarGenero = $conexion->prepare("UPDATE usuarios SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
+                $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
+                
+                $stmtActualizarGenero->execute();
+                
+                if ($stmtActualizarGenero->affected_rows <= 0) {
+                    echo "Error al actualizar el género en la tabla de usuarios.";
+                }
+                $stmtActualizarGenero->close();
+            }
 
             if ($stmtUsuarioRespuesta->affected_rows <= 0) {
                 echo "Error al registrar la respuesta del usuario.";

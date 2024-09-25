@@ -189,6 +189,16 @@ if ($row) {
                     case 'texto_a':
                         echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></textarea>";
                         break;
+                        case 'genero':
+                            $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
+                            echo "<select name='respuestas[$idPregunta]' class='respuesta-genero' data-idpregunta='$idPregunta' required>";
+                            while ($genero = $generos->fetch_assoc()) {
+                                $selected = ($respuestaTexto == $genero['nombre']) ? 'selected' : '';
+                                echo "<option value='{$genero['nombre']}' $selected>{$genero['nombre']}</option>";
+                            }
+                            echo "</select>";
+                            break;
+                        
 
                     case 'opcion':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
@@ -656,49 +666,57 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
             return alert;
         }
 
-
         document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
+    const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
+    const form = document.querySelector('form'); // Asegúrate de que tu formulario tenga la etiqueta <form>
 
-            // Cargar valores de localStorage
-            inputs.forEach(function(input) {
-                let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
+    // Cargar valores de localStorage
+    inputs.forEach(function(input) {
+        let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
 
-                if (storedValue) {
-                    if (input.type === 'radio') {
-                        // Marcar el radio como 'checked' si su valor coincide con el almacenado
-                        if (input.value === storedValue) {
-                            input.checked = true; // Asegúrate de que el radio esté seleccionado
-                            obtenerValor(storedValue, input.dataset.idpregunta); // Ejecuta la función para desplegar el campo dinámico
-                        }
-                    } else {
-                        // Restaurar otros tipos de input (text, select, etc.)
-                        input.value = storedValue;
-                    }
+        if (storedValue) {
+            if (input.type === 'radio') {
+                // Marcar el radio como 'checked' si su valor coincide con el almacenado
+                if (input.value === storedValue) {
+                    input.checked = true; // Asegúrate de que el radio esté seleccionado
+                    obtenerValor(storedValue, input.dataset.idpregunta); // Ejecuta la función para desplegar el campo dinámico
                 }
+            } else {
+                // Restaurar otros tipos de input (text, select, etc.)
+                input.value = storedValue;
+            }
+        }
 
-                // Guardar el valor en localStorage cuando el usuario interactúe
-                input.addEventListener('input', function() {
-                    if (input.type === 'radio') {
-                        // Para radios, almacenar el valor cuando se selecciona
-                        if (input.checked) {
-                            localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
-                            obtenerValor(input.value, input.dataset.idpregunta); // Llama a la función al seleccionar
-                        }
-                    } else {
-                        // Para otros inputs
-                        localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
-                    }
-                });
-
-                // Para selects, también escuchar el evento 'change'
-                if (input.tagName === 'SELECT') {
-                    input.addEventListener('change', function() {
-                        localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
-                    });
+        // Guardar el valor en localStorage cuando el usuario interactúe
+        input.addEventListener('input', function() {
+            if (input.type === 'radio') {
+                // Para radios, almacenar el valor cuando se selecciona
+                if (input.checked) {
+                    localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                    obtenerValor(input.value, input.dataset.idpregunta); // Llama a la función al seleccionar
                 }
-            });
+            } else {
+                // Para otros inputs
+                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+            }
         });
+
+        // Para selects, también escuchar el evento 'change'
+        if (input.tagName === 'SELECT') {
+            input.addEventListener('change', function() {
+                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+            });
+        }
+    });
+
+    // Eliminar los valores de localStorage cuando se envía el formulario
+    form.addEventListener('submit', function() {
+        inputs.forEach(function(input) {
+            localStorage.removeItem('respuesta_' + input.dataset.idpregunta); // Eliminar solo los valores específicos
+        });
+    });
+});
+
     </script>
 
 </body>
