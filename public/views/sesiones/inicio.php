@@ -9,6 +9,10 @@
     $consulta2 = mysqli_query($conexion, $PE);
     $programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
 
+    $GT = "SELECT * FROM tutores;";
+    $consulta3 = mysqli_query($conexion, $GT);
+    $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
+
 
 ?>
 <!DOCTYPE html>
@@ -137,6 +141,13 @@
             
             <div class="filtro3">
                 Grupo Tutor
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($grupos_v as $item): ?>  
+                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] ."&f=3". "&nombre=" . urlencode($item['        ']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
             
             <div class="filtro4">
