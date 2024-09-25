@@ -1,10 +1,10 @@
 <?php
 require '../../database/conexion.php';
 
-$id = $conexion->real_escape_string($_POST['id']);
+$id = $conexion->real_escape_string($_POST['id']);      
 
 
-$sql = "DELETE FROM periodos_escolar  WHERE id=$id";
+$sql = "UPDATE periodos_escolar SET activo = 0 WHERE id=$id";
 if($conexion->query($sql)){
    
 }

@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlPeriodos = "SELECT id, inicio, fin FROM periodos_escolar";
+$sqlPeriodos = "SELECT id, alias, inicio, fin FROM periodos_escolar WHERE activo = 1";
 $periodos = $conexion->query($sqlPeriodos);
 ?>
 <div class="container py-3">
@@ -15,15 +15,17 @@ $periodos = $conexion->query($sqlPeriodos);
         <thead>
             <tr>
                 <th>#</th>
+                <th>Alias</th>
                 <th>Inicio del cuatrimestre</th>
                 <th>Fin del cuatrimestre</th>
                 <th>Acciones </th>
             </tr>
         </thead>
         <tbody>
-            <?php while ($row_periodos = $periodos->fetch_assoc()) { ?>
+            <?php while ($row_periodos = $periodos->fetch_assoc()) { ?>             
                 <tr>
                     <td><?= $row_periodos['id']; ?></td>
+                    <td><?= $row_periodos['alias']; ?></td>
                     <td><?= $row_periodos['inicio']; ?></td>
                     <td><?= $row_periodos['fin']; ?></td>
                     <td>
