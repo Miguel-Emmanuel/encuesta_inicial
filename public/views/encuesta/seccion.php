@@ -199,7 +199,33 @@ if ($row) {
                             echo "</select>";
                             break;
                         
-
+                            case 'pais':
+                                echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' required>";
+                                echo "<option value=''>Selecciona un país</option>";
+                                
+                                $resultPais = $conexion->query("SELECT * FROM paises");
+                                while ($pais = $resultPais->fetch_assoc()) {
+                                    echo "<option value='{$pais['id']},{$pais['nombre']}'>{$pais['nombre']}</option>";
+                                }
+                                echo "<option value='otro'>Otro</option>";
+                            
+                                echo "</select>";
+                                break;
+                            
+                            case 'estado':
+                                echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' required>";
+                                echo "<option value=''>Selecciona un estado</option>"; // El contenido se llenará con AJAX
+                                echo "</select>";
+                                break;
+                            
+                            case 'municipio':
+                                echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' required>";
+                                echo "<option value=''>Selecciona un municipio</option>"; // El contenido se llenará con AJAX
+                                echo "</select>";
+                                break;
+                            
+                            
+    
                     case 'opcion':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
@@ -738,15 +764,15 @@ function cargarEstados(selectPais, idPregunta) {
     // Guardar HTML original si aún no está guardado
     if (!estadoOriginal) estadoOriginal = estadoSelect.outerHTML;
     if (!municipioOriginal) municipioOriginal = municipioSelect.outerHTML;
-
     console.log("Buscando estado con ID:", "estado_" + estadoIdPregunta); // Verifica que esté buscando el estado correcto
-
+    
+    console.log("pais:  "+paisId);
     if (estadoSelect) {
         // Si el país seleccionado es "Otro"
         if (paisId === "otro") {
             // Cambiar los selects a inputs de texto
-            estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='estado_otro' placeholder='Especifica tu estado' required />`;
-            municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='municipio_otro' placeholder='Especifica tu municipio' required />`;
+            estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='respuestas[${estadoIdPregunta}]' placeholder='Especifica tu estado' required />`;
+            municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='respuestas[${municipioIdPregunta}]' placeholder='Especifica tu municipio' required />`;
         } else {
             // Restaurar los selects originales si se selecciona un país de la base de datos
             estadoSelect.outerHTML = estadoOriginal;
