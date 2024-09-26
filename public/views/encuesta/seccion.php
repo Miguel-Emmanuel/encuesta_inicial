@@ -709,14 +709,111 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
         }
     });
 
-    // Eliminar los valores de localStorage cuando se envía el formulario
-    form.addEventListener('submit', function() {
-        inputs.forEach(function(input) {
-            localStorage.removeItem('respuesta_' + input.dataset.idpregunta); // Eliminar solo los valores específicos
+            // Eliminar los valores de localStorage cuando se envía el formulario
+            form.addEventListener('submit', function() {
+                inputs.forEach(function(input) {
+                    localStorage.removeItem('respuesta_' + input.dataset.idpregunta); // Eliminar solo los valores específicos
+                });
+            });
         });
-    });
-});
+//////////////////////PAISES OTROS TEXTO PLANO //////////////////
 
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////
+        /////////COMBO DINAMICO DE ESTADOS MUNICIPIOS///////////////////////
+        let estadoOriginal = '';
+let municipioOriginal = '';
+
+function cargarEstados(selectPais, idPregunta) {
+    const paisId = selectPais.value; // ID del país seleccionado
+    const estadoIdPregunta = idPregunta + 1; // El siguiente select es el de estados
+    const estadoSelect = document.getElementById("estado_" + estadoIdPregunta);
+    const municipioIdPregunta = estadoIdPregunta + 1; // El siguiente select es el de municipios
+    const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta);
+
+    // Guardar HTML original si aún no está guardado
+    if (!estadoOriginal) estadoOriginal = estadoSelect.outerHTML;
+    if (!municipioOriginal) municipioOriginal = municipioSelect.outerHTML;
+
+    console.log("Buscando estado con ID:", "estado_" + estadoIdPregunta); // Verifica que esté buscando el estado correcto
+
+    if (estadoSelect) {
+        // Si el país seleccionado es "Otro"
+        if (paisId === "otro") {
+            // Cambiar los selects a inputs de texto
+            estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='estado_otro' placeholder='Especifica tu estado' required />`;
+            municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='municipio_otro' placeholder='Especifica tu municipio' required />`;
+        } else {
+            // Restaurar los selects originales si se selecciona un país de la base de datos
+            estadoSelect.outerHTML = estadoOriginal;
+            municipioSelect.outerHTML = municipioOriginal;
+
+            // Refresca los elementos de select
+            const estadoSelectUpdated = document.getElementById("estado_" + estadoIdPregunta);
+            const municipioSelectUpdated = document.getElementById("municipio_" + municipioIdPregunta);
+
+            // Ahora se carga el select de estados
+            if (paisId) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'cargar_datos.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        estadoSelectUpdated.innerHTML = xhr.responseText; // Actualiza el select de estados
+                    }
+                };
+                xhr.send('accion=estados&pais_id=' + paisId); // Envía el ID del país seleccionado
+            } else {
+                estadoSelectUpdated.innerHTML = "<option value=''>Selecciona un estado</option>"; // Si no hay país, restablece el select
+            }
+        }
+    } else {
+        console.error("El elemento con ID 'estado_" + estadoIdPregunta + "' no existe en el DOM.");
+    }
+}
+
+
+
+        function cargarMunicipios(selectEstado, idPregunta) {
+            const estadoId = selectEstado.value;
+
+            // Calcula el ID del municipio basado en el ID de la pregunta
+            const municipioIdPregunta = idPregunta + 1; // Ajusta según sea necesario
+
+            console.log("Estado seleccionado:", estadoId);
+            console.log("Buscando municipio con ID:", "municipio_" + municipioIdPregunta); // Para depuración
+
+            if (estadoId) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'cargar_datos.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta); // Utiliza el nuevo ID calculado
+
+                        if (municipioSelect) {
+                            municipioSelect.innerHTML = xhr.responseText; // Rellena los municipios
+                        } else {
+                            console.error("El elemento con ID 'municipio_" + municipioIdPregunta + "' no existe en el DOM.");
+                        }
+                    }
+                };
+
+                xhr.send('accion=municipios&estado_id=' + estadoId);
+            } else {
+                const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta);
+                if (municipioSelect) {
+                    municipioSelect.innerHTML = "<option value=''>Selecciona un municipio</option>";
+                } else {
+                    console.error("El elemento con ID 'municipio_" + municipioIdPregunta + "' no existe en el DOM.");
+                }
+            }
+        }
     </script>
 
 </body>
