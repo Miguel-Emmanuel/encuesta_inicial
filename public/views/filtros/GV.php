@@ -2,13 +2,24 @@
     require '../../../app/Models/conexion.php';
 
     $id = (int) $_GET['id'];
-    $NGV= $_GET['nombre'];
+    $NGV= $_GET['nombre'];  
     
-    $usuarios = "
-    SELECT u.*, p.nombre AS n_carrera
-    FROM usuarios u
-    JOIN programa_edu p ON u.carrera = p.id
-    WHERE u.rol_id = 3 AND u.grupos_v = " . $id;
+    $usuarios ="SELECT 
+                    usuarios.nombre AS nombre,
+                    usuarios.apellido_paterno,
+                    usuarios.apellido_materno,
+                    usuarios.email,
+                    estudiantes.id,     
+                    estudiantes.matricula,
+                    estudiantes.telefono,
+                    gruposv.nombregv AS nombre_gv,
+                    i_genero.nombreig AS nombre_ig
+                    FROM estudiantes
+                    INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
+                    LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
+                    LEFT JOIN i_genero ON estudiantes.i_genero = i_genero.id
+                    WHERE estudiantes.grupos_v = $id
+                    ";
     $consulta = mysqli_query($conexion, $usuarios);
     $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
@@ -72,7 +83,7 @@
                             <option value="<?php echo $ig['id']; ?>"><?php echo $ig['nombreig']; ?></option>
                         <?php endforeach;?>
                     </select>
-                </div>
+                </div>  
             
             <?php } ?>
 
@@ -93,22 +104,29 @@
             <th>Matrícula</th>
             <th>Carrera</th>
             <th>Email</th>
+            <th>Telefono</th>
+            <th>Grupo Vulnerable</th>
+            <th>Identidad</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['i_genero']; ?>">
-            <td> <?php echo $estudiante['id'] ?> </td>
+            <tr data-genero="<?php echo $estudiante['i_genero']; ?>">
+            <td> <?php echo $estudiante['id']; ?> </td>
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
-            <td> <?php echo $estudiante['matricula'] ?> </td>
-            <td> <?php echo $estudiante['n_carrera'] ?> </td>
-            <td> <?php echo $estudiante['email'] ?> </td>
+            <td> <?php echo $estudiante['matricula']; ?> </td>
+            <td> Vacio </td>
+            <td> <?php echo $estudiante['email']; ?> </td>
+            <td> <?php echo $estudiante['telefono']; ?> </td>
+            <td> <?php echo $estudiante['nombre_gv']; ?> </td>
+            <td> <?php echo $estudiante['nombre_ig']; ?> </td>
         </tr>
         <?php endforeach;?>
     </tbody>
 </table>
 </div>
+
 <script>
     // Obtener los elementos de la tabla y el filtro
     const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
@@ -132,5 +150,7 @@
         }
     });
 </script>
+
 </body>
 </html>
+                                        
