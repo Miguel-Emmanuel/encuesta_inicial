@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Deseleccionable</title>
+</head>
+<body>
+
+    <label>
+        <input type="radio" name="opcion" id="radio1" value="1">
+        Opción 1
+    </label>
+    <br>
+    <label>
+        <input type="radio" name="opcion" id="radio2" value="2">
+        Opción 2
+    </label>
+
+    <script>
+        // Variable para almacenar el último radio seleccionado
+        let lastChecked = null;
+
+        // Obtener todos los radio buttons
+        const radios = document.querySelectorAll('input[type="radio"][name="opcion"]');
+
+        radios.forEach(radio => {
+            radio.addEventListener('click', function() {
+                // Si el radio ya estaba seleccionado, deseleccionarlo
+                if (this === lastChecked) {
+                    this.checked = false;
+                    lastChecked = null; // Reiniciar la variable
+                } else {
+                    // Si no estaba seleccionado, actualizar la variable
+                    lastChecked = this;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

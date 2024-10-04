@@ -7,6 +7,22 @@
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+/* ////////////////// ERRORES DE VALIDACION ////////////// */
+
+
+
+.pregunta.error {
+    border-left: 4px solid red; /* Cambia el borde a rojo cuando hay un error */
+    background-color: #fbe9e9; /* Fondo ligeramente rosado para dar un efecto de error */
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25em;
+}
+
+/* //////////////////////////////////////////////////// */
 
 /* Estilo para el título de las secciones */
 .pregunta h3 {
@@ -117,7 +133,7 @@
 .pregunta table th,
 .pregunta table td {
     padding: 10px;
-    text-align: left;
+    /* text-align: left; */
     /* border-bottom: 1px solid #dee2e6; */
 }
 
@@ -129,6 +145,12 @@
 .pregunta table td {
     background-color: #fff;
 }
+
+
+.hola {
+    width: 25%;
+}
+
 
 /* Estilo para radio buttons */
 .custom-radio {
@@ -302,8 +324,11 @@
     transform: scale(0.98);
 }/* Ocultar el input radio */
 .custom-radio {
-    display: none; /* Ocultamos el radio nativo */
+    opacity: 0; /* Ocultamos visualmente el radio nativo pero permitimos que reciba eventos */
+    position: absolute;
+    z-index: -1; /* Opcional, para asegurarnos de que no interfiera */
 }
+
 
 /* Estilo del label que se verá como un checkbox */
 .custom-radio-label {
