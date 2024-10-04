@@ -125,11 +125,11 @@
             // var_dump( "Respuestas generales" .$respuestas . "respuestas dimanicas" . $respuestas_otro   );
             // var_dump(in_array($idPregunta, [17, 18, 19]));
             if ($opcionId === null) {
-                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO estudiante_respuesta (estudiante_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $seccionId, $respuestaTexto);
 
             } else {
-                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO estudiante_respuesta (estudiante_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiiis", $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
             }
             
@@ -141,7 +141,7 @@
             // Verificar si la pregunta es sobre género (por ejemplo, si la pregunta tiene ID 9)
             if ($idPregunta == 9) {
                 // Actualizar la tabla usuarios con el género seleccionado
-                $stmtActualizarGenero = $conexion->prepare("UPDATE usuarios SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
+                $stmtActualizarGenero = $conexion->prepare("UPDATE estudiantes SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
                 $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
                 
                 $stmtActualizarGenero->execute();

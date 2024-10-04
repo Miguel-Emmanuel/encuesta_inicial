@@ -113,7 +113,7 @@ if ($row) {
 
             function obtenerRespuestasUsuario($conexion, $idUsuario)
             {
-                $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
+                $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM estudiante_respuesta WHERE estudiante_id = ?");
                 $stmt->bind_param("i", $idUsuario);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -344,7 +344,7 @@ if ($row) {
                                         $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
                                         echo "
                                         <td class='espaciadoo'>
-                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2'>
+                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' >
                                             <label for='$radioId' class='custom-radio-label'></label>
                                         </td>";
                                     }
@@ -663,6 +663,8 @@ document.getElementById('encuestaForm').addEventListener('submit', function(even
         pregunta.classList.remove('error'); // Remueve el borde rojo u otra clase de error
     });
 
+
+    
             // Validar campos específicos
             var rfcInputs = form.querySelectorAll('input.respuesta-rfc');
             rfcInputs.forEach(function(input) {
@@ -1031,6 +1033,75 @@ radios.forEach(radio => {
             lastChecked = this;
         }
     });
+});
+
+
+
+document.getElementById('encuestaForm').addEventListener('submit', function(event) {
+    var form = event.target;
+    var alertContainer = document.getElementById('alert-container');
+    var valid = true;
+    var errorMessages = [];
+
+    // Limpiar el contenedor de alertas
+    alertContainer.innerHTML = '';
+    
+    // Eliminar mensajes de error previos
+    var errorElements = form.querySelectorAll('.error-message');
+    errorElements.forEach(function(el) {
+        el.remove();
+    });
+
+    // Verificar todos los campos requeridos
+    var requiredFields = form.querySelectorAll('[required]');
+    requiredFields.forEach(function(input) {
+        // Verificar si está vacío o no es válido
+        if (input.type === 'radio') {
+            // Verificar si algún radio con el mismo 'name' está seleccionado
+            var name = input.name;
+            if (!form.querySelector('input[name="' + name + '"]:checked')) {
+                valid = false;
+                var idPregunta = input.getAttribute('data-idpregunta') || 'sin ID';
+                var errorMessage = 'Pregunta #' + idPregunta + ': Debe seleccionar una opción.';
+                errorMessages.push(errorMessage);
+
+                // Agregar mensaje de error a la pregunta (en lugar de al input individual)
+                var parentTd = input.closest('td'); // Encuentra el 'td' que contiene el radio
+                var errorElement = createErrorElement(errorMessage);
+                parentTd.appendChild(errorElement);
+            }
+        } else if (input.value.trim() === '') {
+            // Otros campos como input text, select, textarea, etc.
+            valid = false;
+            var idPregunta = input.getAttribute('data-idpregunta') || 'sin ID';
+            var errorMessage = 'Pregunta #' + idPregunta + ': Este campo es requerido.';
+            errorMessages.push(errorMessage);
+
+            // Agregar mensaje de error al campo
+            var errorElement = createErrorElement(errorMessage);
+            input.parentElement.appendChild(errorElement);
+        }
+    });
+
+    // Validación personalizada para otros campos (ejemplo de CURP)
+    var curpInputs = form.querySelectorAll('input.respuesta-curp');
+    curpInputs.forEach(function(input) {
+        var idPregunta = input.getAttribute('data-idpregunta');
+        if (input.value !== '' && !validateCURP(input.value)) {
+            valid = false;
+            var errorMessage = 'Pregunta #' + idPregunta + ': CURP no es válido. Debe seguir el formato correcto.';
+            errorMessages.push(errorMessage);
+            var errorElement = createErrorElement(errorMessage);
+            input.parentElement.appendChild(errorElement);
+        }
+    });
+
+    // Si hay errores, mostrar alerta y detener el envío del formulario
+    if (!valid) {
+        var alert = createAlert('Hay errores en el formulario.');
+        alertContainer.appendChild(alert);
+        event.preventDefault(); // Detener el envío del formulario
+    }
 });
     </script>
 

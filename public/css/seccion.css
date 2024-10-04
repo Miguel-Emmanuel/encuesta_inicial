@@ -368,3 +368,24 @@
     cursor: pointer;
 }
 
+/* Aplica borde rojo a cualquier campo requerido que no sea válido */
+/* Aplica borde rojo cuando no está seleccionado y es requerido */
+input[type="radio"]:required:invalid + .custom-radio-label {
+    border-color: red;
+    background-color: #ffe6e6; /* Cambia el fondo del radio cuando hay error */
+}
+
+/* Otras reglas para otros campos como select, textarea, etc. */
+input:required:invalid,
+select:required:invalid,
+textarea:required:invalid {
+    border: 2px solid red;
+}
+
+
+/* Para los checkbox, si también tienes estilos customizados */
+input[type="checkbox"]:required:invalid + .custom-checkbox-label {
+    border-color: red;
+}
+
+
