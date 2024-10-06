@@ -13,7 +13,8 @@
                     estudiantes.matricula,
                     estudiantes.telefono,
                     gruposv.nombregv AS nombre_gv,
-                    i_genero.nombreig AS nombre_ig
+                    i_genero.nombreig AS nombre_ig,
+                    i_genero.id AS id_genero
                     FROM estudiantes
                     INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
                     LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
@@ -111,7 +112,7 @@
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-            <tr data-genero="<?php echo $estudiante['i_genero']; ?>">
+        <tr data-genero="<?php echo $estudiante['id_genero']; ?>">
             <td> <?php echo $estudiante['id']; ?> </td>
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
@@ -131,6 +132,7 @@
     // Obtener los elementos de la tabla y el filtro
     const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
     const filter = document.getElementById('filterGenero');
+    console.log(table);
 
     // Evento que se dispara cuando cambia el select
     filter.addEventListener('change', function() {
