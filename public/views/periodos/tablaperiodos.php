@@ -1,11 +1,11 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEducativo = "SELECT id, nombre, clave FROM programa_edu";
-$educa = $conexion->query($sqlEducativo);
+$sqlPeriodos = "SELECT id, inicio, fin FROM periodos_escolar";
+$periodos = $conexion->query($sqlPeriodos);
 ?>
 <div class="container py-3">
-    <h2 class="text-center">Programa Educativo</h2>
+    <h2 class="text-center">Periodos Escolares</h2>
     <div class="row justify-content-end">
         <div class="col-auto">
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
@@ -15,20 +15,20 @@ $educa = $conexion->query($sqlEducativo);
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Clave</th>
+                <th>Inicio del cuatrimestre</th>
+                <th>Fin del cuatrimestre</th>
                 <th>Acciones </th>
             </tr>
         </thead>
         <tbody>
-            <?php while ($row_educa = $educa->fetch_assoc()) { ?>
+            <?php while ($row_periodos = $periodos->fetch_assoc()) { ?>
                 <tr>
-                    <td><?= $row_educa['id']; ?></td>
-                    <td><?= $row_educa['nombre']; ?></td>
-                    <td><?= $row_educa['clave']; ?></td>
+                    <td><?= $row_periodos['id']; ?></td>
+                    <td><?= $row_periodos['inicio']; ?></td>
+                    <td><?= $row_periodos['fin']; ?></td>
                     <td>
-                        <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-trash"></i></a>
+                        <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_periodos['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_periodos['id']; ?>"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             <?php } ?>
@@ -48,15 +48,13 @@ $educa = $conexion->query($sqlEducativo);
     let eliminamodal = document.getElementById('eliminamodal')
 
     nuevomodal.addEventListener('hide.bs.modal', event => {
-        nuevomodal.querySelector('.modal-body #grado').value = ""
-        nuevomodal.querySelector('.modal-body #nombre').value = ""
-        nuevomodal.querySelector('.modal-body #clave').value = ""
+        nuevomodal.querySelector('.modal-body #inicio').value = ""
+        nuevomodal.querySelector('.modal-body #fin').value = ""
     })
 
     editarmodal.addEventListener('hide.bs.modal', event => {
-        editarmodal.querySelector('.modal-body #grado').value = ""
-        editarmodal.querySelector('.modal-body #nombre').value = ""
-        editarmodal.querySelector('.modal-body #clave').value = ""
+        editarmodal.querySelector('.modal-body #inicio').value = ""
+        editarmodal.querySelector('.modal-body #fin').value = ""
     })
 
     editarmodal.addEventListener('shown.bs.modal', event => {
@@ -64,11 +62,10 @@ $educa = $conexion->query($sqlEducativo);
         let id = button.getAttribute('data-bs-id')
 
         let inputId = editarmodal.querySelector('.modal-body #id')
-        let inputGrado = editarmodal.querySelector('.modal-body #grado')
-        let inputNombre = editarmodal.querySelector('.modal-body #nombre')
-        let inputClave = editarmodal.querySelector('.modal-body #clave')
+        let inputInicio= editarmodal.querySelector('.modal-body #inicio')
+        let inputFin = editarmodal.querySelector('.modal-body #fin')
 
-        let url = "../../../app/Educativo/getEduca.php"
+        let url = "../../../app/Periodos/getPeriodos.php"
         let formData = new FormData()
         formData.append('id', id)
 
@@ -79,9 +76,8 @@ $educa = $conexion->query($sqlEducativo);
             .then(data => {
 
                 inputId.value = data.id
-                inputGrado.value = data.grado
-                inputNombre.value = data.nombre
-                inputClave.value = data.clave
+                inputInicio.value = data.inicio
+                inputFin.value = data.fin
             }).catch(err => console.log(err))
     })
 

@@ -1,0 +1,345 @@
+/* Estilo general para el contenedor de cada pregunta */
+.pregunta {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #007bff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el título de las secciones */
+.pregunta h3 {
+    font-size: 22px;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+/* Estilo para el texto de las preguntas */
+.pregunta-texto {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Estilo para botones de ayuda */
+.pregunta-texto button {
+    background-color: #007bff;
+    border: none;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.pregunta-texto button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para los inputs de texto */
+.respuesta-input,
+.respuesta-fecha,
+.respuesta-correo,
+.respuesta-curp,
+.respuesta-rfc,
+.respuesta-telefono,
+.respuesta-numero,
+.respuesta-r_social,
+.respuesta-c_postal,
+.respuesta-texto_a {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.respuesta-input:focus,
+.respuesta-fecha:focus,
+.respuesta-correo:focus,
+.respuesta-curp:focus,
+.respuesta-rfc:focus,
+.respuesta-telefono:focus,
+.respuesta-numero:focus,
+.respuesta-r_social:focus,
+.respuesta-c_postal:focus,
+.respuesta-texto_a:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Estilo específico para textareas */
+.respuesta-texto_a {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Estilo para selects */
+.select-container select,
+.respuesta-genero,
+.respuesta-pais,
+.respuesta-estado,
+.respuesta-municipio,
+.respuesta-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.select-container select:focus,
+.respuesta-genero:focus,
+.respuesta-pais:focus,
+.respuesta-estado:focus,
+.respuesta-municipio:focus,
+.respuesta-select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Estilo para tablas en preguntas de opción múltiple */
+.pregunta table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.pregunta table th,
+.pregunta table td {
+    padding: 10px;
+    text-align: left;
+    /* border-bottom: 1px solid #dee2e6; */
+}
+
+.pregunta table th {
+    background-color: #f1f3f5;
+    font-weight: bold;
+}
+
+.pregunta table td {
+    background-color: #fff;
+}
+
+/* Estilo para radio buttons */
+.custom-radio {
+    margin-right: 10px;
+}
+
+.custom-radio-label {
+    margin-right: 15px;
+}
+
+/* Responsividad: se adapta a pantallas más pequeñas */
+@media (max-width: 768px) {
+    .pregunta h3 {
+        font-size: 20px;
+    }
+
+    .pregunta-texto {
+        font-size: 16px;
+    }
+
+    .pregunta table th,
+    .pregunta table td {
+        padding: 8px;
+    }
+
+    .respuesta-input,
+    .respuesta-fecha,
+    .respuesta-correo,
+    .respuesta-curp,
+    .respuesta-rfc,
+    .respuesta-telefono,
+    .respuesta-numero,
+    .respuesta-r_social,
+    .respuesta-c_postal,
+    .respuesta-texto_a,
+    .select-container select,
+    .respuesta-genero,
+    .respuesta-pais,
+    .respuesta-estado,
+    .respuesta-municipio,
+    .respuesta-select {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+
+
+/* Estilo para el contenedor general */
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Estilo para el título principal */
+.container h1 {
+    font-size: 48px;
+    color: #2c3e50;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif; /* Asegúrate de que la fuente esté cargada */
+    margin-bottom: 20px;
+}
+
+/* Estilo para la clase específica del título 'Entrevista Inicial' */
+.bebas-neue-regular {
+    font-weight: normal;
+    font-size: 80px;
+    line-height: 1.2;
+    color: #007bff;
+}
+
+/* Estilo para el título de la sección */
+.container h1:nth-of-type(2) {
+    font-size: 36px;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* Estilo para la descripción de la sección */
+.container p {
+    font-size: 18px;
+    color: #6c757d;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .bebas-neue-regular {
+        font-size: 48px;
+    }
+
+    .container h1 {
+        font-size: 32px;
+    }
+
+    .container h1:nth-of-type(2) {
+        font-size: 28px;
+    }
+
+    .container p {
+        font-size: 16px;
+    }
+}
+
+/* Estilos generales para el contenedor de botones */
+.botones {
+    display: flex;
+     justify-content: center; 
+     margin-top: 30px;
+}
+
+/* Estilo para los enlaces de los botones */
+.botones a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 200px;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin: 0 10px; /* Espacio entre botones */
+}
+
+/* Estilos específicos para el botón de regresar */
+.btn-menu {
+    background-color: #3989de; /* Azul */
+    margin-right: 800px;
+}
+
+.btn-menu:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+}
+
+/* Estilos específicos para el botón de cerrar sesión */
+.btn-cerrar-sesion {
+    background-color: #dc3545; /* Rojo */
+   
+
+    }
+
+.btn-cerrar-sesion:hover {
+    background-color: #c82333; /* Rojo más oscuro */
+}
+
+/* Estilos para el botón enviar */
+.btn-enviar {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espaciado superior */
+}
+
+.btn-enviar:hover {
+    background-color: #218838; /* Verde más oscuro */
+}
+
+.btn-enviar:active {
+    background-color: #1e7e34; /* Verde al hacer clic */
+    transform: scale(0.98);
+}/* Ocultar el input radio */
+.custom-radio {
+    display: none; /* Ocultamos el radio nativo */
+}
+
+/* Estilo del label que se verá como un checkbox */
+.custom-radio-label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555; /* Bordes que simulan el borde del checkbox */
+    border-radius: 4px; /* Opcional, si quieres un checkbox cuadrado quita esto */
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+/* Cambia el color de fondo cuando se selecciona */
+.custom-radio:checked + .custom-radio-label {
+    background-color: #007bff; /* Color de fondo cuando está seleccionado */
+    border-color: #007bff;
+}
+
+/* Simula el checkmark */
+.custom-radio:checked + .custom-radio-label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: white; /* El color del "check" */
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+}
+
+/* Texto del radio */
+.custom-radio-text {
+    margin-left: 10px;
+    cursor: pointer;
+}
+

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GHINNI</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.3/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h4>Subida de Excel con Javascript y conversión a JSON</h4>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Conversión de EXCEL a JSON</div>
+            <div class="panel-body">
+                <input type="file" id="fileUpload" accept=".xls,.xlsx"><br>
+                <button type="button" id="uploadExcel">Convertir</button>
+                <div style="margin-top:10px;">
+                    <pre id="jsonData"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var selectedFile;
+        document.getElementById("fileUpload").addEventListener("change", function(event) {
+            selectedFile = event.target.files[0];
+        });
+    
+        document.getElementById("uploadExcel").addEventListener("click", function() {
+            if (selectedFile) {
+                var fileReader = new FileReader();
+                fileReader.onload = function(event) {
+                    var data = event.target.result;
+                    var workbook = XLSX.read(data, { type: "binary" });
+                    
+                    var sheetName = workbook.SheetNames[1];
+                    var worksheet = workbook.Sheets[sheetName];
+                    var sheetName2 = workbook.SheetNames[1];
+                    var worksheet2 = workbook.Sheets[sheetName2];
+    
+                    var rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    // var rows2 = XLSX.utils.sheet_to_json(worksheet2, { header: 1 });
+    
+                    var filteredRows = rows.slice(0).filter(row => row[14]);
+                    // var filteredRows2 = rows2.slice(1).filter(row2 => row2[4]);
+    
+                    // Crear un objeto con los valores de 'NO' de la hoja 2
+                    // var sheet2NOs = {};
+                    // filteredRows2.forEach(row => {
+                    //     var value = row[1] ? row[1].toString().trim().toUpperCase() : '';
+                    //     sheet2NOs[value] = true;
+                    //     console.log("Valor añadido a sheet2NOs:", value);
+                    // });
+    
+                    // console.log("Valores en sheet2NOs:", Object.keys(sheet2NOs));
+    
+                    // Filtrar las filas de la hoja 1 que coinciden con los 'NO' de la hoja 2
+                    // var matchingRows = filteredRows.filter(row => {
+                    //     var rowNo = row[0] ? row[0].toString().trim().toUpperCase() : '';
+                    //     var hasMatch = rowNo in sheet2NOs;
+                    //     console.log("Comparando:", rowNo, hasMatch);
+                    //     return hasMatch;
+                    // });
+        
+                        // console.log("Filas coincidentes:", matchingRows.length);
+    
+                    var jsonObject = matchingRows.map(row => {
+                        return {
+                            'NO': row[0] ? row[0].toString().toUpperCase() : '',
+                            'CODIGO-INTERNO': row[1] ? row[1].toString().toUpperCase() : '',
+                            'UNIDAD': row[2] ? row[2].toString().toUpperCase() : '',
+                            'CODIGO-ALTERNO': row[3] ? row[3].toString().toUpperCase() : '',
+                            'DESCRIPCION': row[4] ? row[4].toString().toUpperCase() : '',
+                            'PROCESO-FABRICACION': row[5] ? row[5].toString().toUpperCase() : '',
+                            'DOCUMENTACION': row[6] ? row[6].toString().toUpperCase().split('/').join(',').split(','):'',
+                            'PROVEDOR': row[7] ? row[7].toString().toUpperCase() : '',
+                            'PROYECTO': row[15] ? row[15].toString().toUpperCase() : ''
+                        };
+                    });
+    
+                    var jsonString = JSON.stringify(jsonObject);
+                    document.getElementById("jsonData").innerHTML = jsonString;
+                    console.log("hola", jsonString);
+    
+                    // Debugging: Mostrar los primeros 10 valores de cada hoja
+                    console.log("Primeros 10 valores de la hoja 1:", filteredRows.slice(0, 10).map(row => row[1]));
+                    console.log("Primeros 10 valores de la hoja 2:", filteredRows2.slice(0, 10).map(row => row[0]));
+                };
+                fileReader.readAsBinaryString(selectedFile);
+            }
+        });
+    </script>
+</body>
+</html>

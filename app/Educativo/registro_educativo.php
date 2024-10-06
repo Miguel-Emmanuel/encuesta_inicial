@@ -1,5 +1,5 @@
 <?php
-require '../Models/conexion.php';
+require '../../database/conexion.php';
 
 $nombre = $conexion->real_escape_string($_POST['nombre']);
 $clave = $conexion->real_escape_string($_POST['clave']);

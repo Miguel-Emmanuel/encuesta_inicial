@@ -13,6 +13,13 @@
 </head>
 
 <body>
+    <style>
+        input.form-control {
+        border: 1px solid grey; /* Grosor y color del borde */
+        border-radius: 3px; /* Bordes redondeados */
+        padding: 10px; /* Espaciado interno */
+    }
+    </style>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
@@ -22,7 +29,7 @@
                 </button>
             </div>
             <div class="p-4 pt-5">
-                <h1><a href="/public/views/sesiones/index.php" class="logo">Encuesta Inical</a></h1>
+                <h1><a href="/public/views/sesiones/index.php" class="logo">Encuesta Inicial</a></h1>
                 <ul class="list-unstyled components mb-5">
                     <li id="inicio" class="active">
                         <a href="/public/views/sesiones/index.php">Inicio</a>
@@ -38,6 +45,15 @@
                             </li>
                             <li>
                                 <a href="/public/views/usuarios/index.php">Usuarios</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/tutores/index.php">Tutores</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/periodos/index.php">Periodos Escolares</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/grupos/index.php">Grupos</a>
                             </li>
                         </ul>
                     </li>

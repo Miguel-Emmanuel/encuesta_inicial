@@ -10,11 +10,11 @@
         $idUsuario = $_SESSION["id"];
 
 
-        // // Inspeccionar el contenido de $_POST
+        // Inspeccionar el contenido de $_POST
         // echo "<pre>";
         // var_dump($_POST);  // Muestra toda la información enviada en el formulario
         // echo "</pre>";
-        // // exit;
+        // exit;
 
 
 
@@ -22,22 +22,36 @@
         // Verificar si se ha enviado el formulario
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $respuestas = $_POST['respuestas'];
-            //var_dump($respuestas);
-
+            $respuestas_otro = $_POST['respuestas_otro'] ?? []; // Capturamos las respuestas dinámicas
+//         var_dump("Respuestas generales" .$respuestas . "respuestas dimanicas" . $respuestas_otro);
+//         ?>
+// <script>
+//     console.log("Respuestas generales" + respuestas + "respuestas dimanicas" + respuestas_otro)
+// </script>
+        <?php 
             foreach ($respuestas as $idPregunta => $respuesta) {
                 $seccionId = obtenerSeccionId($conexion, $idPregunta);
-            
+        
+
+    // Si la pregunta es país (17), estado (18) o municipio (19)
+    // if (in_array($idPregunta, [17, 18, 19])) {
+    //     // Separar el valor recibido (id y nombre)
+    //     list($opcionId, $respuestaTexto) = explode(',', $respuesta);
+        
+    //     // Guardar el ID en `opcion_id` y el nombre en `respuesta_texto`
+    //     guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
+    // } 
+
+
+
+                // Obtener si existe un campo dinámico para la misma pregunta
+                $respuestaTexto = $respuestas_otro[$idPregunta] ?? null; 
+        
                 if (is_array($respuesta)) {
-                    // Caso de múltiples opciones, incluso si solo hay una opción seleccionada
                     foreach ($respuesta as $opcionId => $opcionRespuesta) {
-                        // En este caso, las claves son los textos de las opciones (por ejemplo, "Lunes")
-                        // Si los valores están vacíos, todavía necesitamos procesarlos
-            
                         $opcionId1 = obtenerOpcionId($conexion, $idPregunta, $opcionId);
-            
                         if ($opcionId1 !== null) {
-                            // Guardar tanto en `opcion_id` como en `respuesta_texto` la clave (por ejemplo, "Lunes")
-                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $opcionId);
+                            guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId1, $seccionId, $respuestaTexto ?: $opcionId);
                         }
                     }
                 } else {
@@ -45,16 +59,15 @@
                     $opcionId = obtenerOpcionId($conexion, $idPregunta, $respuesta);
                     if ($opcionId !== null) {
                         // Guardar tanto en `opcion_id` como en `respuesta_texto`
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuesta);
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto ?: $respuesta);
                     } else {
                         // Fallback en caso de no encontrar un `opcion_id`, guarda el texto en `respuesta_texto`
-                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuesta);
+                        guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuestaTexto ?: $respuesta);
                     }
                 }
             }
-            
         }
-
+        
         function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {
             if ($opcion2 === null) {
                 $stmt = $conexion->prepare("SELECT id FROM opciones_respuesta WHERE pregunta_id = ? AND opcion1 = ?");
@@ -83,16 +96,84 @@
             return $seccionId;
         }
 
+
+        // function obtenerUbicacionId($conexion, $tabla, $nombre, $columnaRelacion = null, $idRelacion = null) {
+        //     $consulta = "SELECT id FROM $tabla WHERE nombre = ?";
+        //     if ($columnaRelacion !== null && $idRelacion !== null) {
+        //         $consulta .= " AND $columnaRelacion = ?";
+        //     }
+        
+        //     $stmt = $conexion->prepare($consulta);
+            
+        //     if ($columnaRelacion !== null && $idRelacion !== null) {
+        //         $stmt->bind_param("si", $nombre, $idRelacion); // Se espera que el nombre sea string y la relación int
+        //     } else {
+        //         $stmt->bind_param("s", $nombre);
+        //     }
+        
+        //     $stmt->execute();
+        //     $stmt->bind_result($id);
+        //     $stmt->fetch();
+        //     $stmt->close();
+        
+        //     return $id ? $id : null;
+        // }
+        
+
         function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto) {
+
+            // var_dump( "Respuestas generales" .$respuestas . "respuestas dimanicas" . $respuestas_otro   );
+            // var_dump(in_array($idPregunta, [17, 18, 19]));
             if ($opcionId === null) {
                 $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $seccionId, $respuestaTexto);
+
             } else {
                 $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiiis", $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
             }
             
             $stmtUsuarioRespuesta->execute();
+            if ($stmtUsuarioRespuesta->affected_rows <= 0) {
+                echo "Error al registrar la respuesta del usuario.";
+            }
+            
+            // Verificar si la pregunta es sobre género (por ejemplo, si la pregunta tiene ID 9)
+            if ($idPregunta == 9) {
+                // Actualizar la tabla usuarios con el género seleccionado
+                $stmtActualizarGenero = $conexion->prepare("UPDATE usuarios SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
+                $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
+                
+                $stmtActualizarGenero->execute();
+                
+                if ($stmtActualizarGenero->affected_rows <= 0) {
+                    echo "Error al actualizar el género en la tabla de usuarios.";
+                }
+                $stmtActualizarGenero->close();
+            }
+            // if (in_array($idPregunta, [17, 18, 19])) {
+            //     // Preguntas de país (17), estado (18) y municipio (19)
+            //     if ($idPregunta == 17) {
+            //         // Obtener el ID del país
+            //         $paisId = obtenerUbicacionId($conexion, 'paises', $respuestaTexto);
+            //         // var_dump($paisId);
+            //         guardarRespuesta($conexion, $idUsuario, $idPregunta, $paisId, $seccionId, $respuestaTexto);
+            //     } elseif ($idPregunta == 18) {
+            //         // Obtener el ID del estado relacionado con el país seleccionado
+            //         $estadoId = obtenerUbicacionId($conexion, 'estados', $respuestaTexto, 'pais', $paisId);
+            //         guardarRespuesta($conexion, $idUsuario, $idPregunta, $estadoId, $seccionId, $respuestaTexto);
+            //     } elseif ($idPregunta == 19) {
+            //         // Obtener el ID del municipio relacionado con el estado seleccionado
+            //         $municipioId = obtenerUbicacionId($conexion, 'municipios', $respuestaTexto, 'estado', $estadoId);
+            //         guardarRespuesta($conexion, $idUsuario, $idPregunta, $municipioId, $seccionId, $respuestaTexto);
+            //     }
+            // } else {
+            //     // Guardado normal para las demás preguntas
+            //     guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto ?: $respuesta);
+            // }
+            
+
+
 
             if ($stmtUsuarioRespuesta->affected_rows <= 0) {
                 echo "Error al registrar la respuesta del usuario.";
