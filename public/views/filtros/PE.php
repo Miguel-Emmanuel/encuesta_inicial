@@ -4,7 +4,22 @@
     $id = (int) $_GET['id'];
     $NPE= $_GET['nombre'];
     
-    $usuarios = "SELECT * FROM usuarios WHERE rol_id = 3 AND carrera = " . $id; 
+    $usuarios = "SELECT 
+                    usuarios.nombre AS nombre,
+                    usuarios.apellido_paterno,
+                    usuarios.apellido_materno,
+                    usuarios.email,
+                    estudiantes.id,
+                    estudiantes.matricula,
+                    estudiantes.telefono,
+                    t_grupos.nombre AS nombre_grupo,
+                    programa_edu.nombre AS nombre_programa
+                FROM estudiantes
+                INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
+                LEFT JOIN t_grupos ON estudiantes.grupo_id = t_grupos.id
+                LEFT JOIN programa_edu ON t_grupos.programa_e = programa_edu.id
+                WHERE programa_edu.id = $id
+            ";
     $consulta = mysqli_query($conexion, $usuarios);
     $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
@@ -53,7 +68,7 @@
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['carrera']; ?>">
+        <tr>
             <td> <?php echo $estudiante['id'] ?> </td>
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
