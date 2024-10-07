@@ -68,7 +68,7 @@ $educa = $conexion->query($sqlEducativo);
         let inputNombre = editarmodal.querySelector('.modal-body #nombre')
         let inputClave = editarmodal.querySelector('.modal-body #clave')
 
-        let url = "../../../app/Educativo/getEduca.php"
+        let url = "../../../app/Controllers/Educativo/getEduca.php"
         let formData = new FormData()
         formData.append('id', id)
 

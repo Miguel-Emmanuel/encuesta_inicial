@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="../../../app/Educativo/registro_educativo.php" method="POST" enctype="multipart/form-data">
+                <form action="../../../app/Controllers/Educativo/registro_educativo.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Grado del programa educativo:</label>
                         <input class="form-control" name="grado" id="grado" required>
