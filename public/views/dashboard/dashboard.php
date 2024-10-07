@@ -41,9 +41,6 @@
                                 <a href="/public/views/roles/index.php">Roles</a>
                             </li>
                             <li>
-                                <a href="/public/views/gruposV/index.php">Grupos_V</a>
-                            </li>
-                            <li>
                                 <a href="/public/views/i_genero/index.php">Generos</a>
                             </li>
                             <li>
