@@ -80,6 +80,11 @@ if ($row) {
                     campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
                     campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
                     console.log("Campo 'Otro' desplegado");
+                    if(idPregunta === 73){
+                        campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
+                    campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
+                    console.log("Campo 'Otro' desplegado");
+                    }
                 } else {
                     campoOtro.slideUp(); // Ocultar el campo de texto si se selecciona cualquier otra opción
                     campoOtro.find('input').prop('required', false); // Hacer opcional el campo
@@ -158,7 +163,15 @@ if ($row) {
 
                 echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b>";
                 if ($ayu !== null) {
-                    echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
+echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' 
+        data-bs-toggle='tooltip' 
+        style='margin-left: 10px;'  
+        data-bs-placement='top' 
+        data-bs-title='Tooltip on top' 
+        title='[$ayu]' 
+        id='tooltipButton'>
+        !
+      </button>";
                 }
                 echo "</p>";
 
@@ -344,13 +357,22 @@ if ($row) {
                                         $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
                                         echo "
                                         <td class='espaciadoo'>
-                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' >
+                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' onchange='obtenerValor(\"$opcion1\", $idPregunta)'>
                                             <label for='$radioId' class='custom-radio-label'></label>
                                         </td>";
                                     }
                                     echo "</tr>";
                                 }
-
+                                echo "<div class='container-dinamico'>";
+                                echo "<tr id='campo_otro_$idPregunta'  style='display:none;'>
+                                        <td colspan='2'>
+                                       <label for='otro_texto'>Especifica:</label>
+                                      <!-- Cambiar el name para que contenga 'otro' además del idPregunta -->
+                                                <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                            </td>
+                                        </tr>
+                                        </div>
+                                        ";
                                 echo "</table>";
                             } else {
                                 echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
