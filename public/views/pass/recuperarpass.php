@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Enviar Solicitud de Cambio</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <?php 
         include("../../../app/Models/conexion.php");
@@ -19,7 +19,7 @@
                 <h2 class="text-center bp-3"> Recuperacion de Contraseña </h2> <br>
                 <form method="post" action=""> <!-- ESTE ES EL FORMULARIO -->
                 <?php
-                include("../../../app/controllers/correos_controller.php");
+                include("../../../app/Controllers/correos_controller.php");
                 ?>
                     <!-- Email input -->
                     <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3" required>

@@ -18,16 +18,22 @@ if (!empty($_POST["btnenviarcorreo"])) {
         if ($datos = $sql->fetch_object()) {
             $row = $sql->fetch_assoc();
             $id=$datos->id;
-            $random="0123456709qwertyuiopasdfghjklzxcvbnm";
-            $i=0;
-            $cantidad=28;
-            while ($i < $cantidad) {
-                $char = substr($random, mt_rand(0, strlen($random)-1), 1);
-                $token .= $char;
-                $i++;
-              }
+            // Caracteres que pueden usarse para el token
+            $numeros_y_letras = "0123456789qwertyuiopasdfghjklzxcvbnm";
+            $solo_letras = "qwertyuiopasdfghjklzxcvbnm"; // Para el primer carácter
 
-            $url = "http://127.0.0.1:8000/public/views/pass/cambiarpass.php?id=" . $id . $token;
+            // Generar el primer carácter como letra
+            $token = substr($solo_letras, mt_rand(0, strlen($solo_letras) - 1), 1);
+
+            // Generar el resto del token (27 caracteres más para un total de 28)
+            $cantidad = 27;
+            for ($i = 0; $i < $cantidad; $i++) {
+                $char = substr($numeros_y_letras, mt_rand(0, strlen($numeros_y_letras) - 1), 1);
+                $token .= $char;
+            }
+
+            // Generar la URL con el token
+            $url = "http://127.0.0.1:8000/public/views/pass/cambiarpass.php?token=" . $id . $token;
             
             $conexion->query("INSERT INTO links (id_usuario, activo) VALUES ('$id', 1)");
 

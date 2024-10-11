@@ -195,7 +195,7 @@
 																	<div class style="font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
 																		<p style="margin: 0; font-size: 15px; text-align: justify; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Estimado usuario,</span></p>
 																		<p style="margin: 0; font-size: 15px; text-align: justify; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Olvidaste tu contraseña, ¿Cierto?</span></p>
-																		<p style="margin: 0; font-size: 15px; text-align: justify; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Recibes este correo electrónico porque has solicitado restablecer tu contraseña. Para continuar con el proceso, por favor haz clic en el boton a continuación:</span></p>
+																		<p style="margin: 0; font-size: 15px; text-align: justify; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Recibes este correo electrónico porque has solicitado restablecer tu contraseña. Para continuar con el proceso, por favor haz clic en el botón a continuación:</span></p>
 																	</div>
 																</div>
 															</td>
@@ -217,7 +217,7 @@
 															<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
 																<div style="font-family: Arial, sans-serif">
 																	<div class style="font-size: 12px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
-																		<p style="margin: 0; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Si no solicitaste este cambio, puedes ignorar este correo.</span></p>
+																		<p style="margin: 0; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Solo tienes 15 minutos antes que expire.<br>Si no solicitaste este cambio, puedes ignorar este correo.</span></p>
 																	</div>
 																</div>
 															</td>
