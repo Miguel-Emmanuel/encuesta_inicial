@@ -7,14 +7,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="../../../app/Periodos/actualiza.php" method="post" enctype="multipart/form-data">
+                <form action="../../../app/Controllers/Periodos/actualiza.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="id" name="id">
+                    <div class="col-md-4">
+                        <label for="validationDefault01" class="form-label">Alias:</label>
+                        <input type="text" class="form-control" id="alias" name="alias" required>
+                    </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Inicio del cuatrimestre:</label>
                         <input class="form-control" type="date" name="inicio" id="inicio" required>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Descripción:</label>
+                        <label for="exampleInputEmail1" class="form-label">Fin del cuatrimestre:</label>
                         <input class="form-control" type="date" name="fin" id="fin" required>
                     </div>
 

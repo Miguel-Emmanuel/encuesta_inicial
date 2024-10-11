@@ -41,13 +41,13 @@
                                 <a href="/public/views/roles/index.php">Roles</a>
                             </li>
                             <li>
+                                <a href="/public/views/i_genero/index.php">Generos</a>
+                            </li>
+                            <li>
                                 <a href="/public/views/educativo/index.php">Programas Educativos</a>
                             </li>
                             <li>
                                 <a href="/public/views/usuarios/index.php">Usuarios</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/tutores/index.php">Tutores</a>
                             </li>
                             <li>
                                 <a href="/public/views/periodos/index.php">Periodos Escolares</a>
@@ -55,13 +55,19 @@
                             <li>
                                 <a href="/public/views/grupos/index.php">Grupos</a>
                             </li>
+                            <li>
+                                <a href="/public/views/estudiante_grupo/index.php">Estudiante_Grupo</a>
+                            </li>
+                            <li>
+                                <a href="/public/views/grupo_tutor/index.php">Grupo_Tutor</a>
+                            </li>
                         </ul>
                     </li>
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apartados extra</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
                             <li>
-                                <a href="#">Home 1</a>
+                                <a href="/public/views/seguimiento/index.php">Seguimiento de Estudiantes</a>
                             </li>
                             <li>
                                 <a href="#">Home 2</a>

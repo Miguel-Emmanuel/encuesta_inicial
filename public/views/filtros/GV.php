@@ -14,13 +14,17 @@
                     estudiantes.telefono,
                     gruposv.nombregv AS nombre_gv,
                     i_genero.nombreig AS nombre_ig,
-                    i_genero.id AS id_genero
-                    FROM estudiantes
-                    INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
-                    LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
-                    LEFT JOIN i_genero ON estudiantes.i_genero = i_genero.id
-                    WHERE estudiantes.grupos_v = $id
-                    ";
+                    i_genero.id AS id_genero,
+                    t_grupos.nomenclatura AS grupo,  -- Nombre del grupo
+                    programa_edu.nombre AS carrera  -- Nombre de la carrera o programa educativo
+                FROM estudiantes
+                INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
+                LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
+                LEFT JOIN i_genero ON estudiantes.i_genero = i_genero.id
+                LEFT JOIN estudiante_grupo eg ON estudiantes.id = eg.estudiante_id
+                LEFT JOIN t_grupos ON eg.grupo_id = t_grupos.id
+                LEFT JOIN programa_edu ON t_grupos.programa_e = programa_edu.id
+                WHERE estudiantes.grupos_v = $id";
     $consulta = mysqli_query($conexion, $usuarios);
     $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
@@ -104,10 +108,12 @@
             <th>Apellidos</th>
             <th>Matrícula</th>
             <th>Carrera</th>
+            <th>Grupo</th>
             <th>Email</th>
-            <th>Telefono</th>
-            <th>Grupo Vulnerable</th>
-            <th>Identidad</th>
+            
+            <?php if ($id == 3) {?>
+                <th>Identidad</th>
+            <?php } ?>
         </tr>
     </thead>
     <tbody>
@@ -117,11 +123,13 @@
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
             <td> <?php echo $estudiante['matricula']; ?> </td>
-            <td> Vacio </td>
+            <td> <?php echo $estudiante['carrera']; ?> </td>
+            <td> <?php echo $estudiante['grupo']; ?> </td>
             <td> <?php echo $estudiante['email']; ?> </td>
-            <td> <?php echo $estudiante['telefono']; ?> </td>
-            <td> <?php echo $estudiante['nombre_gv']; ?> </td>
-            <td> <?php echo $estudiante['nombre_ig']; ?> </td>
+            
+            <?php if ($id == 3) {?>
+                <td> <?php echo $estudiante['nombre_ig']; ?> </td>
+            <?php } ?>
         </tr>
         <?php endforeach;?>
     </tbody>
