@@ -58,13 +58,12 @@
     <table id="usuariosTable" class="table table-sm table-striped table-hover mt-4">
     <thead>
         <tr>
-            <th>ID Estudiante</th>
+            <th>Estudiante</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Matrícula</th>
             <th>Carrera</th>
             <th>Email</th>
-            <th>Programa Educativo</th>
             <th>Grupo</th>
         </tr>
     </thead>
@@ -75,36 +74,13 @@
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
             <td> <?php echo $estudiante['matricula'] ?> </td>
-            <td> <?php echo $estudiante['email'] ?> </td>
             <td> <?php echo $estudiante['programa_edu'] ?> </td>
+            <td> <?php echo $estudiante['email'] ?> </td>
             <td> <?php echo $estudiante['grupo'] ?> </td>
         </tr>
         <?php endforeach;?>
     </tbody>
 </table>
 </div>
-<script>
-    // Obtener los elementos de la tabla y el filtro
-    const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
-    const filter = document.getElementById('filterGenero');
-
-    // Evento que se dispara cuando cambia el select
-    filter.addEventListener('change', function() {
-        const selectedGenero = this.value;
-
-        // Iterar sobre todas las filas de la tabla
-        for (let row of table.rows) {
-            const genero = row.getAttribute('data-genero');
-
-            // Si el valor del filtro es "0" (todos) o coincide con el género, mostrar la fila
-            if (selectedGenero === "0" || genero === selectedGenero) {
-                row.style.display = '';
-            } else {
-                // Si no coincide, ocultar la fila
-                row.style.display = 'none';
-            }
-        }
-    });
-</script>
 </body>
 </html>
