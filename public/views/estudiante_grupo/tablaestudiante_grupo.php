@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEstuGrup = "SELECT e.id, u.nombre, u.apellido_paterno, u.apellido_materno, g.nombre AS nombreg, p.alias FROM estudiante_grupo AS e
+$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias FROM estudiante_grupo AS e
 INNER JOIN estudiantes as estu ON estu.id = e.estudiante_id
 INNER JOIN usuarios AS u ON u.id = estu.usuario_id
 INNER JOIN t_grupos AS g ON g.id = e.grupo_id
@@ -28,6 +28,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
                 <th>Nombre Estudiante</th>
                 <th>Grupo</th>
                 <th>Periodo Educativo</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -38,6 +39,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
                     <td><?= $row_estugrup['nombre']; ?> <?= $row_estugrup['apellido_paterno']; ?> <?= $row_estugrup['apellido_materno']; ?></td>
                     <td> <?= $row_estugrup['nombreg']; ?></td>
                     <td> <?= $row_estugrup['alias']; ?></td>
+                    <td><?= $row_estugrup['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-trash"></i></a>
@@ -57,7 +59,9 @@ $estugrup = $conexion->query($sqlEstuGrup);
     INNER JOIN usuarios AS u ON u.id = estu.usuario_id";
     $estuE = $conexion->query($sqlestuE);
 
-    $sqlGrupos = "SELECT id, nombre FROM t_grupos";
+    $sqlGrupos = "SELECT g.id, g.nomenclatura 
+    FROM t_grupos g 
+    INNER JOIN grupo_tutor  gt ON g.id = gt.grupo_id";
     $grupos = $conexion->query($sqlGrupos);
 
     $sqlPer = "SELECT id, alias FROM periodos_escolar";
@@ -99,10 +103,12 @@ $per->data_seek(0);
         let button = event.relatedTarget
         let id = button.getAttribute('data-bs-id')
 
-        let inputId = editarmodal.querySelector('.modal-body #id')
-        let inputEstudi = editarmodal.querySelector('.modal-body #estudiante_id')
-        let inputGrupo = editarmodal.querySelector('.modal-body #grupo_id')
-        let inputPerio = editarmodal.querySelector('.modal-body #periodo_id')
+        let inputId = editarmodal.querySelector('.modal-body #id');
+        let inputEstudi = editarmodal.querySelector('.modal-body #estudiante_id');
+        let inputGrupo = editarmodal.querySelector('.modal-body #grupo_id');
+        let inputPerio = editarmodal.querySelector('.modal-body #periodo_id');
+        let inputTutorNombreCompleto = editarmodal.querySelector('.modal-body #tutor_nombre_completo');
+        let inputTutorId = editarmodal.querySelector('.modal-body #tutor_id');
 
         let url = "../../../app/Controllers/Estudiante_Grupo/getestudiante_grupo.php"
         let formData = new FormData()
@@ -119,8 +125,42 @@ $per->data_seek(0);
                 inputGrupo.value = data.grupo_id
                 inputPerio.value = data.periodo_id
 
+                fetchTutorPorGrupo(data.grupo_id);
+
             }).catch(err => console.log(err))
-    })
+
+            inputGrupo.addEventListener('change', function(){
+                fetchTutorPorGrupo(this.value);
+            });
+
+            function fetchTutorPorGrupo(grupoId){
+                if (grupoId){
+                    let formData = new FormData();
+                    formData.append('grupo_id',grupoId);
+
+                    fetch('../../../app/Controllers/Estudiante_Grupo/getTutorPorGrupo.php',{
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(!data.tutor_nombre){
+                            let tutorNombreCompleto = `${data.nombre} ${data.apellido_paterno} ${data.apellido_paterno}`;
+                            inputTutorNombreCompleto.value = tutorNombreCompleto;
+                            inputTutorId.value = data.id;
+                        }else{
+                            inputTutorNombreCompleto.value = '';
+                            inputTutorId.value = '';
+                            console.error(data.tutor_nombre);
+                        }
+                    })
+                    .catch(err => console.error(err));
+                }else{
+                    inputTutorNombreCompleto.value = '';
+                    inputTutorId.value = '';
+                }
+            }
+    });
 
     eliminamodal.addEventListener('shown.bs.modal', event => {
         let button = event.relatedTarget
@@ -128,4 +168,36 @@ $per->data_seek(0);
 
         eliminamodal.querySelector('.modal-footer #id').value = id
     })
+
+    document.getElementById('grupo_id').addEventListener('change', function() {
+        let grupoId = this.value;
+
+        if (grupoId) {
+            let formData = new FormData();
+            formData.append('grupo_id', grupoId);
+
+            fetch('../../../app/Controllers/Estudiante_Grupo/getTutorPorGrupo.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.error) {
+                        let tutorNombreCompleto = `${data.nombre} ${data.apellido_paterno} ${data.apellido_materno}`;
+                        document.getElementById('tutor_nombre_completo').value = tutorNombreCompleto;
+
+                        document.getElementById('tutor_id').value = data.id;
+
+                    } else {
+                        document.getElementById('tutor_nombre_completo').value = '';
+                        document.getElementById('tutor_id').value = '';
+                        console.error(data.error);
+                    }
+                })
+                .catch(err => console.error(err));
+        } else {
+            document.getElementById('tutor_nombre_completo').value = '';
+            document.getElementById('tutor_id').value = '';
+        }
+    });
 </script>

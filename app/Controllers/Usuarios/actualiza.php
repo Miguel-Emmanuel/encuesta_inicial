@@ -20,15 +20,6 @@ if ($conexion->query($sql)) {
 
 		$sql_tutor = "UPDATE tutores SET clave_sp = '$clave_sp', telefono = '$telefono' WHERE usuario_id = $id";
 		$conexion->query($sql_tutor);
-	} else if ($rol_id == 3) {
-		$matricula = $conexion->real_escape_string($_POST['matricula']);
-		$telefono = $conexion->real_escape_string($_POST['telefonoE']);
-		$grupos_v = $conexion->real_escape_string($_POST['grupos_v']);
-		$genero = $conexion->real_escape_string($_POST['genero']);
-		$i_genero = $conexion->real_escape_string($_POST['i_genero']);
-
-		$sql_estudiante = "UPDATE estudiantes SET matricula = '$matricula', telefono = '$telefono', grupos_v = '$grupos_v', genero = '$genero', i_genero = '$i_genero' WHERE usuario_id = $id";
-		$conexion->query($sql_estudiante);
 	}
 }
 

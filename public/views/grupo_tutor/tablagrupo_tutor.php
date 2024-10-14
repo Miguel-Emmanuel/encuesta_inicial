@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlGruTuto = "SELECT gt.id, u.nombre, u.apellido_paterno, u.apellido_materno, g.nombre AS nombreg, p.alias FROM grupo_tutor AS gt
+$sqlGruTuto = "SELECT gt.id, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, gt.activo, p.alias FROM grupo_tutor AS gt
 INNER JOIN tutores as tuto ON tuto.id = gt.tutor_id 
 INNER JOIN usuarios AS u ON u.id = tuto.usuario_id
 INNER JOIN t_grupos AS g ON g.id = gt.grupo_id
@@ -28,6 +28,7 @@ $grututo = $conexion->query($sqlGruTuto);
                 <th>Nombre del tutor</th>
                 <th>Grupo</th>
                 <th>Periodo Educativo</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -38,6 +39,7 @@ $grututo = $conexion->query($sqlGruTuto);
                     <td><?= $row_grututo['nombre']; ?> <?= $row_grututo['apellido_paterno']; ?> <?= $row_grututo['apellido_materno']; ?></td>
                     <td> <?= $row_grututo['nombreg']; ?></td>
                     <td> <?= $row_grututo['alias']; ?></td>
+                    <td><?= $row_grututo['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_grututo['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_grututo['id']; ?>"><i class="fa-solid fa-trash"></i></a>
@@ -52,8 +54,11 @@ $grututo = $conexion->query($sqlGruTuto);
     INNER JOIN usuarios AS u ON u.id = tut.usuario_id";
     $tuto = $conexion->query($sqltuto);
 
-    $sqlGrupos = "SELECT id, nombre FROM t_grupos";
+    $sqlGrupos = "SELECT id, nomenclatura FROM t_grupos WHERE id NOT IN (SELECT grupo_id FROM grupo_tutor)";
     $grupos = $conexion->query($sqlGrupos);
+
+    $sqlGruposE = "SELECT id, nomenclatura FROM t_grupos";
+    $gruposE = $conexion->query($sqlGruposE);
 
     $sqlPer = "SELECT id, alias FROM periodos_escolar";
     $per = $conexion->query($sqlPer);
@@ -66,6 +71,7 @@ $grututo = $conexion->query($sqlGruTuto);
 <?php
 $tuto->data_seek(0);
 $grupos->data_seek(0);
+$gruposE->data_seek(0);
 $per->data_seek(0);
 ?>
 
