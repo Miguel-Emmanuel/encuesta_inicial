@@ -176,7 +176,7 @@ $per->data_seek(0);
             let formData = new FormData();
             formData.append('grupo_id', grupoId);
 
-            fetch('../../../app/Controllers/Estudiante_Grupo/getTutorPorGrupo.php', {
+            fetch('../../../app/Controllers/Estudiante_grupo/getTutorPorGrupo.php', {
                     method: 'POST',
                     body: formData
                 })
