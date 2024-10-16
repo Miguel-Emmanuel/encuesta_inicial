@@ -8,7 +8,7 @@ if ($filtro == 1) {
 } elseif ($filtro == 2) {
     $content = 'GV.php';  // Acción para cuando filtro es 2
 } elseif ($filtro == 3) {
-    $content = 'Contenido para filtro 3';  // Acción para cuando filtro es 3
+    $content = 'GT.php';  // Acción para cuando filtro es 3
 } elseif ($filtro == 4) {
     $content = 'Contenido para filtro 4';  // Acción para cuando filtro es 4
 }

@@ -51,10 +51,11 @@ if (!empty($_POST["btnenviarcorreo"])) {
                 $mail->Port = 465;                                       // Puerto TCP
 
                 // Destinatarios
-                $mail->setFrom('soporteuippe@gmail.com', 'PRUEBA');
+                $mail->setFrom('soporteuippe@gmail.com', 'UTVT | SOLICITUD DE CAMBIO DE CONTRASEÑA');
                 $mail->addAddress($email);                               // Destinatario
 
                 // Contenido del correo
+                $mail->CharSet = 'UTF-8';
                 $mail->isHTML(true);                                     // Formato HTML
                 $mail->Subject = 'Solicitud de cambio de contraseña';
                 ob_start();
