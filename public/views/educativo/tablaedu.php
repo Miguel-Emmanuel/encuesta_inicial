@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEducativo = "SELECT id, nombre, clave FROM programa_edu";
+$sqlEducativo = "SELECT id, nombre, clave, activo FROM programa_edu";
 $educa = $conexion->query($sqlEducativo);
 ?>
 <div class="container py-3">
@@ -17,6 +17,7 @@ $educa = $conexion->query($sqlEducativo);
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Clave</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@ $educa = $conexion->query($sqlEducativo);
                     <td><?= $row_educa['id']; ?></td>
                     <td><?= $row_educa['nombre']; ?></td>
                     <td><?= $row_educa['clave']; ?></td>
+                    <td><?= $row_educa['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_educa['id']; ?>"><i class="fa-solid fa-trash"></i></a>

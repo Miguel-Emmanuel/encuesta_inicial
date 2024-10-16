@@ -18,12 +18,8 @@ if($conexion->query($sql)){
 
     if($rol_id == 3){
         $matricula = $conexion->real_escape_string($_POST['matricula']);
-        $telefono = $conexion->real_escape_string($_POST['telefono']);
-        $grupos_v = $conexion->real_escape_string($_POST['grupos_v']);
-        $genero = $conexion->real_escape_string($_POST['genero']);
-        $i_genero = $conexion->real_escape_string($_POST['i_genero']);
 
-        $sql_estudiantes = "INSERT INTO estudiantes (usuario_id, matricula, telefono, grupos_v, genero, i_genero) VALUES ('$usuario_id', '$matricula', '$telefono', '$grupos_v', '$genero', '$i_genero')";
+        $sql_estudiantes = "INSERT INTO estudiantes (usuario_id, matricula, telefono, grupos_v, genero, i_genero) VALUES ('$usuario_id', '$matricula', NULL, NULL, NULL, NULL)";
         if ($conexion->query($sql_estudiantes)) {
             echo "Registro de estudiante guardado exitosamente.";
         } else {

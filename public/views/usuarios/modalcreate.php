@@ -33,8 +33,9 @@
                         <select class="form-select" id="rol_id" name="rol_id" onchange="showAdditionalFields()" required>
                             <option value="">Seleccionar...</option>
                             <?php while ($row_roles = $roles->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_roles["id"] ?>"><?= $row_roles["nombre"] ?></option>
+                                <option value="<?php echo $row_roles["id"]?>"><?= $row_roles["nombre"] ?></option>
                             <?php } ?>
+
                         </select>
                     </div>
                     <input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>">
@@ -44,43 +45,7 @@
                             <label for="validationDefault01" class="form-label">Matricula:</label>
                             <input type="text" class="form-control" id="matricula" name="matricula" required>
                         </div>
-                        <div class="col">
-                            <label for="validationDefault02" class="form-label">Telefono:</label>
-                            <input type="text" class="form-control" id="telefonoC" name="telefono" required>
-                        </div>
-                        <div class="col">
-                            <label for="validationCustom04" class="form-label">Grupo:</label>
-                            <select class="form-select" id="grupos_v" name="grupos_v" required>
-                                <option value="">Seleccionar...</option>
-                                <?php while ($row_gruposv = $gruposv->fetch_assoc()) { ?>
-                                    <option value="<?php echo $row_gruposv["id"] ?>"><?= $row_gruposv["nombregv"] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col">
-                        <label for="validationCustom04" class="form-label">Sexo:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="genero" id="generoH" value="1">
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Hombre
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="genero" id="generoM" value="2">
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Mujer
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <label for="validationCustom04" class="form-label">I_Genero:</label>
-                            <select class="form-select" id="i_genero" name="i_genero" required>
-                                <option value="">Seleccionar...</option>
-                                <?php while ($row_igenero = $igenero->fetch_assoc()) { ?>
-                                    <option value="<?php echo $row_igenero["id"] ?>"><?= $row_igenero["nombreig"] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
+
                     </div>
 
                     <div id="additionalFieldsRol2" style="display: none;">
@@ -88,9 +53,9 @@
                             <label for="exampleInputPassword1" class="form-label">Clave_SP</label>
                             <input type="text" class="form-control" id="clave_sp" name="clave_sp">
                         </div>
-                        <div class="col">
-                            <label for="validationDefault01" class="form-label">Telefono:</label>
-                            <input type="text" class="form-control" id="telefonoT" name="telefono" required>
+                        <div class="mb-6">
+                            <label for="exampleInputPassword1" class="form-label">Telefono</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono">
                         </div>
                     </div>
 

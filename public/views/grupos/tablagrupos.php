@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlGrupos = "SELECT g.id, g.nombre AS nombreG, g.nomenclatura, pedu.nombre AS programa_e FROM t_grupos AS g 
+$sqlGrupos = "SELECT g.id, g.nombre AS nombreG, g.nomenclatura, g.activo, pedu.nombre AS programa_e FROM t_grupos AS g 
 INNER JOIN programa_edu as pedu ON g.programa_e = pedu.id";
 $grupos = $conexion->query($sqlGrupos);
 ?>
@@ -24,6 +24,7 @@ $grupos = $conexion->query($sqlGrupos);
                 <th>Nombre del grupo</th>
                 <th>Programa educativo</th>
                 <th>Nomenclatura</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -34,6 +35,7 @@ $grupos = $conexion->query($sqlGrupos);
                     <td><?= $row_grupos['nombreG']; ?></td>
                     <td><?= $row_grupos['programa_e']; ?></td>
                     <td><?= $row_grupos['nomenclatura']; ?></td>
+                    <td><?= $row_grupos['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_grupos['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_grupos['id']; ?>"><i class="fa-solid fa-trash"></i></a>
@@ -44,7 +46,7 @@ $grupos = $conexion->query($sqlGrupos);
         </tbody>
     </table>
     <?php
-    $sqlPrograma = "SELECT id, nombre FROM programa_edu";
+    $sqlPrograma = "SELECT id, nombre FROM programa_edu WHERE activo = 1";
     $programas = $conexion->query($sqlPrograma);
     ?>
 </div>

@@ -22,9 +22,14 @@
                         <select class="form-select" id="grupo_id" name="grupo_id" required>
                             <option value="">Seleccionar...</option>
                             <?php while ($row_grupos = $grupos->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nombre"] ?></option>
+                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nomenclatura"] ?></option>
                             <?php } ?>
                         </select>
+                    </div>
+                    <div class="md-4">
+                        <label for="tutor_nombre_completo" class="form-label">Tutor del grupo</label>
+                        <input type="text" class="form-control" id="tutor_nombre_completo" name="tutor_nombre_completo" readonly>
+                        <input type="hidden" id="tutor_id" name="tutor_id">
                     </div>
                     <div class="md-4">
                         <label for="validationCustom04" class="form-label">Periodo escolar</label>
@@ -35,6 +40,7 @@
                             <?php } ?>
                         </select>
                     </div>
+                    
                     <div class="">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>

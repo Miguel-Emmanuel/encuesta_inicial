@@ -22,8 +22,8 @@
                         <label for="validationCustom04" class="form-label">Grupo</label>
                         <select class="form-select" id="grupo_id" name="grupo_id" required>
                             <option value="">Seleccionar...</option>
-                            <?php while ($row_grupos = $grupos->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nombre"] ?></option>
+                            <?php while ($row_grupos = $gruposE->fetch_assoc()) { ?>
+                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nomenclatura"] ?></option>
                             <?php } ?>
                         </select>
                     </div>

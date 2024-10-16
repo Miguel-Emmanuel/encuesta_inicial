@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="nuevomodalLabel">Registro de Estudiante_Grupo</h1>
+                <h1 class="modal-title fs-5" id="nuevomodalLabel">Registro de Grupo_Tutor</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -22,7 +22,7 @@
                         <select class="form-select" id="grupo_id" name="grupo_id" required>
                             <option value="">Seleccionar...</option>
                             <?php while ($row_grupos = $grupos->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nombre"] ?></option>
+                                <option value="<?php echo $row_grupos["id"] ?>"><?= $row_grupos["nomenclatura"] ?></option>
                             <?php } ?>
                         </select>
                     </div>

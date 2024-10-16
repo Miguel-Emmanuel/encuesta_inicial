@@ -4,7 +4,7 @@ require '../../../database/conexion.php';
 $id = $conexion->real_escape_string($_POST['id']);
 
 
-$sql = "DELETE FROM t_grupos  WHERE id=$id";
+$sql = "UPDATE t_grupos SET activo = 0 WHERE id = $id";
 if($conexion->query($sql)){
    
 }

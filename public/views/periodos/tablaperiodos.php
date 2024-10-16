@@ -1,7 +1,7 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlPeriodos = "SELECT id, alias, inicio, fin FROM periodos_escolar";
+$sqlPeriodos = "SELECT id, alias, inicio, fin, activo FROM periodos_escolar";
 $periodos = $conexion->query($sqlPeriodos);
 ?>
 <div class="container py-3">
@@ -18,6 +18,7 @@ $periodos = $conexion->query($sqlPeriodos);
                 <th>Alias</th>
                 <th>Inicio del cuatrimestre</th>
                 <th>Fin del cuatrimestre</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@ $periodos = $conexion->query($sqlPeriodos);
                     <td><?= $row_periodos['alias']; ?></td>
                     <td><?= $row_periodos['inicio']; ?></td>
                     <td><?= $row_periodos['fin']; ?></td>
+                    <td><?= $row_periodos['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_periodos['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_periodos['id']; ?>"><i class="fa-solid fa-trash"></i></a>

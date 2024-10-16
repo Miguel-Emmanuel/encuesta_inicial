@@ -41,9 +41,6 @@
                                 <a href="/public/views/roles/index.php">Roles</a>
                             </li>
                             <li>
-                                <a href="/public/views/i_genero/index.php">Generos</a>
-                            </li>
-                            <li>
                                 <a href="/public/views/educativo/index.php">Programas Educativos</a>
                             </li>
                             <li>
@@ -56,10 +53,10 @@
                                 <a href="/public/views/grupos/index.php">Grupos</a>
                             </li>
                             <li>
-                                <a href="/public/views/estudiante_grupo/index.php">Estudiante_Grupo</a>
+                                <a href="/public/views/grupo_tutor/index.php">Grupo_Tutor</a>
                             </li>
                             <li>
-                                <a href="/public/views/grupo_tutor/index.php">Grupo_Tutor</a>
+                                <a href="/public/views/estudiante_grupo/index.php">Estudiante_Grupo</a>
                             </li>
                         </ul>
                     </li>
