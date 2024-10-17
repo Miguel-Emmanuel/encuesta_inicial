@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../css/virtual-select.min.css">
 <!-- Modal -->
 <div class="modal fade" id="nuevomodal" tabindex="-1" aria-labelledby="nuevomodalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -10,8 +11,7 @@
                 <form class="row g-3" action="../../../app/Controllers/Estudiante_grupo/registro_estudiante_grupo.php" method="POST" enctype="multipart/form-data">
                     <div class="md-4">
                         <label for="validationCustom04" class="form-label">Estudiante</label>
-                        <select class="form-select" id="estudiante_id" name="estudiante_id" required>
-                            <option value="">Seleccionar...</option>
+                        <select multiple data-search="true" data-silent-initial-value-set="true" id="estudiante_id" name="estudiante_id[]" required>
                             <?php while ($row_estu = $estu->fetch_assoc()) { ?>
                                 <option value="<?php echo $row_estu["id"] ?>"><?= $row_estu["nombre"] ?> <?= $row_estu["apellido_paterno"] ?> <?= $row_estu["apellido_materno"] ?></option>
                             <?php } ?>
@@ -40,7 +40,7 @@
                             <?php } ?>
                         </select>
                     </div>
-                    
+
                     <div class="">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -51,3 +51,13 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/virtual-select.min.js"></script>
+
+<script type="text/javascript">
+    VirtualSelect.init({
+        ele: '#estudiante_id'
+        // ele: 'select'
+    });
+</script>

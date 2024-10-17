@@ -21,6 +21,18 @@ $estugrup = $conexion->query($sqlEstuGrup);
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
         </div>
     </div>
+    <?php
+    //Mensaje de registro exitoso
+    if(isset($_REQUEST['e'])){ ?>
+	<div class="row pt-3">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Registro éxitoso!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
     <table class="table table-sm table-striped table-hover mt-4">
         <thead>
             <tr>
