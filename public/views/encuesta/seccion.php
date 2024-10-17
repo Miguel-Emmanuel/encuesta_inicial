@@ -204,7 +204,7 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                         echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
                     case 'r_social':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
+                        echo "<input type='text' n  ame='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
                         break;
                     case 'c_postal':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";

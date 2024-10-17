@@ -1,5 +1,7 @@
 /* Estilo general para el contenedor de cada pregunta */
-.pregunta {
+.pregunta ,
+.preguntas-dependientes
+{
     margin-bottom: 20px;
     padding: 10px 15px;
     background-color: #f8f9fa;
@@ -387,5 +389,4 @@ textarea:required:invalid {
 input[type="checkbox"]:required:invalid + .custom-checkbox-label {
     border-color: red;
 }
-
 
