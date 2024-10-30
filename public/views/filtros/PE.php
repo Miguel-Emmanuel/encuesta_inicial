@@ -4,7 +4,22 @@
     $id = (int) $_GET['id'];
     $NPE= $_GET['nombre'];
     
-    $usuarios = "SELECT * FROM usuarios WHERE rol_id = 3 AND carrera = " . $id; 
+    $usuarios = "SELECT 
+                    e.id AS id,
+                    u.nombre AS nombre,
+                    u.apellido_paterno,
+                    u.apellido_materno,
+                    e.matricula,
+                    p.nombre AS programa_edu,
+                    t_gr.nomenclatura AS grupo,
+                    u.email
+                FROM estudiantes e
+                JOIN usuarios u ON e.usuario_id = u.id
+                JOIN estudiante_grupo eg ON e.id = eg.estudiante_id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                JOIN programa_edu p ON t_gr.programa_e = p.id
+                WHERE p.id = $id
+            ";
     $consulta = mysqli_query($conexion, $usuarios);
     $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
@@ -43,50 +58,29 @@
     <table id="usuariosTable" class="table table-sm table-striped table-hover mt-4">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Estudiante</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Matrícula</th>
             <th>Carrera</th>
             <th>Email</th>
+            <th>Grupo</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['carrera']; ?>">
+        <tr>
             <td> <?php echo $estudiante['id'] ?> </td>
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
             <td> <?php echo $estudiante['matricula'] ?> </td>
-            <td> <?php echo $NPE;?> </td>
+            <td> <?php echo $estudiante['programa_edu'] ?> </td>
             <td> <?php echo $estudiante['email'] ?> </td>
+            <td> <?php echo $estudiante['grupo'] ?> </td>
         </tr>
         <?php endforeach;?>
     </tbody>
 </table>
 </div>
-<script>
-    // Obtener los elementos de la tabla y el filtro
-    const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
-    const filter = document.getElementById('filterGenero');
-
-    // Evento que se dispara cuando cambia el select
-    filter.addEventListener('change', function() {
-        const selectedGenero = this.value;
-
-        // Iterar sobre todas las filas de la tabla
-        for (let row of table.rows) {
-            const genero = row.getAttribute('data-genero');
-
-            // Si el valor del filtro es "0" (todos) o coincide con el género, mostrar la fila
-            if (selectedGenero === "0" || genero === selectedGenero) {
-                row.style.display = '';
-            } else {
-                // Si no coincide, ocultar la fila
-                row.style.display = 'none';
-            }
-        }
-    });
-</script>
 </body>
 </html>

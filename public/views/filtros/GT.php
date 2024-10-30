@@ -2,15 +2,27 @@
     require '../../../app/Models/conexion.php';
 
     $id = (int) $_GET['id'];
-    $NPE= $_GET['nombre'];
+    $NT= $_GET['nombre'];
     
-    $usuarios = "SELECT * FROM usuarios WHERE rol_id = 3 AND carrera = " . $id; 
+    $usuarios = "SELECT 
+                    t.id AS tutor_id,
+                    t.usuario_id,
+                    CONCAT(u_tutor.nombre, ' ', u_tutor.apellido_paterno, ' ', u_tutor.apellido_materno) AS nombre_tutor,
+                    e.id AS estudiante_id,
+                    CONCAT(u_est.nombre, ' ', u_est.apellido_paterno, ' ', u_est.apellido_materno) AS nombre_estudiante,
+                    tg.nomenclatura AS grupo,
+                    e.matricula AS matricula
+                FROM tutores t
+                INNER JOIN grupo_tutor gt ON t.id = gt.tutor_id
+                INNER JOIN t_grupos tg ON gt.grupo_id = tg.id
+                INNER JOIN estudiante_grupo eg ON tg.id = eg.grupo_id
+                INNER JOIN estudiantes e ON eg.estudiante_id = e.id
+                INNER JOIN usuarios u_tutor ON t.usuario_id = u_tutor.id  
+                INNER JOIN usuarios u_est ON e.usuario_id = u_est.id  
+                WHERE t.id = $id;  
+            ";
     $consulta = mysqli_query($conexion, $usuarios);
-    $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
-
-    $pe = "SELECT * FROM programa_edu";
-    $consulta2 = mysqli_query($conexion, $pe);
-    $datape = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
+    $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +46,7 @@
 
     </style>
 <div class="container py-3">
-    <h2 class="text-center">Estudiantes por: <?php echo $NPE; ?></h2>
+    <h2 class="text-center">Estudiantes por: <?php echo $NT; ?></h2>
     <div class="row justify-content-end">
         <div class="col-auto">
                 <div class="boton"> <a href="../sesiones/index.php" class="btn btn-primary">Volver a los filtros</a> </div>
@@ -43,50 +55,23 @@
     <table id="usuariosTable" class="table table-sm table-striped table-hover mt-4">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Estudiante</th>
             <th>Nombre</th>
-            <th>Apellidos</th>
             <th>Matrícula</th>
-            <th>Carrera</th>
-            <th>Email</th>
+            <th>Grupo</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['carrera']; ?>">
-            <td> <?php echo $estudiante['id'] ?> </td>
-            <td> <?php echo $estudiante['nombre']; ?> </td>
-            <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
+        <tr>
+            <td> <?php echo $estudiante['estudiante_id'] ?> </td>
+            <td> <?php echo $estudiante['nombre_estudiante']; ?> </td>
             <td> <?php echo $estudiante['matricula'] ?> </td>
-            <td> <?php echo $NPE;?> </td>
-            <td> <?php echo $estudiante['email'] ?> </td>
+            <td> <?php echo $estudiante['grupo'] ?> </td>
         </tr>
         <?php endforeach;?>
     </tbody>
 </table>
 </div>
-<script>
-    // Obtener los elementos de la tabla y el filtro
-    const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
-    const filter = document.getElementById('filterGenero');
-
-    // Evento que se dispara cuando cambia el select
-    filter.addEventListener('change', function() {
-        const selectedGenero = this.value;
-
-        // Iterar sobre todas las filas de la tabla
-        for (let row of table.rows) {
-            const genero = row.getAttribute('data-genero');
-
-            // Si el valor del filtro es "0" (todos) o coincide con el género, mostrar la fila
-            if (selectedGenero === "0" || genero === selectedGenero) {
-                row.style.display = '';
-            } else {
-                // Si no coincide, ocultar la fila
-                row.style.display = 'none';
-            }
-        }
-    });
-</script>
 </body>
 </html>

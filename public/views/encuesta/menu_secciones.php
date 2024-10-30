@@ -48,6 +48,8 @@ $result = $conexion->query($sql);
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu de Secciones</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/menusecciones.css">
@@ -78,6 +80,7 @@ $result = $conexion->query($sql);
                         echo "<tr>";
                         echo "<td>" . $row["id"]  . '   |   ' . $row["descripcion"] . "</td>";
                         echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+                        // echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
                         echo "<td class='centrar'>" . $iconoCompletado . "</td>";
                         echo "</tr>";
                     }

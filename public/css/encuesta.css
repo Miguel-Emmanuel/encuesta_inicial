@@ -17,24 +17,139 @@ textarea{
     background-color: #f9f9f9;
 }
 
-/* Estilos de las preguntas */
-.pregunta {
-    margin-bottom: 20px;
-}
-
-/* Estilos del texto de la pregunta */
+/* Estilo para el contenedor de las preguntas */
 .pregunta-texto {
-    font-weight: bold;
+    font-size: 18px;
+    color: #333;
     margin-bottom: 10px;
+    font-weight: 500;
 }
 
+/* Botón del tooltip */
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
 
-/* Estilos del input de texto */
-.respuesta-input {
-    width: 100%;
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+/* Estilos generales para inputs */
+input {
     padding: 10px;
-    border: 1px solid #ccc;
+    font-size: 16px;
     border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, background-color 0.3s;
+    margin-bottom: 15px;
+}
+
+/* Efecto al hacer foco en los inputs */
+input:focus {
+    border-color: #0066cc;
+    background-color: #fff;
+    outline: none;
+}
+
+/* Estilos específicos para cada tipo de input */
+.respuesta-input {
+    background-color: #eaf1f8;
+}
+
+.respuesta-fecha {
+    background-color: #eaf1f8;
+}
+
+.respuesta-correo {
+    background-color: #e0f7f1;
+}
+
+.respuesta-curp,
+.respuesta-rfc {
+    background-color: #f7e0f0;
+}
+
+.respuesta-telefono,
+.respuesta-numero {
+    background-color: #fff7e0;
+}
+
+.respuesta-r_social {
+    background-color: #e8f0fe;
+}
+
+.respuesta-c_postal {
+    background-color: #ffebf0;
+}
+
+/* Tooltip personalizado */
+[data-bs-toggle="tooltip"] {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+[data-bs-toggle="tooltip"]:hover::after {
+    content: attr(data-bs-title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    z-index: 10;
+}
+
+[data-bs-toggle="tooltip"]:hover::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 600px) {
+    input {
+        font-size: 14px;
+        max-width: 100%;
+    }
+
+    .pregunta-texto {
+        font-size: 18px; /* Ajuste de tamaño para una mejor lectura */
+        font-weight: 600; /* Negrita ligera para resaltar la pregunta */
+        color: #2c3e50; /* Un color más oscuro para mejor contraste */
+        margin-bottom: 15px; /* Mayor espacio entre las preguntas y los campos */
+        line-height: 1.5; /* Mejor espaciado entre líneas */
+        padding: 10px 15px; /* Añadir padding para un diseño más espacioso */
+        background-color: #f8f9fa; /* Fondo claro para resaltar el texto */
+        border-left: 4px solid #007bff; /* Borde izquierdo para resaltar la pregunta */
+        border-radius: 5px; /* Bordes redondeados */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera para elevar el contenedor */
+        transition: background-color 0.3s ease; /* Suave transición en el cambio de color */
+    }
+    
+    /* Efecto al pasar el cursor por la pregunta */
+    .pregunta-texto:hover {
+        background-color: #e2e6ea; /* Cambiar color de fondo al pasar el mouse */
+        border-left-color: #0056b3; /* Cambiar el color del borde */
+    }
 }
 
 /* Estilos del radio button */
@@ -42,13 +157,7 @@ textarea{
     margin-right: 5px;
 }
 
-/* Estilos del select */
-.respuesta-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+
 
 /* Estilos del botón de enviar */
 .btn-enviar {
@@ -175,7 +284,7 @@ h1{
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s;   
 }
 
 /* Estilo para el estado seleccionado */
@@ -186,5 +295,119 @@ h1{
 /* Estilo del texto */
 .custom-radio-text {
     font-size: 16px;
+}
+/* ESTILOS DE SELECTs  */
+/* Contenedor de select general para consistencia */
+.select-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+}
+
+/* Estilo general para todos los selects */
+select {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, background-color 0.3s;
+    appearance: none;
+    /*Eliminarflechaspordefectoenalgunosnavegadores*/cursor: pointer;
+    -webkit-transition: border-color 0.3s, background-color 0.3s;
+    -moz-transition: border-color 0.3s, background-color 0.3s;
+    -ms-transition: border-color 0.3s, background-color 0.3s;
+    -o-transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Estilo específico para cada select si es necesario */
+.respuesta-genero,
+.respuesta-pais,
+.respuesta-estado,
+.respuesta-select,
+.respuesta-municipio {
+    padding: 10px;
+    margin: 0; /* Opcional: quitar márgenes adicionales */
+    
+}
+
+/* Estilo en foco para resaltar el select seleccionado */
+select:focus {
+    border-color: #0066cc;
+    background-color: #fff;
+    outline: none;
+}
+
+/* Personalizar la flecha del select (cross-browser) */
+select::-ms-expand {
+    display: none; /* Para IE y Edge */
+}
+
+select::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Ajustes responsivos para pantallas más pequeñas */
+@media (max-width: 600px) {
+    .select-container {
+        max-width: 100%;
+    }
+    select {
+        font-size: 16px;
+    }
+}
+/* ////////////////// INICIO ESTILOS PARA ESTILOS  DATE///////////// */
+/* Estilo general para los inputs de tipo date */
+.respuesta-fecha {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, background-color 0.3s;
+    cursor: pointer;
+}
+
+/* Efecto al hacer foco en el input */
+.respuesta-fecha:focus {
+    border-color: #0066cc;
+    background-color: #fff;
+    outline: none;
+}
+
+/* Ajustes adicionales para los inputs de fecha en navegadores */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none; /* Ocultar los iconos de los navegadores para mayor control visual */
+}
+
+/* Para la responsividad */
+@media (max-width: 600px) {
+    .respuesta-fecha {
+        font-size: 16px;
+        max-width: 100%;
+    }
+}
+/* ///////////////////END ESTILSO DATE////////////////////////////// */
+
+/* //////////////////////ESTILOS PARA CAMPOS DINAMICOS/////////////////// */
+.container-dinamico{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    display:none;
+    width: 100%;
 }
 

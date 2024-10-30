@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reestablecer Contraseña</title>
     <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <?php 
         include("../../../app/Models/conexion.php");
@@ -13,7 +13,9 @@
 </head>
 <body>
     <?php 
-    $id=$_GET["id"];
+    $id=$_GET["token"];
+
+    $verificacion = $conexion->query("DELETE FROM links WHERE created_at < (NOW() - INTERVAL 15 MINUTE);");
 
     $sql = $conexion->query("SELECT * FROM links WHERE id_usuario = '$id'");
 
@@ -26,7 +28,7 @@
                 <h2 class="text-center bp-3"> Restablecer Contraseña </h2> <br>
                 <form method="post" action=""> <!-- ESTE ES EL FORMULARIO -->
                 <?php
-                    include("../../../app/controllers/cambiarpass_controller.php");
+                    include("../../../app/Controllers/cambiarpass_controller.php");
                 ?>
                     <!-- id del usuario -->
                     <input type="hidden" name="id" aria-describedby="basic-addon3" value='<?php echo $id ?>'>

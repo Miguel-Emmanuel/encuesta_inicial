@@ -1,5 +1,5 @@
 <?php
-require '../../../app/Models/conexion.php';
+require '../../../database/conexion.php';
 
 $sqlRoles = "SELECT id, nombre, descripcion FROM roles";
 $roles = $conexion->query($sqlRoles);
@@ -65,7 +65,7 @@ $roles = $conexion->query($sqlRoles);
         let inputNombre = editarmodal.querySelector('.modal-body #nombre')
         let inputDescripcion = editarmodal.querySelector('.modal-body #descripcion')
 
-        let url = "../../../app/Roles/getRoles.php"
+        let url = "../../../app/Controllers/Roles/getRoles.php"
         let formData = new FormData()
         formData.append('id', id)
 
