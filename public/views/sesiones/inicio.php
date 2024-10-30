@@ -9,6 +9,15 @@
     $consulta2 = mysqli_query($conexion, $PE);
     $programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
 
+    $T = "SELECT 
+                t.id AS id,
+                t.usuario_id,
+                CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre
+            FROM tutores t
+            INNER JOIN usuarios u ON t.usuario_id = u.id;";
+    $consulta3 = mysqli_query($conexion, $T);
+    $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
+
 
 ?>
 <!DOCTYPE html>
@@ -137,11 +146,19 @@
             
             <div class="filtro3">
                 Grupo Tutor
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($tutores as $item): ?>  
+                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] ."&f=3". "&nombre=" . urlencode($item['nombre']); ?>><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
             
             <div class="filtro4">
                 Padecimientos de Salud
             </div>
+            
             
 
         </div>

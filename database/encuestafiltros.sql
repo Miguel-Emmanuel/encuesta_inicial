@@ -536,8 +536,8 @@ CREATE TABLE `periodos_escolar` (
 
 LOCK TABLES `periodos_escolar` WRITE;
 /*!40000 ALTER TABLE `periodos_escolar` DISABLE KEYS */;
-INSERT INTO `periodos_escolar` VALUES
-(1,'2024-09-02','2024-11-20',1);
+      INSERT INTO `periodos_escolar` VALUES
+      (1,'2024-09-02','2024-11-20',1);
 /*!40000 ALTER TABLE `periodos_escolar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,7 +551,7 @@ DROP TABLE IF EXISTS `preguntas`;
 CREATE TABLE `preguntas` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pregunta` text NOT NULL,
-  `depende_p` text DEFAULT NULL,
+  `depende_p` text DEFAULT NULL,      
   `tipo` varchar(255) NOT NULL,
   `seccion_id` varchar(255) NOT NULL,
   `activo` tinyint(1) NOT NULL,
@@ -851,9 +851,9 @@ CREATE TABLE `t_grupos` (
 
 LOCK TABLES `t_grupos` WRITE;
 /*!40000 ALTER TABLE `t_grupos` DISABLE KEYS */;
-INSERT INTO `t_grupos` VALUES
-(1,'ejemplo',2,'IRD-71',1,1,1),
-(2,'ejemplo2',1,'DSM-41',2,1,1);
+  INSERT INTO `t_grupos` VALUES
+  (1,'ejemplo',2,'IRD-71',1,1,1),
+  (2,'ejemplo2',1,'DSM-41',2,1,1);
 /*!40000 ALTER TABLE `t_grupos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -873,7 +873,7 @@ CREATE TABLE `tutores` (
   `correo` text DEFAULT NULL,
   `telefono` text DEFAULT NULL,
   `activo` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`)  
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -883,9 +883,9 @@ CREATE TABLE `tutores` (
 
 LOCK TABLES `tutores` WRITE;
 /*!40000 ALTER TABLE `tutores` DISABLE KEYS */;
-INSERT INTO `tutores` VALUES
-(1,'Pamela','Rosales','Aviles','00794492','pamela.rosales@utvtol.edu.mx','7226598068',1),
-(2,'Miguel Angel','Orona','Lopez','1129599','miguel.orona@utvtol.edu.mx','7224308544',1);
+  INSERT INTO `tutores` VALUES
+  (1,'Pamela','Rosales','Aviles','00794492','pamela.rosales@utvtol.edu.mx','7226598068',1),
+  (2,'Miguel Angel','Orona','Lopez','1129599','miguel.orona@utvtol.edu.mx','7224308544',1);
 /*!40000 ALTER TABLE `tutores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -904,7 +904,7 @@ CREATE TABLE `usuario_respuesta` (
   `seccion_id` bigint(200) unsigned DEFAULT NULL,
   `respuesta_texto` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,   
   PRIMARY KEY (`id`),
   KEY `usuario_respuesta_usuario_id_foreign` (`usuario_id`),
   KEY `usuario_respuesta_pregunta_id_foreign` (`pregunta_id`),

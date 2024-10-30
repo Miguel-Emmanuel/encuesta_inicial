@@ -2,13 +2,29 @@
     require '../../../app/Models/conexion.php';
 
     $id = (int) $_GET['id'];
-    $NGV= $_GET['nombre'];
+    $NGV= $_GET['nombre'];  
     
-    $usuarios = "
-    SELECT u.*, p.nombre AS n_carrera
-    FROM usuarios u
-    JOIN programa_edu p ON u.carrera = p.id
-    WHERE u.rol_id = 3 AND u.grupos_v = " . $id;
+    $usuarios ="SELECT 
+                    usuarios.nombre AS nombre,
+                    usuarios.apellido_paterno,
+                    usuarios.apellido_materno,
+                    usuarios.email,
+                    estudiantes.id,     
+                    estudiantes.matricula,
+                    estudiantes.telefono,
+                    gruposv.nombregv AS nombre_gv,
+                    i_genero.nombreig AS nombre_ig,
+                    i_genero.id AS id_genero,
+                    t_grupos.nomenclatura AS grupo,  -- Nombre del grupo
+                    programa_edu.nombre AS carrera  -- Nombre de la carrera o programa educativo
+                FROM estudiantes
+                INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
+                LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
+                LEFT JOIN i_genero ON estudiantes.i_genero = i_genero.id
+                LEFT JOIN estudiante_grupo eg ON estudiantes.id = eg.estudiante_id
+                LEFT JOIN t_grupos ON eg.grupo_id = t_grupos.id
+                LEFT JOIN programa_edu ON t_grupos.programa_e = programa_edu.id
+                WHERE estudiantes.grupos_v = $id";
     $consulta = mysqli_query($conexion, $usuarios);
     $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
@@ -72,7 +88,7 @@
                             <option value="<?php echo $ig['id']; ?>"><?php echo $ig['nombreig']; ?></option>
                         <?php endforeach;?>
                     </select>
-                </div>
+                </div>  
             
             <?php } ?>
 
@@ -92,27 +108,39 @@
             <th>Apellidos</th>
             <th>Matrícula</th>
             <th>Carrera</th>
+            <th>Grupo</th>
             <th>Email</th>
+            
+            <?php if ($id == 3) {?>
+                <th>Identidad</th>
+            <?php } ?>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['i_genero']; ?>">
-            <td> <?php echo $estudiante['id'] ?> </td>
+        <tr data-genero="<?php echo $estudiante['id_genero']; ?>">
+            <td> <?php echo $estudiante['id']; ?> </td>
             <td> <?php echo $estudiante['nombre']; ?> </td>
             <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
-            <td> <?php echo $estudiante['matricula'] ?> </td>
-            <td> <?php echo $estudiante['n_carrera'] ?> </td>
-            <td> <?php echo $estudiante['email'] ?> </td>
+            <td> <?php echo $estudiante['matricula']; ?> </td>
+            <td> <?php echo $estudiante['carrera']; ?> </td>
+            <td> <?php echo $estudiante['grupo']; ?> </td>
+            <td> <?php echo $estudiante['email']; ?> </td>
+            
+            <?php if ($id == 3) {?>
+                <td> <?php echo $estudiante['nombre_ig']; ?> </td>
+            <?php } ?>
         </tr>
         <?php endforeach;?>
     </tbody>
 </table>
 </div>
+
 <script>
     // Obtener los elementos de la tabla y el filtro
     const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
     const filter = document.getElementById('filterGenero');
+    console.log(table);
 
     // Evento que se dispara cuando cambia el select
     filter.addEventListener('change', function() {
@@ -132,5 +160,7 @@
         }
     });
 </script>
+
 </body>
 </html>
+                                        

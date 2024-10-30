@@ -1,10 +1,8 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlGrupos = "SELECT g.id, g.nombre AS nombreG, pedu.nombre AS programa_e, t.nombre, t.apellido_p, t.apellido_m, pes.inicio, pes.fin FROM t_grupos AS g 
-INNER JOIN programa_edu as pedu ON g.programa_e = pedu.id
-INNER JOIN tutores as t ON g.tutor = t.id
-INNER JOIN periodos_escolar as pes ON g.periodo_e = pes.id";
+$sqlGrupos = "SELECT g.id, g.nombre AS nombreG, g.nomenclatura, g.activo, pedu.nombre AS programa_e FROM t_grupos AS g 
+INNER JOIN programa_edu as pedu ON g.programa_e = pedu.id";
 $grupos = $conexion->query($sqlGrupos);
 ?>
 
@@ -25,8 +23,8 @@ $grupos = $conexion->query($sqlGrupos);
                 <th>#</th>
                 <th>Nombre del grupo</th>
                 <th>Programa educativo</th>
-                <th>Tutor Acargo</th>
-                <th>Periodo escolar</th>
+                <th>Nomenclatura</th>
+                <th>Estado</th>
                 <th>Acciones </th>
             </tr>
         </thead>
@@ -36,8 +34,8 @@ $grupos = $conexion->query($sqlGrupos);
                     <td><?= $row_grupos['id']; ?></td>
                     <td><?= $row_grupos['nombreG']; ?></td>
                     <td><?= $row_grupos['programa_e']; ?></td>
-                    <td><?= $row_grupos['nombre']; ?> <?= $row_grupos['apellido_p']; ?> <?= $row_grupos['apellido_m']; ?></td>
-                    <td><?= $row_grupos['inicio']; ?> - <?= $row_grupos['fin']; ?></td>
+                    <td><?= $row_grupos['nomenclatura']; ?></td>
+                    <td><?= $row_grupos['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
                         <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_grupos['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_grupos['id']; ?>"><i class="fa-solid fa-trash"></i></a>
@@ -48,14 +46,8 @@ $grupos = $conexion->query($sqlGrupos);
         </tbody>
     </table>
     <?php
-    $sqlPrograma = "SELECT id, nombre FROM programa_edu";
+    $sqlPrograma = "SELECT id, nombre FROM programa_edu WHERE activo = 1";
     $programas = $conexion->query($sqlPrograma);
-
-    $sqlTutor = "SELECT id, nombre, apellido_p, apellido_m FROM tutores";
-    $tutores = $conexion->query($sqlTutor);
-
-    $sqlPeriodo = "SELECT id, inicio, fin FROM periodos_escolar";
-    $periodos = $conexion->query($sqlPeriodo);
     ?>
 </div>
 
@@ -64,8 +56,6 @@ $grupos = $conexion->query($sqlGrupos);
 
 <?php
 $programas->data_seek(0);
-$tutores->data_seek(0);
-$periodos->data_seek(0);
 ?>
 
 <?php include "modaledit.php"; ?>
@@ -80,16 +70,12 @@ $periodos->data_seek(0);
         nuevomodal.querySelector('.modal-body #nombre').value = ""
         nuevomodal.querySelector('.modal-body #programa_e').value = ""
         nuevomodal.querySelector('.modal-body #nomenclatura').value = ""
-        nuevomodal.querySelector('.modal-body #tutor').value = ""
-        nuevomodal.querySelector('.modal-body #periodo_e').value = ""
     })
 
     editarmodal.addEventListener('hide.bs.modal', event => {
         editarmodal.querySelector('.modal-body #nombre').value = ""
         editarmodal.querySelector('.modal-body #programa_e').value = ""
         editarmodal.querySelector('.modal-body #nomenclatura').value = ""
-        editarmodal.querySelector('.modal-body #tutor').value = ""
-        editarmodal.querySelector('.modal-body #periodo_e').value = ""
     })
 
     editarmodal.addEventListener('shown.bs.modal', event => {
@@ -100,10 +86,8 @@ $periodos->data_seek(0);
         let inputNombre = editarmodal.querySelector('.modal-body #nombre')
         let inputPedu = editarmodal.querySelector('.modal-body #programa_e')
         let inputNomen = editarmodal.querySelector('.modal-body #nomenclatura')
-        let inputTuto = editarmodal.querySelector('.modal-body #tutor')
-        let inputPes = editarmodal.querySelector('.modal-body #periodo_e')
 
-        let url = "../../../app/Grupos/getGrupos.php"
+        let url = "../../../app/Controllers/Grupos/getGrupos.php"
         let formData = new FormData()
         formData.append('id', id)
 
@@ -117,8 +101,6 @@ $periodos->data_seek(0);
                 inputNombre.value = data.nombre
                 inputPedu.value = data.programa_e
                 inputNomen.value = data.nomenclatura
-                inputTuto.value = data.tutor
-                inputPes.value = data.periodo_e
 
             }).catch(err => console.log(err))
     })

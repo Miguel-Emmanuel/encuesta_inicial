@@ -10,7 +10,7 @@
                 ¿Desea Eliminar el registro?   
             </div>
             <div class="modal-footer">
-            <form action="../../../app/Roles/elimina.php" method="POST" >
+            <form action="../../../app/Controllers/Roles/elimina.php" method="POST" >
                     <input type="hidden" name="id" id="id">
                   
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

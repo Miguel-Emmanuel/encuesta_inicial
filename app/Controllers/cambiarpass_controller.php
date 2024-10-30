@@ -10,7 +10,11 @@ if (!empty($_POST["btncambiarpass"])) {
     }else if ($password1 !== $password2){
         echo '<div class="alert alert-danger">"Las contraseñas no coinciden."</div>';
     }else{
-        $sql="UPDATE usuarios SET pass = '$password1' WHERE id = '$id' ";
+
+        $PasswordHash = password_hash($password1, PASSWORD_BCRYPT); //Incriptando clave,
+	    //crea un nuevo hash de contraseña usando un algoritmo de hash fuerte de único sentido.
+
+        $sql="UPDATE usuarios SET pass = '$PasswordHash' WHERE id = '$id' ";
         $conexion->query($sql);
         $conexion->query("DELETE FROM links WHERE id_usuario = '$id'");
         echo '<script>alert("La contraseña ha sido actualizada, intente iniciar sesion."); window.location.href = "../sesiones/login.php";</script>';

@@ -24,6 +24,8 @@ try {
 $sql = "SELECT pregunta_id, depende_de_pregunta_id FROM dependencias_preguntas";
 $result = $conexion->query($sql);
 
+$verificacion = $conexion->query("DELETE FROM links WHERE created_at < (NOW() - INTERVAL 15 MINUTE);");
+
 $dependencias = array();
 
 if ($result->num_rows > 0) {
