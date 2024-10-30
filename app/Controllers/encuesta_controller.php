@@ -11,10 +11,10 @@
 
 
         // Inspeccionar el contenido de $_POST
-        echo "<pre>";
-        var_dump($_POST);  // Muestra toda la información enviada en el formulario
-        echo "</pre>";
-        exit;
+        // echo "<pre>";
+        // var_dump($_POST);  // Muestra toda la información enviada en el formulario
+        // echo "</pre>";
+        // exit;
 
 
 
@@ -122,6 +122,21 @@
 
         function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto) {
 
+            /////insercion a tabla respuestas/////////////
+            $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO respuestas (pregunta_id, estudiante_id, respuesta, created_at) VALUES (?, ?, ?, NOW())");
+
+            if (!$stmtUsuarioRespuesta) {
+                echo "Error en prepare(): " . $conexion->error;
+            }
+            
+            $stmtUsuarioRespuesta->bind_param("iis", $idPregunta, $idUsuario, $respuestaTexto);
+            
+            if (!$stmtUsuarioRespuesta->execute()) {
+                echo "Error en execute(): " . $stmtUsuarioRespuesta->error;
+            }
+            /////////////////////////////////////////////////////////
+
+            //////////////////insercion a tbabla estudiantes_respiestas///////////////
             // var_dump( "Respuestas generales" .$respuestas . "respuestas dimanicas" . $respuestas_otro   );
             // var_dump(in_array($idPregunta, [17, 18, 19]));
             if ($opcionId === null) {
