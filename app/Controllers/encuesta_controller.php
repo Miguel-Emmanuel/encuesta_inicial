@@ -7,10 +7,17 @@
             exit;
         }
 
-        $idUsuario = $_SESSION["id"];
+        // $idUser = $_SESSION["id"];
 
+// Obtener `estudiante_id` usando `usuario_id` de la sesión
+$stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
+$stmt->bind_param("i", $_SESSION["id"]);
+$stmt->execute();
+$stmt->bind_result($idUsuario);
+$stmt->fetch();
+$stmt->close();
 
-        // Inspeccionar el contenido de $_POST
+        // Inspeccionar el contenido de $_POSTp
         // echo "<pre>";
         // var_dump($_POST);  // Muestra toda la información enviada en el formulario
         // echo "</pre>";
