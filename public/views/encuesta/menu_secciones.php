@@ -30,7 +30,7 @@ function contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId) {
     $stmt->bind_result($totalRespuestas);
     $stmt->fetch();
     $stmt->close();
-    return $totalRespuestas;
+    return $totalRespuestas; 
 }
 
 // Función para verificar si la sección está completada
@@ -43,7 +43,7 @@ function seccionCompletada($conexion, $seccionId, $usuarioId) {
 // Obtener secciones
 $sql = "SELECT id, nombre, descripcion FROM secciones";
 $result = $conexion->query($sql);
-?>
+?> 
 
 <!DOCTYPE html>
 <html>
@@ -97,7 +97,7 @@ $result = $conexion->query($sql);
     <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion">
         <center>
             <input type="submit" name="btningresar" class="btn btn-danger" value="Cerrar sesión">
-        </center>
+        </center>   
     </a>
     
     <script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
