@@ -11,19 +11,6 @@ if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
 }
 
-// Obtener el ID del estudiante desde la tabla `estudiantes` usando el ID de usuario
-$usuarioId = $_SESSION["id"];
-$stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
-$stmt->bind_param("i", $usuarioId);
-$stmt->execute();
-$stmt->bind_result($estudianteId);
-$stmt->fetch();
-$stmt->close();
-
-if (!$estudianteId) {
-    die("Error: No se encontró el estudiante correspondiente al usuario.");
-}
-
 // Función para contar preguntas en una sección
 function contarPreguntasSeccion($conexion, $seccionId) {
     $stmt = $conexion->prepare("SELECT COUNT(*) as total FROM preguntas WHERE seccion_id = ?");
@@ -35,10 +22,10 @@ function contarPreguntasSeccion($conexion, $seccionId) {
     return $totalPreguntas;
 }
 
-// Función para contar respuestas del estudiante en una sección
-function contarRespuestasEstudianteSeccion($conexion, $seccionId, $estudianteId) {
-    $stmt = $conexion->prepare("SELECT COUNT(DISTINCT pregunta_id) as total FROM estudiante_respuesta WHERE seccion_id = ? AND estudiante_id = ?");
-    $stmt->bind_param("ii", $seccionId, $estudianteId);
+// Función para contar respuestas del usuario en una sección
+function contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId) {
+    $stmt = $conexion->prepare("SELECT COUNT(DISTINCT pregunta_id) as total FROM usuario_respuesta WHERE seccion_id = ? AND usuario_id = ?");
+    $stmt->bind_param("ii", $seccionId, $usuarioId);
     $stmt->execute();
     $stmt->bind_result($totalRespuestas);
     $stmt->fetch();
@@ -47,9 +34,9 @@ function contarRespuestasEstudianteSeccion($conexion, $seccionId, $estudianteId)
 }
 
 // Función para verificar si la sección está completada
-function seccionCompletada($conexion, $seccionId, $estudianteId) {
+function seccionCompletada($conexion, $seccionId, $usuarioId) {
     $totalPreguntas = contarPreguntasSeccion($conexion, $seccionId);
-    $totalRespuestas = contarRespuestasEstudianteSeccion($conexion, $seccionId, $estudianteId);
+    $totalRespuestas = contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId);
     return $totalPreguntas == $totalRespuestas;
 }
 
@@ -84,7 +71,7 @@ $result = $conexion->query($sql);
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         // Verificar si la sección está completada
-                        $completado = seccionCompletada($conexion, $row["id"], $estudianteId);
+                        $completado = seccionCompletada($conexion, $row["id"], $_SESSION["id"]);
                         $iconoCompletado = $completado ? '✅' : '❌';
                 
                         // Deshabilitar el botón si la sección está completada
@@ -93,6 +80,7 @@ $result = $conexion->query($sql);
                         echo "<tr>";
                         echo "<td>" . $row["id"]  . '   |   ' . $row["descripcion"] . "</td>";
                         echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+                        // echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
                         echo "<td class='centrar'>" . $iconoCompletado . "</td>";
                         echo "</tr>";
                     }
@@ -100,6 +88,7 @@ $result = $conexion->query($sql);
                     echo "<tr><td colspan='3'>0 resultados</td></tr>";
                 }
                 $conexion->close();
+                
                 ?>
             </tbody>
         </table>
