@@ -40,6 +40,7 @@ async function obtenerPreguntaId(nombrePregunta) {
   return resultados.length > 0 ? resultados[0].id : null;
 }
 
+
 // Insertar respuestas en la tabla `respuestas`
 async function insertarRespuestas(email, respuestas) {
   const usuarioId = await obtenerUsuarioId(email);
@@ -97,7 +98,7 @@ async function procesarRespuestas() {
           console.error('Error al cerrar la conexión:', err);
         } else {
           console.log('Conexión cerrada correctamente.');
-        }
+        } 
       });
     }
   }

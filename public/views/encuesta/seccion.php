@@ -569,51 +569,62 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-
-                            case 'multi':
-                                $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                                if ($opciones_respuesta->num_rows > 0) {
-                                    echo "<div class='pregunta'>";
-                                    // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
-                                    $opciones = array();
-                                    while ($opcion = $opciones_respuesta->fetch_object()) {
-                                        $opciones[$opcion->opcion1][] = $opcion->opcion2;
-                                    }
-
-                                    if (!empty($opciones)) {
-                                        echo "<table>";
-                                        echo "<tr><th></th>";
-                                        foreach ($opciones[array_key_first($opciones)] as $opcion2) {
-                                            echo "<th>$opcion2</th>";
+                                case 'multi':
+                                    $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+                                    if ($opciones_respuesta->num_rows > 0) {
+                                        echo "<div class='pregunta'>";
+                                        // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                        $opciones = array();
+                                        while ($opcion = $opciones_respuesta->fetch_object()) {
+                                            $opciones[$opcion->opcion1][] = $opcion->opcion2;
                                         }
-                                        echo "</tr>";
-                                        $cont = 0;
-                                        foreach ($opciones as $opcion1 => $valoresOpcion2) {
-                                            $cont = $cont + 1;
-                                            echo "<tr>";
-                                            echo "<td class='hola'>$opcion1</td>";
-                                            foreach ($valoresOpcion2 as $opcion2) {
-                                                $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
-                                                echo "<td>
-                                                        <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2'>
-                                                        <label for='$radioId' class='custom-radio-label'></label>
-                                                      </td>";
+            
+                                        if (!empty($opciones)) {
+                                            echo "<table>";
+                                            echo "<tr><th></th>";
+                                            foreach ($opciones[array_key_first($opciones)] as $opcion2) {
+                                                echo "<th>$opcion2</th>";
                                             }
                                             echo "</tr>";
+                                            $cont = 0;
+                                            foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                                $cont = $cont + 1;
+                                                echo "<tr>";
+                                                echo "<td class='hola'>$opcion1</td>";
+                                                foreach ($valoresOpcion2 as $opcion2) {
+            
+                                                    $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
+                                                    echo "
+                                                    <td class='espaciadoo'>
+                                                        <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' onchange='obtenerValor(\"$opcion1\", $idPregunta)'>
+                                                        <label for='$radioId' class='custom-radio-label'></label>
+                                                    </td>";
+                                                }
+                                                echo "</tr>";
+                                            }
+                                            echo "<div class='container-dinamico'>";
+                                            echo "<tr id='campo_otro_$idPregunta'  style='display:none;'>
+                                                    <td colspan='2'>
+                                                   <label for='otro_texto'>Especifica:</label>
+                                                  <!-- Cambiar el name para que contenga 'otro' además del idPregunta -->
+                                                            <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                                        </td>
+                                                    </tr>
+                                                    </div>
+                                                    ";
+                                            echo "</table>";
+                                        } else {
+                                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                         }
-
-                                        echo "</table>";
+                                        echo "</div>";
                                     } else {
                                         echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                     }
-                                    echo "</div>";
-                                } else {
-                                    echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
-                                }
-                                break;
-
-
-                            default:
+                                    break;
+            
+            
+            
+                                default:
                                 echo "Tipo de pregunta no soportado";
                                 break;
                         }
