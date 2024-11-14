@@ -1,14 +1,9 @@
 <script src="https://kit.fontawesome.com/198c26d5ef.js" crossorigin="anonymous"></script>
-<script>
-    const myModal = document.getElementById('myModal')
-    const myInput = document.getElementById('myInput')
-
-    myModal.addEventListener('shown.bs.modal', () => {
-        myInput.focus()
-    })
-</script>
 <?php
 require '../../../app/Models/conexion.php';
+
+$estudiante = intval($_POST['estudiante']);
+$usuario = intval($_POST['usuario']);
 
 $usuarios = "SELECT 
                     e.id AS id,
@@ -27,7 +22,8 @@ $usuarios = "SELECT
                 LEFT JOIN tutores t ON gt.tutor_id = t.id
                 LEFT JOIN usuarios tu ON t.usuario_id = tu.id  -- Para obtener el nombre completo del tutor
                 LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
-                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id";
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
+                WHERE e.id = $estudiante";  // Filtra por el id del estudiante
 
 
 $consulta = mysqli_query($conexion, $usuarios);
@@ -39,46 +35,15 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programa Educativo</title>
+    <title>Seguimiento</title>
 </head>
 
-<style>
-    .btn-buscar,
-    .btn-buscar:hover {
-        background-color: #8E70D0;
-        border: solid 1px;
-    }
-
-    .group1 {
-        padding-bottom: 5%;
-    }
-</style>
-
 <body>
+    <div class="pt-4 pb-5 px-6 border-bottom border-secondary-light">
+        <h4 class="mb-0">Seguimiento del Estudiante.</h4>
+    </div>
+    <div class="boton"> <a href="index.php" class="btn btn-primary">Regresar</a></div>
     <div class="container py-3">
-        <div class="row justify-content-center">
-            <form action="indexresultados.php" method="POST">
-                <div class="input-group group1">
-                    <span class="input-group-text w-25">Nombre y Apellidos</span>
-                    <input type="hidden" value="1" name="tipo">
-                    <input type="text" aria-label="Nombre" name="nombre" class="form-control" placeholder="Nombre: Fer">
-                    <input type="text" aria-label="ApellidoP" name="ap" class="form-control" placeholder="Apellido Paterno: San">
-                    <input type="text" aria-label="ApellidoM" name="am" class="form-control" placeholder="Apellido Materno: Guz">
-                    <button type="submit" class="btn btn-buscar"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
-                </div>
-            </form>
-            <form action="indexresultados.php" method="POST">
-                <input type="hidden" value="2" name="tipo">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Matrícula</span>
-                    <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="basic-addon2" name="matricula" placeholder="222111***">
-                    <button type="submit" class="btn btn-buscar"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
-                </div>
-                <div class="form-text">
-                    Es necesaria una matrícula completa para obtener un resultado.
-                </div>
-            </form>
-        </div>
         <div class="table-responsive">
             <table id="usuariosTable" class="table table-sm table-striped table-hover mt-4">
                 <thead>
@@ -103,7 +68,14 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                             <td><?php echo $estudiante['grupo']; ?></td>
                             <td><?php echo $estudiante['tutor']; ?></td>
                             <td><?php echo $estudiante['periodo_escolar']; ?></td>
-                            <td><?php echo $estudiante['activo']; ?></td>
+                            <td class="py-5 px-6">
+                                <?php
+                                if ($estudiante['activo'] == 1) { ?>
+                                    <span class="badge bg-success">Activo</span>
+                                <?php } else if ($estudiante['activo'] == 0) { ?>
+                                    <span class="badge bg-danger">Baja</span>
+                                <?php } ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
