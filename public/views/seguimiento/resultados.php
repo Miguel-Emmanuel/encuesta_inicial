@@ -90,25 +90,25 @@
         </div>
         <div class="boton"> <a href="index.php" class="btn btn-primary">Regresar</a></div>
         <div class="px-4 table-responsive">
-            <table class="table mb-0 table-borderless table-striped small">
+            <table class="table mb-0 table-borderless table-striped">
                 <thead>
-                    <tr class="text-secondary">
-                        <th class="py-3 px-6">Estudiante</th>
-                        <th class="py-3 px-6">Matrícula</th>
-                        <th class="py-3 px-6">Carrera</th>
-                        <th class="py-3 px-6">Grupo</th>
-                        <th class="py-3 px-6">Estatus</th>
-                        <th class="py-3 px-6">Acciones</th>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Matrícula</th>
+                        <th>Carrera</th>
+                        <th>Grupo</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($dataresult as $estudiante): ?>
                         <tr>
-                            <td class="py-5 px-6"><?php echo $estudiante['estudiante']; ?></td>
-                            <td class="py-5 px-6"><?php echo $estudiante['matricula']; ?></td>
-                            <td class="py-5 px-6"><?php echo $estudiante['carrera']; ?></td>
-                            <td class="py-5 px-6"><?php echo $estudiante['grupo']; ?></td>
-                            <td class="py-5 px-6">
+                            <td><?php echo $estudiante['estudiante']; ?></td>
+                            <td><?php echo $estudiante['matricula']; ?></td>
+                            <td><?php echo $estudiante['carrera']; ?></td>
+                            <td><?php echo $estudiante['grupo']; ?></td>
+                            <td>
                                 <?php
                                 if ($estudiante['activo'] == 1) { ?>
                                     <span class="badge bg-success">Activo</span>
@@ -116,7 +116,7 @@
                                     <span class="badge bg-danger">Baja</span>
                                 <?php } ?>
                             </td>
-                            <td class="py-5 px-6">
+                            <td>
                                 <form action="indexrbusqueda.php" method="POST">
                                     <input type="hidden" name="usuario" value="<?php echo $estudiante['usuario_id']; ?>">
                                     <input type="hidden" name="estudiante" value="<?php echo $estudiante['estudiante_id']; ?>">

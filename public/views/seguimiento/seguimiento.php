@@ -103,7 +103,15 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                             <td><?php echo $estudiante['grupo']; ?></td>
                             <td><?php echo $estudiante['tutor']; ?></td>
                             <td><?php echo $estudiante['periodo_escolar']; ?></td>
-                            <td><?php echo $estudiante['activo']; ?></td>
+                            <td>
+                                <?php
+                                if ($estudiante['activo'] == 1) { ?>
+                                    <span class="badge bg-success">Activo</span>
+                                <?php } else if ($estudiante['activo'] == 0) { ?>
+                                    <span class="badge bg-danger">Baja</span>
+                                <?php } ?>
+                            </td>
+                        </tr>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

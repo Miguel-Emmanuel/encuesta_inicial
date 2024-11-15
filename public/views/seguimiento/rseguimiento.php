@@ -68,7 +68,7 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                             <td><?php echo $estudiante['grupo']; ?></td>
                             <td><?php echo $estudiante['tutor']; ?></td>
                             <td><?php echo $estudiante['periodo_escolar']; ?></td>
-                            <td class="py-5 px-6">
+                            <td>
                                 <?php
                                 if ($estudiante['activo'] == 1) { ?>
                                     <span class="badge bg-success">Activo</span>
