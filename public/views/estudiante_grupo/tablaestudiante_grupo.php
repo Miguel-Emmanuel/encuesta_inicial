@@ -18,6 +18,9 @@ $estugrup = $conexion->query($sqlEstuGrup);
     <h2 class="text-center">Estudiante_Grupo</h2>
     <div class="row justify-content-end">
         <div class="col-auto">
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambiomodal">Cambio de Grupo</a>
+        </div>
+        <div class="col-auto">
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
         </div>
     </div>
@@ -83,6 +86,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
 
 
 <?php include "modalcreate.php"; ?>
+<?php include "modalcambio.php"; ?>
 
 <?php
 $estu->data_seek(0);
@@ -96,6 +100,7 @@ $per->data_seek(0);
 
 <script>
     let nuevomodal = document.getElementById('nuevomodal')
+    let cambiomodal = document.getElementById('cambiomodal')
     let editarmodal = document.getElementById('editarmodal')
     let eliminamodal = document.getElementById('eliminamodal')
 
@@ -103,6 +108,12 @@ $per->data_seek(0);
         nuevomodal.querySelector('.modal-body #estudiante_id').value = ""
         nuevomodal.querySelector('.modal-body #grupo_id').value = ""
         nuevomodal.querySelector('.modal-body #periodo_id').value = ""
+    })
+
+    cambiomodal.addEventListener('hide.bs.modal', event => {
+        cambiomodal.querySelector('.modal-body #estudiante_id').value = ""
+        cambiomodal.querySelector('.modal-body #grupo_id').value = ""
+        cambiomodal.querySelector('.modal-body #periodo_id').value = ""
     })
 
     editarmodal.addEventListener('hide.bs.modal', event => {
