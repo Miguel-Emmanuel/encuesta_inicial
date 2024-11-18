@@ -69,7 +69,7 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
             </form>
             <form action="indexresultados.php" method="POST">
                 <input type="hidden" value="2" name="tipo">
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 w-25">
                     <span class="input-group-text" id="inputGroup-sizing-default">Matrícula</span>
                     <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="basic-addon2" name="matricula" placeholder="222111***">
                     <button type="submit" class="btn btn-buscar"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
