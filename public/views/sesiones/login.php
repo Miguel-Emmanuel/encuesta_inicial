@@ -2,7 +2,7 @@
 session_start();
 include("../../../app/Models/conexion.php");
 if (isset($_SESSION['id']) == "") { ?>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 
 <head>

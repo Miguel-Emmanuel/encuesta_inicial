@@ -225,19 +225,40 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                         echo "</div>";
                         break;
 
-                    case 'pais':
-                        echo "<div class='select-container'>";
-                        echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' required>";
-                        echo "<option value=''>Seleccione su país</option>";
-
-                        $resultPais = $conexion->query("SELECT * FROM paises");
-                        while ($pais = $resultPais->fetch_assoc()) {
-                            echo "<option value='{$pais['id']},{$pais['nombre']}'>{$pais['nombre']}</option>";
-                        }
-                        echo "<option value='otro'>Otro</option>";
-                        echo "</select>";
-                        echo "</div>";
-                        break;
+                        case 'pais':
+                            echo "<div class='radio-container'>";
+                            
+                            // Obtener los países de la base de datos
+                            $resultPais = $conexion->query("SELECT * FROM paises");
+                            
+                            // Imprimir cada país como un radio button
+                            while ($pais = $resultPais->fetch_assoc()) {
+                                echo "<div class='form-check'>
+                                        <input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='pais_{$pais['id']}_$idPregunta' value='{$pais['id']},{$pais['nombre']}' onchange='cargarEstados(this, $idPregunta)' required>
+                                        <label class='form-check-label' for='pais_{$pais['id']}_$idPregunta'>
+                                            {$pais['nombre']}
+                                        </label>
+                                      </div>";
+                            }
+                        
+                            // Opción "Otro"
+                            echo "<div class='form-check'>
+                                    <input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='pais_otro_$idPregunta' value='otro' onchange='cargarEstados(this, $idPregunta)' required>
+                                    <label class='form-check-label' for='pais_otro_$idPregunta'>
+                                        Otro
+                                    </label>
+                                  </div>";
+                        
+                            // Contenedor para el campo de texto cuando seleccionan "Otro"
+                            echo "<div class='container-dinamico' id='campo_otro_$idPregunta' style='display:none;'>
+                                    <label for='otro_texto'>Especifica:</label>
+                                    <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                  </div>";
+                            
+                            echo "</div>";
+                            break;
+                        
+                            
 
                     case 'estado':
                         echo "<div class='select-container'>";
@@ -960,11 +981,18 @@ function createAlert(message) {
         let municipioOriginal = '';
 
         function cargarEstados(selectPais, idPregunta) {
+            
             const paisId = selectPais.value; // ID del país seleccionado
             const estadoIdPregunta = idPregunta + 1; // El siguiente select es el de estados
             const estadoSelect = document.getElementById("estado_" + estadoIdPregunta);
             const municipioIdPregunta = estadoIdPregunta + 1; // El siguiente select es el de municipios
             const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta);
+
+            // const paisId = selectPais.value; // ID del país seleccionado
+
+// Obtener el div para el campo de texto
+const campoOtro = document.getElementById('campo_otro_' + idPregunta);
+
 
             // Guardar HTML original si aún no está guardado
             if (!estadoOriginal) estadoOriginal = estadoSelect.outerHTML;
@@ -978,7 +1006,11 @@ function createAlert(message) {
                     // Cambiar los selects a inputs de texto
                     estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='respuestas[${estadoIdPregunta}]' placeholder='Especifica tu estado'  />`;
                     municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='respuestas[${municipioIdPregunta}]' placeholder='Especifica tu municipio' required />`;
+    campoOtro.style.display = 'block';
+
                 } else {
+    campoOtro.style.display = 'none';
+
                     // Restaurar los selects originales si se selecciona un país de la base de datos
                     estadoSelect.outerHTML = estadoOriginal;
                     municipioSelect.outerHTML = municipioOriginal;

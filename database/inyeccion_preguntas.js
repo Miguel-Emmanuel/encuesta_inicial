@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'inyeccion'
+ database: 'encuesta_01'
 });
 
 // Convertir consultas en promesas
