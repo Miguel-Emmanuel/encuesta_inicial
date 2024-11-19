@@ -37,7 +37,7 @@ if (isset($_POST['estudiante_cambio_id'])) {
 
         
         
-        $sql = "INSERT INTO estudiante_grupo (estudiante_id , grupo_id, periodo_id) VALUES ('$estudiantes_id[$i]','$grupo_id ','$periodo_id')";
+        $sql = "INSERT INTO estudiante_grupo (estudiante_id , grupo_id, tutor_id , periodo_id) VALUES ('$estudiantes_id[$i]','$grupo_id ','$tutor_id','$periodo_id')";
         if ($conexion->query($sql)) {
             $id = $conexion->insert_id;
         }

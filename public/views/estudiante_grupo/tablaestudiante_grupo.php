@@ -1,11 +1,14 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias FROM estudiante_grupo AS e
-INNER JOIN estudiantes as estu ON estu.id = e.estudiante_id
-INNER JOIN usuarios AS u ON u.id = estu.usuario_id
-INNER JOIN t_grupos AS g ON g.id = e.grupo_id
-INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id";
+$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias 
+                FROM estudiante_grupo AS e
+                INNER JOIN estudiantes AS estu ON estu.id = e.estudiante_id
+                INNER JOIN usuarios AS u ON u.id = estu.usuario_id
+                INNER JOIN t_grupos AS g ON g.id = e.grupo_id
+                INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id
+                WHERE e.activo = 1";
+
 
 $estugrup = $conexion->query($sqlEstuGrup);
 ?>
