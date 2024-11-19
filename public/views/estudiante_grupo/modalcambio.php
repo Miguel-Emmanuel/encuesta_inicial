@@ -13,8 +13,7 @@ $sqlGrupos = "SELECT g.id, g.nomenclatura
 $grupos = $conexion->query($sqlGrupos);
 
 $sqlPer = "SELECT id, alias FROM periodos_escolar";
-    $per = $conexion->query($sqlPer);
-
+$per = $conexion->query($sqlPer);
 ?>
 
 <link rel="stylesheet" href="../../css/virtual-select.min.css">
@@ -27,7 +26,7 @@ $sqlPer = "SELECT id, alias FROM periodos_escolar";
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3" action="../../../app/Controllers/Estudiante_grupo/registro_estudiante_grupo.php" method="POST" enctype="multipart/form-data">
+                <form class="row g-3" action="../../../app/Controllers/Estudiante_grupo/cambio_estudiante_grupo.php" method="POST" enctype="multipart/form-data">
                     <div class="md-4">
                         <label for="validationCustom04" class="form-label">Estudiante</label>
                         <select multiple data-search="true" data-silent-initial-value-set="true" id="estudiante_cambio_id" name="estudiante_cambio_id[]" required>
@@ -44,11 +43,6 @@ $sqlPer = "SELECT id, alias FROM periodos_escolar";
                                 <option value="<?php echo $row_grupos_cambio["id"] ?>"><?= $row_grupos_cambio["nomenclatura"] ?></option>
                             <?php } ?>
                         </select>
-                    </div>
-                    <div class="md-4">
-                        <label for="tutor_nombre_completo" class="form-label">Tutor del grupo</label>
-                        <input type="text" class="form-control" id="tutor_nombre_completo" name="tutor_nombre_completo" readonly>
-                        <input type="hidden" id="tutor_id" name="tutor_id">
                     </div>
                     <div class="md-4">
                         <label for="validationCustom04" class="form-label">Periodo escolar</label>
@@ -76,7 +70,7 @@ $sqlPer = "SELECT id, alias FROM periodos_escolar";
 
 <script type="text/javascript">
     VirtualSelect.init({
-        ele: '#estudiante_cambio_id'
-        // ele: 'select'
+        ele: '#estudiante_cambio_id',
+        // Agregar más opciones de personalización si es necesario
     });
 </script>
