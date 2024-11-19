@@ -37,7 +37,7 @@ $per = $conexion->query($sqlPer);
                     </div>
                     <div class="md-4">
                         <label for="validationCustom04" class="form-label">Grupo</label>
-                        <select class="form-select" id="grupo_id" name="grupo_id" required>
+                        <select class="form-select" name="grupo_id" required>
                             <option value="">Seleccionar...</option>
                             <?php while ($row_grupos_cambio = $grupos->fetch_assoc()) { ?>
                                 <option value="<?php echo $row_grupos_cambio["id"] ?>"><?= $row_grupos_cambio["nomenclatura"] ?></option>
