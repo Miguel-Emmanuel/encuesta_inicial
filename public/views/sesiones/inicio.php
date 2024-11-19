@@ -1,5 +1,5 @@
 <?php
-    require '../../../app/Models/conexion.php';
+    include("../../../database/conexion.php");
 
     $GV = "SELECT * FROM gruposv;";
     $consulta = mysqli_query($conexion, $GV);

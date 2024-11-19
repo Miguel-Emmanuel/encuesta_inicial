@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Respuestas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-4">
+        <h2 class="text-center">Búsqueda de Respuestas por ID de Pregunta</h2>
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="searchForm">
+                    <div class="mb-3">
+                        <label for="idPregunta" class="form-label">ID de Pregunta:</label>
+                        <input type="text" id="idPregunta" name="idPregunta" class="form-control" placeholder="Ingresa el ID de la pregunta" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped" id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Estudiante ID</th>
+                            <th>Respuesta</th>
+                            <th>Fecha de Creación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se cargarán los resultados -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault(); // Evitar que se recargue la página
+
+                const idPregunta = $('#idPregunta').val();
+
+                // Enviar petición AJAX
+                $.ajax({
+                    url: '../../../app/Controllers/GruposV/buscar_respuestas.php',
+                    type: 'POST',
+                    data: { id_pregunta: idPregunta },
+                    dataType: 'json',
+                    success: function (data) {
+                        const tbody = $('#resultTable tbody');
+                        tbody.empty(); // Limpiar la tabla
+
+                        if (data.length > 0) {
+                            data.forEach(function (respuesta) {
+                                tbody.append(`
+                                    <tr>
+                                        <td>${respuesta.estudiante_id}</td>
+                                        <td>${respuesta.respuesta}</td>
+                                        <td>${respuesta.created_at}</td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            tbody.append('<tr><td colspan="3" class="text-center">No se encontraron resultados</td></tr>');
+                        }
+                    },
+                    error: function () {
+                        alert('Error al buscar respuestas. Por favor, intenta de nuevo.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
