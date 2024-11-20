@@ -19,7 +19,7 @@ if($conexion->query($sql)){
     if($rol_id == 3){
         $matricula = $conexion->real_escape_string($_POST['matricula']);
 
-        $sql_estudiantes = "INSERT INTO estudiantes (usuario_id, matricula, telefono, grupos_v, genero, i_genero) VALUES ('$usuario_id', '$matricula', NULL, NULL, NULL, NULL)";
+        $sql_estudiantes = "INSERT INTO estudiantes (usuario_id, matricula, telefono,genero ) VALUES ('$usuario_id', '$matricula', NULL, NULL)";
         if ($conexion->query($sql_estudiantes)) {
             echo "Registro de estudiante guardado exitosamente.";
         } else {

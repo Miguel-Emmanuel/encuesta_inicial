@@ -12171,9 +12171,12 @@ CREATE TABLE `estudiantes` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `estudiantes` */
+
+insert  into `estudiantes`(`id`,`usuario_id`,`matricula`,`telefono`,`genero`,`activo`) values 
+(13,162,'8941984',NULL,NULL,1);
 
 /*Table structure for table `grupo_tutor` */
 
@@ -12194,9 +12197,12 @@ CREATE TABLE `grupo_tutor` (
   CONSTRAINT `grupo_tutor_ibfk_1` FOREIGN KEY (`tutor_id`) REFERENCES `tutores` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `grupo_tutor_ibfk_2` FOREIGN KEY (`grupo_id`) REFERENCES `t_grupos` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `grupo_tutor_ibfk_3` FOREIGN KEY (`periodo_id`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `grupo_tutor` */
+
+insert  into `grupo_tutor`(`id`,`grupo_id`,`tutor_id`,`periodo_id`,`activo`,`created_at`,`desactivated_at`) values 
+(1,1,1,1,1,'2024-11-20 10:44:58',NULL);
 
 /*Table structure for table `gruposv` */
 
@@ -15125,9 +15131,12 @@ CREATE TABLE `periodos_escolar` (
   `fin` date DEFAULT NULL,
   `activo` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `periodos_escolar` */
+
+insert  into `periodos_escolar`(`id`,`alias`,`inicio`,`fin`,`activo`) values 
+(1,'4t 5t','2024-11-05','2024-11-16',1);
 
 /*Table structure for table `preguntas` */
 
@@ -15283,34 +15292,36 @@ CREATE TABLE `programa_edu` (
   `grado` varchar(20) DEFAULT NULL,
   `nombre` text DEFAULT NULL,
   `clave` varchar(10) DEFAULT NULL,
+  `activo` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `programa_edu` */
 
-insert  into `programa_edu`(`id`,`grado`,`nombre`,`clave`,`created_at`,`updated_at`) values 
-(1,'TSU','TSU en TI, área Desarrollo de Software Multiplataforma','DSM',NULL,NULL),
-(2,'TSU','Infraestructura de Redes Digitales','IRD',NULL,NULL),
-(3,'TSU','Mantenimiento Industrial','MI',NULL,NULL),
-(4,'TSU','Sistemas de Manufactura Flexible','SMF',NULL,NULL),
-(5,'TSU','Procesos Productivos','PP',NULL,NULL),
-(6,'TSU','Gestión Ambiental','GA',NULL,NULL),
-(7,'TSU','Paramédico','Paramédico',NULL,NULL),
-(8,'TSU','Ventas','Ventas',NULL,NULL),
-(9,'TSU','Mercadotecnia','Mercadotec',NULL,NULL),
-(10,'TSU','Biotecnología','Biotecnolo',NULL,NULL),
-(11,'TSU','Tecnología de Alimentos','TA',NULL,NULL),
-(12,'Ingeniería','Diseño y Gestión de Software','IDGS',NULL,NULL),
-(13,'Ingeniería','Mantenimiento Industrial','MI',NULL,NULL),
-(14,'Ingeniería','Mecatrónica','Mecatrónic',NULL,NULL),
-(15,'Ingeniería','Industrial','Industrial',NULL,NULL),
-(16,'Ingeniería','Biotecnología','Biotecnolo',NULL,NULL),
-(17,'Ingeniería','Alimentos','Alimentos',NULL,NULL),
-(18,'Licenciatura','Protección Civil y Emergencias','IPCE',NULL,NULL),
-(19,'Licenciatura','Negocios y Mercadotecnia','INM',NULL,NULL),
-(20,'Licenciatura','Enfermería','LE',NULL,NULL);
+insert  into `programa_edu`(`id`,`grado`,`nombre`,`clave`,`activo`,`created_at`,`updated_at`) values 
+(1,'TSU','TSU en TI, área Desarrollo de Software Multiplataforma','DSM',1,NULL,NULL),
+(2,'TSU','Infraestructura de Redes Digitales','IRD',1,NULL,NULL),
+(3,'TSU','Mantenimiento Industrial','MI',1,NULL,NULL),
+(4,'TSU','Sistemas de Manufactura Flexible','SMF',1,NULL,NULL),
+(5,'TSU','Procesos Productivos','PP',1,NULL,NULL),
+(6,'TSU','Gestión Ambiental','GA',1,NULL,NULL),
+(7,'TSU','Paramédico','Paramédico',1,NULL,NULL),
+(8,'TSU','Ventas','Ventas',1,NULL,NULL),
+(9,'TSU','Mercadotecnia','Mercadotec',1,NULL,NULL),
+(10,'TSU','Biotecnología','Biotecnolo',1,NULL,NULL),
+(11,'TSU','Tecnología de Alimentos','TA',1,NULL,NULL),
+(12,'Ingeniería','Diseño y Gestión de Software','IDGS',1,NULL,NULL),
+(13,'Ingeniería','Mantenimiento Industrial','MI',1,NULL,NULL),
+(14,'Ingeniería','Mecatrónica','Mecatrónic',1,NULL,NULL),
+(15,'Ingeniería','Industrial','Industrial',1,NULL,NULL),
+(16,'Ingeniería','Biotecnología','Biotecnolo',1,NULL,NULL),
+(17,'Ingeniería','Alimentos','Alimentos',1,NULL,NULL),
+(18,'Licenciatura','Protección Civil y Emergencias','IPCE',1,NULL,NULL),
+(19,'Licenciatura','Negocios y Mercadotecnia','INM',1,NULL,NULL),
+(20,'Licenciatura','Enfermería','LE',1,NULL,NULL),
+(21,'Ingenirera','bitecnologia','BIO',1,NULL,NULL);
 
 /*Table structure for table `respuestas` */
 
@@ -15466,7 +15477,7 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `roles` */
 
@@ -15474,7 +15485,8 @@ insert  into `roles`(`id`,`nombre`,`descripcion`,`created_at`,`updated_at`) valu
 (1,'Director de Carrera','Hola',NULL,NULL),
 (2,'PTC/Tutor','Hola',NULL,NULL),
 (3,'Estudiante','Hola',NULL,NULL),
-(4,'Psicología','Hola',NULL,NULL);
+(4,'Psicología','Hola',NULL,NULL),
+(5,'nuevo ingreso','este no hara nada',NULL,NULL);
 
 /*Table structure for table `secciones` */
 
@@ -15514,9 +15526,12 @@ CREATE TABLE `t_grupos` (
   PRIMARY KEY (`id`),
   KEY `programa_e` (`programa_e`),
   CONSTRAINT `t_grupos_ibfk_1` FOREIGN KEY (`programa_e`) REFERENCES `programa_edu` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `t_grupos` */
+
+insert  into `t_grupos`(`id`,`nombre`,`programa_e`,`nomenclatura`,`activo`) values 
+(1,'idgs',2,'MIKE',1);
 
 /*Table structure for table `tutores` */
 
@@ -15559,12 +15574,12 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `users_email_unique` (`email`) USING HASH,
   KEY `users_rol_id_foreign` (`rol_id`),
   CONSTRAINT `users_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`email`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`activo`,`created_at`,`updated_at`) values 
-(1,'Director','UTVT','UTVT','director@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,NULL,NULL),
+(1,'Director','UTVTS','UTVT','director@gmail.com',NULL,'$2y$10$JILiKF.1mHxsemuggePdkeWLRVwbPmn45aG8YTt3G7ZDi.j1Bgx5a',NULL,1,1,NULL,NULL),
 (2,'Mike','UTVT','UTVT','ptc@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
 (3,'Mike','Arriola','Ortega','estudiante@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (4,'Jimena','Diaz','Diaz','psicologia@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),
@@ -15719,7 +15734,9 @@ insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`ema
 (157,'MARIA GUADALUPE','RUIZ','ROMERO','al222410977@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
 (158,'Osvaldo','Salinas','Aranda','al222411167@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
 (159,'Ailen','Zagaceta ','Garcia ','al222410947@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(160,'Cristian Antonio ','Sara ','Escutia ','al222410824@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL);
+(160,'Cristian Antonio ','Sara ','Escutia ','al222410824@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
+(161,'MIGUEL EMMANUEL','ARRIOLA','ORTEGA','al222010277878@gmail.com',NULL,'$2y$10$qz4b4Qd9MkISUQvHfYjf1.C/VAdAnZ.mSI2W1gmDqCBsAGqNlIxF2',NULL,3,1,NULL,NULL),
+(162,'MIGUEL EMMANUEL','ARRIOLA','ORTEGA','al2220654277878@gmail.com',NULL,'$2y$10$LvEfat.NM9yzmQtic2NNRu2Q9Dw13PqY6jD1leOylDAGVCgRbZs2m',NULL,3,1,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
