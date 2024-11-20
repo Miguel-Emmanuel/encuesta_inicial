@@ -4,7 +4,11 @@ include("../../database/conexion.php");
 session_start();
 
 if(isset($_SESSION['id']) != ""){
-    $rol = $_SESSION['rol'];
+    $idUsuario = $_SESSION['id'];
+    $rolu = "SELECT rol_id FROM usuarios WHERE id = $idUsuario";
+    $result = $conexion->query($rolu);
+    $row = $result->fetch_assoc();
+    $rol = $row['rol_id']; 
     //  Redirección a partir del rol del usuario
     switch ($rol) {
         case 1:
@@ -17,7 +21,7 @@ if(isset($_SESSION['id']) != ""){
             header("Location: ../../public/views/encuesta/menu_secciones.php");
             exit();
         case 4:
-            header("Location: ../../public/views/encuesta/menu_secciones.php");
+            header("Location: ../../public/views/sesiones/index.php");
             exit();
     }
 }else{
