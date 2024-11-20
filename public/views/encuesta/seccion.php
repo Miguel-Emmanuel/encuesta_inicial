@@ -188,14 +188,14 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                         echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'correo':
-                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
+                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' placeholder='al225163489@gmail.com' value='$respuestaTexto' required>";
                         break;
                     case 'curp':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' placeholder='RACW050729MMCSHNA2' value='$respuestaTexto'  required>";
                         break;
 
                     case 'rfc':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' placeholder='VECJ8803260V8' value='$respuestaTexto' required>";
                         break;
                     case 'telefono':
                         echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-telefono' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
@@ -204,7 +204,7 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                         echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
                     case 'r_social':
-                        echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></textarea>";
+                        echo "<textarea name='respuestas[$idPregunta]' class='respuesta-r_social' placeholder='https://www.facebook.com/perfil' data-idpregunta='$idPregunta'>$respuestaTexto</textarea>";
                         break;
                     case 'c_postal':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
@@ -226,37 +226,48 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                         break;
 
                         case 'pais':
-                            echo "<div class='radio-container'>";
-                            
-                            // Obtener los países de la base de datos
+                            echo "<div class='pregunta'>"; // Clase principal para el contenedor
                             $resultPais = $conexion->query("SELECT * FROM paises");
-                            
-                            // Imprimir cada país como un radio button
+                            $opciones = array();
+                        
                             while ($pais = $resultPais->fetch_assoc()) {
-                                echo "<div class='form-check'>
-                                        <input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='pais_{$pais['id']}_$idPregunta' value='{$pais['id']},{$pais['nombre']}' onchange='cargarEstados(this, $idPregunta)' required>
-                                        <label class='form-check-label' for='pais_{$pais['id']}_$idPregunta'>
-                                            {$pais['nombre']}
-                                        </label>
-                                      </div>";
+                                $opciones[$pais['id']] = $pais['nombre'];
                             }
                         
-                            // Opción "Otro"
-                            echo "<div class='form-check'>
-                                    <input class='form-check-input' type='radio' name='respuestas[$idPregunta]' id='pais_otro_$idPregunta' value='otro' onchange='cargarEstados(this, $idPregunta)' required>
-                                    <label class='form-check-label' for='pais_otro_$idPregunta'>
-                                        Otro
-                                    </label>
-                                  </div>";
+                            if (!empty($opciones)) {
+                                echo "<table>";
+                                echo "<tr><th>País</th></tr>"; // Encabezado del radio
                         
-                            // Contenedor para el campo de texto cuando seleccionan "Otro"
-                            echo "<div class='container-dinamico' id='campo_otro_$idPregunta' style='display:none;'>
-                                    <label for='otro_texto'>Especifica:</label>
-                                    <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
-                                  </div>";
-                            
+                                foreach ($opciones as $id => $nombre) {
+                                    echo "<tr>";
+                                    echo "<td class='hola'>$nombre</td>";
+                                    echo "<td><input class='form-check-input $idPregunta' type='radio' name='respuestas[$idPregunta]' id='pais_{$id}_$idPregunta' value='{$id},{$nombre}' onchange='cargarEstados(this, $idPregunta)' required></td>";
+                                    echo "</tr>";
+                                }
+                        
+                                // Opción "Otro"
+                                echo "<tr>";
+                                echo "<td class='hola'>Otro</td>";
+                                echo "<td><input class='form-check-input $idPregunta' type='radio' name='respuestas[$idPregunta]' id='pais_otro_$idPregunta' value='otro' onchange='cargarEstados(this, $idPregunta)' required></td>";
+                                echo "</tr>";
+                        
+                                // Campo oculto para "Otro"
+                                echo "<div class='container-dinamico'>";
+                                echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
+                                        <td colspan='2'>
+                                            <label for='otro_texto_$idPregunta'>Especifica:</label>
+                                            <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                        </td>
+                                      </tr>";
+                                echo "</div>";
+                        
+                                echo "</table>";
+                            } else {
+                                echo "<p class='pregunta-texto'>No se encontraron países disponibles.</p>";
+                            }
                             echo "</div>";
                             break;
+                        
                         
                             
 
@@ -465,7 +476,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  >";
                                 break;
                             case 'r_social':
-                                echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' ></textarea>";
+                                echo "<textarea name='respuestas[$idPregunta]' class='respuesta-r_social' placeholder='https://www.facebook.com/perfil' data-idpregunta='$idPregunta'>$respuestaTexto</textarea>";
                                 break;
                             case 'c_postal':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' >";
