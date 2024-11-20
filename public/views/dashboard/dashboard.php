@@ -34,6 +34,8 @@
                     <li id="inicio" class="active">
                         <a href="/public/views/sesiones/index.php">Inicio</a>
                     </li>
+
+                
                     <li>
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -60,6 +62,7 @@
                             </li>
                         </ul>
                     </li>
+              
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apartados extra</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">

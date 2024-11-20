@@ -1,11 +1,14 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias FROM estudiante_grupo AS e
-INNER JOIN estudiantes as estu ON estu.id = e.estudiante_id
-INNER JOIN usuarios AS u ON u.id = estu.usuario_id
-INNER JOIN t_grupos AS g ON g.id = e.grupo_id
-INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id";
+$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias 
+                FROM estudiante_grupo AS e
+                INNER JOIN estudiantes AS estu ON estu.id = e.estudiante_id
+                INNER JOIN usuarios AS u ON u.id = estu.usuario_id
+                INNER JOIN t_grupos AS g ON g.id = e.grupo_id
+                INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id
+                WHERE e.activo = 1";
+
 
 $estugrup = $conexion->query($sqlEstuGrup);
 ?>
@@ -17,6 +20,9 @@ $estugrup = $conexion->query($sqlEstuGrup);
 <div class="container py-3">
     <h2 class="text-center">Estudiante_Grupo</h2>
     <div class="row justify-content-end">
+        <div class="col-auto">
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambiomodal">Cambio de Grupo</a>
+        </div>
         <div class="col-auto">
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
         </div>
@@ -83,6 +89,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
 
 
 <?php include "modalcreate.php"; ?>
+<?php include "modalcambio.php"; ?>
 
 <?php
 $estu->data_seek(0);
@@ -96,6 +103,7 @@ $per->data_seek(0);
 
 <script>
     let nuevomodal = document.getElementById('nuevomodal')
+    let cambiomodal = document.getElementById('cambiomodal')
     let editarmodal = document.getElementById('editarmodal')
     let eliminamodal = document.getElementById('eliminamodal')
 
@@ -103,6 +111,12 @@ $per->data_seek(0);
         nuevomodal.querySelector('.modal-body #estudiante_id').value = ""
         nuevomodal.querySelector('.modal-body #grupo_id').value = ""
         nuevomodal.querySelector('.modal-body #periodo_id').value = ""
+    })
+
+    cambiomodal.addEventListener('hide.bs.modal', event => {
+        cambiomodal.querySelector('.modal-body #estudiante_id').value = ""
+        cambiomodal.querySelector('.modal-body #grupo_id').value = ""
+        cambiomodal.querySelector('.modal-body #periodo_id').value = ""
     })
 
     editarmodal.addEventListener('hide.bs.modal', event => {

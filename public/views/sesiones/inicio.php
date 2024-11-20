@@ -1,166 +1,235 @@
 <?php
-    include("../../../database/conexion.php");
+require '../../../app/Models/conexion.php';
 
-    $GV = "SELECT * FROM gruposv;";
-    $consulta = mysqli_query($conexion, $GV);
-    $grupos_v = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
+$GV = "SELECT * FROM gruposv;";
+$consulta = mysqli_query($conexion, $GV);
+$grupos_v = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
-    $PE = "SELECT * FROM programa_edu;";
-    $consulta2 = mysqli_query($conexion, $PE);
-    $programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
+$PE = "SELECT * FROM programa_edu;";
+$consulta2 = mysqli_query($conexion, $PE);
+$programas = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
 
-    $T = "SELECT 
+$T = "SELECT 
                 t.id AS id,
                 t.usuario_id,
                 CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre
             FROM tutores t
             INNER JOIN usuarios u ON t.usuario_id = u.id;";
-    $consulta3 = mysqli_query($conexion, $T);
-    $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
+$consulta3 = mysqli_query($conexion, $T);
+$tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-    <body>
-        <style>
-            body {
-                margin: 0;
-                display: flex;
-                justify-content: center;
-                height: 100vh;
-                align-items: center;
-            }
-            .container {
-                padding-top: 15%;
-                padding-left: 10%;
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 30px;
-            }
-            .filtro1, .filtro2, .filtro3, .filtro4{
-                height: 120px;
-                width: 250px;
-                background-color: #28a745;
-                color: white;
-                border-radius: 3px;
-                border: solid 1px black;
-                margin: 30px;
-                font-size:large;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-            }
-            .dropdown {
-                max-height: 400px; /* Ajusta según el tamaño deseado */
-                overflow-y: auto; /* Activa la barra de desplazamiento vertical */
-                display: none;
-                position: absolute;
-                top: 0%;
-                left: 50%;
-                width: 350px;
-                background-color: white;
-                border: 2px solid #708090; /* Color del borde */
-                border-radius: 8px; /* Bordes redondeados */
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                z-index: 10;
-            }
-            .filtro2 .dropdown{
-                width: 200px;
-            }
-            .dropdown ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-            .dropdown li {
-                padding: 10px;
-                color: black;
-                font-size:small     ;
-            }
-            .dropdown li:hover{
-                background-color: grey;
-                color: white;
-            }
-            .dropdown li:last-child {
-                border-bottom: 0.5px solid black;
-            }
-            .filtro1:hover .dropdown, 
-            .filtro2:hover .dropdown, 
-            .filtro3:hover .dropdown, 
-            .filtro4:hover .dropdown {
-                display: block;
-            }
-            a{
-                color: inherit;
-            }
 
-            /* Estilo minimalista para el scrollbar en WebKit */
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            background-color: #4CAF50;
+            border-radius: 7px;
+        }
+
+        .filtro {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            color: #333;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .filtro:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .dropdown li {
+            padding: 10px;
+            font-size: 16px;
+            color: #333;
+            border-bottom: 1px solid #eaeaea;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown li:hover {
+            background-color: #f0f0f0;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Scrollbar personalizado */
         .dropdown::-webkit-scrollbar {
-            width: 5px; /* Ancho del scrollbar */
+            width: 6px;
         }
+
         .dropdown::-webkit-scrollbar-track {
-            background: #EAEAEA; /* Fondo del track */
+            background: #f0f0f0;
         }
+
         .dropdown::-webkit-scrollbar-thumb {
-            background: #2F4F4F; /* Color del thumb */
-            border-radius: 4px; /* Bordes redondeados del thumb */
+            background-color: #888;
+            border-radius: 10px;
         }
+
         .dropdown::-webkit-scrollbar-thumb:hover {
-            background: #0056b3; /* Color del thumb al pasar el mouse */
+            background-color: #555;
         }
-            
 
-        </style>
+        /* Media queries para mejor adaptación */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
 
-        <div class="container">
+            .filtro:hover .dropdown {
+                display: none; /* Desactivamos el hover en móviles */
+            }
+        }
+    </style>
+</head>
 
-            <div class="filtro1">
-                Programas Educativos
-                <div class="dropdown">
-                    <ul>
-                        <?php foreach ($programas as $item): ?>
-                                <a href="<?php echo "../filtros/index.php?id=" . $item['id'] ."&f=1". "&nombre=" . urlencode($item['nombre']); ?>"><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+<body>
+
+    <div class="container">
+        <div class="filtro">
+            Programas Educativos
+            <div class="dropdown">
+                <ul>
+                    <?php foreach ($programas as $item): ?>
+                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=1" . "&nombre=" . urlencode($item['nombre']); ?>">
+                            <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                        </a>
+                    <?php endforeach; ?>
+                </ul>
             </div>
-
-            <div class="filtro2" id="filtro">
-                Grupos Vulnerables
-                <div class="dropdown">
-                    <ul>
-                        <?php foreach ($grupos_v as $item): ?>  
-                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] ."&f=2". "&nombre=" . urlencode($item['nombregv']); ?>><li><?php echo htmlspecialchars($item['nombregv']); ?> </li></a>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="filtro3">
-                Grupo Tutor
-                <div class="dropdown">
-                    <ul>
-                        <?php foreach ($tutores as $item): ?>  
-                                <a href= <?php echo "../filtros/index.php?id=" . $item['id'] ."&f=3". "&nombre=" . urlencode($item['nombre']); ?>><li><?php echo htmlspecialchars($item['nombre']); ?> </li></a>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="filtro4">
-                Padecimientos de Salud
-            </div>
-            
-            
-
         </div>
-    </body>
+
+        <div class="filtro">
+            Grupos Vulnerables
+            <div class="dropdown">
+                <ul>
+                    <?php foreach ($grupos_v as $item): ?>
+                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=2" . "&nombre=" . urlencode($item['nombregv']); ?>">
+                            <li><?php echo htmlspecialchars($item['nombregv']); ?></li>
+                        </a>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+
+        <div class="filtro">
+            Grupo Tutor
+            <div class="dropdown">
+                <ul>
+                    <?php foreach ($tutores as $item): ?>
+                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=3" . "&nombre=" . urlencode($item['nombre']); ?>">
+                            <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                        </a>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+
+        <div class="filtro">
+            Padecimientos de Salud
+        </div>
+    </div>
+
+    <script>
+        // Detectar si el dispositivo es móvil
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+        if (isMobile) {
+            document.querySelectorAll('.filtro').forEach(filtro => {
+                filtro.addEventListener('click', function () {
+                    const dropdown = this.querySelector('.dropdown');
+                    const isVisible = dropdown.style.display === 'block';
+                    // Cerrar todos los dropdowns
+                    document.querySelectorAll('.dropdown').forEach(dd => dd.style.display = 'none');
+                    // Alternar el dropdown del filtro actual
+                    if (!isVisible) {
+                        dropdown.style.display = 'block';
+                    }
+                });
+            });
+
+            // Cerrar el dropdown si se hace clic fuera
+            window.addEventListener('click', function (e) {
+                if (!e.target.closest('.filtro')) {
+                    document.querySelectorAll('.dropdown').forEach(dd => dd.style.display = 'none');
+                }
+            });
+        } else {
+            // En PC usamos el hover para mostrar los dropdowns
+            document.querySelectorAll('.filtro').forEach(filtro => {
+                filtro.addEventListener('mouseenter', function () {
+                    const dropdown = this.querySelector('.dropdown');
+                    dropdown.style.display = 'block';
+                });
+
+                filtro.addEventListener('mouseleave', function () {
+                    const dropdown = this.querySelector('.dropdown');
+                    dropdown.style.display = 'none';
+                });
+            });
+        }
+    </script>
+
+</body>
+
 </html>

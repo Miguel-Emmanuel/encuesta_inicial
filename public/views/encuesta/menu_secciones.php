@@ -47,8 +47,7 @@ function contarRespuestasUsuarioSeccion($conexion, $seccionId, $estudianteId) {
     $stmt->bind_result($totalRespuestas);
     $stmt->fetch();
     $stmt->close();
-    // echo "<p><strong>Total de Respuestas del Usuario en la Sección $seccionId:</strong> $totalRespuestas</p>";
-    return $totalRespuestas;
+    return $totalRespuestas; 
 }
 
 // Función para verificar si la sección está completada
