@@ -1,166 +1,124 @@
-<?php
-    require '../../../app/Models/conexion.php';
-
-    $id = (int) $_GET['id'];
-    $NGV= $_GET['nombre'];  
-    
-    $usuarios ="SELECT 
-                    usuarios.nombre AS nombre,
-                    usuarios.apellido_paterno,
-                    usuarios.apellido_materno,
-                    usuarios.email,
-                    estudiantes.id,     
-                    estudiantes.matricula,
-                    estudiantes.telefono,
-                    gruposv.nombregv AS nombre_gv,
-                    i_genero.nombreig AS nombre_ig,
-                    i_genero.id AS id_genero,
-                    t_grupos.nomenclatura AS grupo,  -- Nombre del grupo
-                    programa_edu.nombre AS carrera  -- Nombre de la carrera o programa educativo
-                FROM estudiantes
-                INNER JOIN usuarios ON estudiantes.usuario_id = usuarios.id
-                LEFT JOIN gruposv ON estudiantes.grupos_v = gruposv.id
-                LEFT JOIN i_genero ON estudiantes.i_genero = i_genero.id
-                LEFT JOIN estudiante_grupo eg ON estudiantes.id = eg.estudiante_id
-                LEFT JOIN t_grupos ON eg.grupo_id = t_grupos.id
-                LEFT JOIN programa_edu ON t_grupos.programa_e = programa_edu.id
-                WHERE estudiantes.grupos_v = $id";
-    $consulta = mysqli_query($conexion, $usuarios);
-    $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
-
-    $ig = "SELECT * FROM i_genero";
-    $consulta2 = mysqli_query($conexion, $ig);
-    $dataig = mysqli_fetch_all($consulta2, MYSQLI_ASSOC);
-
-?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Grupos Vulnerables</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Respuestas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
 <body>
-        <?php if ($id == 3) {?>
-            <style>
-                .nose{
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 1100px;
-                }
-            </style>
-        <?php }else{ ?>
-            <style>
-                .nose{
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    width: 1100px;
-                }
-            </style>
-        <?php } ?>
-
-    <style>
-        .col-auto{
-            font-size: large;
-        }
-        .filtro{
-            width: 25%;
-        }
-        .boton{
-            align-self: right;
-        }
-
-    </style>
-<div class="container py-3">
-    <h2 class="text-center">Estudiantes por: <?php echo $NGV; ?></h2>
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <div class="nose">
-            <?php if ($id == 3) {?>
-
-                <div class="filtro">
-                    Filtrar por:
-                    <select name="ig" id="filterGenero" class="form-select"> 
-                        <option value="0" selected>Todos</option>
-                        <?php foreach ($dataig as $ig):?>
-                            <option value="<?php echo $ig['id']; ?>"><?php echo $ig['nombreig']; ?></option>
-                        <?php endforeach;?>
-                    </select>
-                </div>  
-            
-            <?php } ?>
-
-
-            <?php if ($id == 3) {?><?php } ?>
-
-
-                <div class="boton"> <a href="../sesiones/index.php" class="btn btn-primary">Volver a los filtros</a> </div>
+    <div class="container py-4">
+        <h2 class="text-center">GRUPOS VULNERABLES</h2>
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="searchForm">
+                    <div class="mb-4">
+                        <!-- <label for="grupoVulnerable" class="form-label">Selecciona un grupo vulnerable:</label> -->
+                        <select id="grupoVulnerable" name="grupoVulnerable" class="form-select" required>
+                            <option value="" disabled selected>Selecciona un grupo</option>
+                            <option value="paternal">Paternal</option>
+                            <option value="economico">Economico</option>
+                            <option value="salud">Salud</option>
+                            <option value="baja">Deserción Académica</option>
+                            <option value="etnia">Población Indígena Linguística</option>
+                            <!-- Más opciones de grupos se pueden agregar aquí -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </form>
+                
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Campo de búsqueda -->
+                <div class="mb-3">
+                    <!-- <label for="searchInput" class="form-label">Buscar en resultados:</label> -->
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar...">
+                </div>
+        
+                <table class="table table-striped" id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Matrícula</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Grupo Vulnerable</th>
+                            <th>Pregunta</th>
+                            <th>Respuesta</th>
+                            <th>Observaciones</th>
+                            <th>Fecha de Respuesta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se cargarán los resultados -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
     </div>
-    <table id="usuariosTable" class="table table-sm table-striped table-hover mt-4">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Matrícula</th>
-            <th>Carrera</th>
-            <th>Grupo</th>
-            <th>Email</th>
-            
-            <?php if ($id == 3) {?>
-                <th>Identidad</th>
-            <?php } ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($data as $estudiante):?>
-        <tr data-genero="<?php echo $estudiante['id_genero']; ?>">
-            <td> <?php echo $estudiante['id']; ?> </td>
-            <td> <?php echo $estudiante['nombre']; ?> </td>
-            <td> <?php echo $estudiante['apellido_paterno'] . ' ' . $estudiante['apellido_materno']; ?> </td>
-            <td> <?php echo $estudiante['matricula']; ?> </td>
-            <td> <?php echo $estudiante['carrera']; ?> </td>
-            <td> <?php echo $estudiante['grupo']; ?> </td>
-            <td> <?php echo $estudiante['email']; ?> </td>
-            
-            <?php if ($id == 3) {?>
-                <td> <?php echo $estudiante['nombre_ig']; ?> </td>
-            <?php } ?>
-        </tr>
-        <?php endforeach;?>
-    </tbody>
-</table>
-</div>
-
-<script>
-    // Obtener los elementos de la tabla y el filtro
-    const table = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
-    const filter = document.getElementById('filterGenero');
-    console.log(table);
-
-    // Evento que se dispara cuando cambia el select
-    filter.addEventListener('change', function() {
-        const selectedGenero = this.value;
-
-        // Iterar sobre todas las filas de la tabla
-        for (let row of table.rows) {
-            const genero = row.getAttribute('data-genero');
-
-            // Si el valor del filtro es "0" (todos) o coincide con el género, mostrar la fila
-            if (selectedGenero === "0" || genero === selectedGenero) {
-                row.style.display = '';
-            } else {
-                // Si no coincide, ocultar la fila
-                row.style.display = 'none';
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>$(document).ready(function () {
+        $('#searchForm').on('submit', function (e) {
+            e.preventDefault(); // Evitar recargar la página
+    
+            const grupoVulnerable = $('#grupoVulnerable').val();
+    
+            // Validar que se seleccionó un grupo
+            if (!grupoVulnerable) {
+                alert('Por favor selecciona un grupo vulnerable.');
+                return;
             }
-        }
+    
+            // Enviar petición AJAX
+            jQuery.noConflict();
+            $.ajax({
+                url: '../../../app/Controllers/GruposV/buscar_respuestas.php',
+                type: 'POST',
+                data: { grupo_vulnerable: grupoVulnerable },
+                dataType: 'json',
+                success: function (data) {
+                    const tbody = $('#resultTable tbody');
+                    tbody.empty(); // Limpiar la tabla
+    
+                    if (data.length > 0) {
+                        data.forEach(function (respuesta) {
+                            tbody.append(`
+                                <tr>
+                                    <td>${respuesta.matricula}</td>
+                                    <td>${respuesta.nombre_completo}</td>
+                                    <td>${respuesta.email}</td>
+                                    <td>${respuesta.grupo_vulnerable}</td>
+                                    <td>${respuesta.pregunta}</td>
+                                    <td>${respuesta.respuesta}</td>
+                                    <td>${respuesta.respuesta}</td>
+                                    <td>${respuesta.created_at}</td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        tbody.append('<tr><td colspan="8" class="text-center">No se encontraron resultados</td></tr>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Estado: " + status);
+                    console.error("Error: " + error);
+                    console.error("Respuesta del servidor: " + xhr.responseText);
+                    alert('Error al buscar respuestas: ' + error + '. Detalles: ' + xhr.responseText);
+                }
+            });
+        });
+    
+        // Función para filtrar la tabla según lo que escriba el usuario
+        $('#searchInput').on('input', function () {
+            var value = $(this).val().toLowerCase(); // Obtener el valor del input en minúsculas
+            $('#resultTable tbody tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1); // Filtrar filas
+            });
+        });
     });
-</script>
-
+    
+    </script>
 </body>
 </html>
-                                        
