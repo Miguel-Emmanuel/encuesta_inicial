@@ -12021,6 +12021,7 @@ CREATE TABLE `estudiante_grupo` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `estudiante_id` bigint(20) unsigned DEFAULT NULL,
   `grupo_id` int(11) DEFAULT NULL,
+  `tutor_id` int(11) NOT NULL,
   `periodo_id` bigint(20) unsigned DEFAULT NULL,
   `activo` int(11) DEFAULT 1,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
@@ -12032,9 +12033,23 @@ CREATE TABLE `estudiante_grupo` (
   CONSTRAINT `estudiante_grupo_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `estudiante_grupo_ibfk_2` FOREIGN KEY (`grupo_id`) REFERENCES `t_grupos` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `estudiante_grupo_ibfk_3` FOREIGN KEY (`periodo_id`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `estudiante_grupo` */
+
+insert  into `estudiante_grupo`(`id`,`estudiante_id`,`grupo_id`,`tutor_id`,`periodo_id`,`activo`,`created_at`,`desactivated_at`) values 
+(1,1,1,0,1,0,'2024-10-04 13:39:24',NULL),
+(2,2,1,0,1,1,'2024-10-04 13:39:34',NULL),
+(3,3,1,0,1,1,'2024-10-07 10:24:06',NULL),
+(4,4,1,0,1,1,'2024-10-07 10:24:25',NULL),
+(5,5,2,0,1,1,'2024-10-07 10:57:26',NULL),
+(6,8,2,0,1,1,'2024-10-07 10:58:26',NULL),
+(7,6,1,0,1,1,'2024-10-07 11:04:23',NULL),
+(8,9,3,0,1,1,'2024-10-07 11:04:32',NULL),
+(9,10,2,0,1,1,'2024-10-07 11:04:39',NULL),
+(10,11,2,0,1,1,'2024-10-07 11:04:48',NULL),
+(11,12,1,0,1,1,'2024-10-07 11:04:57',NULL),
+(12,7,3,0,1,1,'2024-10-07 11:05:16',NULL);
 
 /*Table structure for table `estudiante_respuesta` */
 
@@ -12166,17 +12181,29 @@ CREATE TABLE `estudiantes` (
   `usuario_id` bigint(20) unsigned DEFAULT NULL,
   `matricula` text DEFAULT NULL,
   `telefono` text DEFAULT NULL,
-  `genero` text DEFAULT NULL,
+  `genero` int(11) DEFAULT NULL,
   `activo` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
+  KEY `grupos_v` (`genero`),
   CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `estudiantes` */
 
 insert  into `estudiantes`(`id`,`usuario_id`,`matricula`,`telefono`,`genero`,`activo`) values 
-(13,162,'8941984',NULL,NULL,1);
+(1,3,'123456','7226668884',1,1),
+(2,6,'123456','7226668884',2,1),
+(3,7,'123456','7226668884',1,1),
+(4,8,'123456','7226668884',1,1),
+(5,9,'123456','7226668884',1,1),
+(6,10,'123456','7226668884',1,1),
+(7,11,'123456','7226668884',1,1),
+(8,12,'123456','7226668884',1,1),
+(9,13,'123456','7226668884',2,1),
+(10,14,'123456','7226668884',1,1),
+(11,15,'123456','7226668884',1,1),
+(12,16,'123456','7226668884',1,1);
 
 /*Table structure for table `grupo_tutor` */
 
@@ -12197,12 +12224,14 @@ CREATE TABLE `grupo_tutor` (
   CONSTRAINT `grupo_tutor_ibfk_1` FOREIGN KEY (`tutor_id`) REFERENCES `tutores` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `grupo_tutor_ibfk_2` FOREIGN KEY (`grupo_id`) REFERENCES `t_grupos` (`id`) ON DELETE NO ACTION,
   CONSTRAINT `grupo_tutor_ibfk_3` FOREIGN KEY (`periodo_id`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `grupo_tutor` */
 
 insert  into `grupo_tutor`(`id`,`grupo_id`,`tutor_id`,`periodo_id`,`activo`,`created_at`,`desactivated_at`) values 
-(1,1,1,1,1,'2024-11-20 10:44:58',NULL);
+(1,1,2,1,1,'2024-10-04 13:32:36',NULL),
+(2,2,1,1,1,'2024-10-07 10:51:17',NULL),
+(3,3,2,1,1,'2024-10-07 10:54:51',NULL);
 
 /*Table structure for table `gruposv` */
 
@@ -15136,7 +15165,7 @@ CREATE TABLE `periodos_escolar` (
 /*Data for the table `periodos_escolar` */
 
 insert  into `periodos_escolar`(`id`,`alias`,`inicio`,`fin`,`activo`) values 
-(1,'4t 5t','2024-11-05','2024-11-16',1);
+(1,'Septiembre - Diciembre 2024','2024-09-02','2024-12-20',1);
 
 /*Table structure for table `preguntas` */
 
@@ -15292,11 +15321,11 @@ CREATE TABLE `programa_edu` (
   `grado` varchar(20) DEFAULT NULL,
   `nombre` text DEFAULT NULL,
   `clave` varchar(10) DEFAULT NULL,
-  `activo` int(11) NOT NULL DEFAULT 1,
+  `activo` int(11) DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `programa_edu` */
 
@@ -15320,8 +15349,7 @@ insert  into `programa_edu`(`id`,`grado`,`nombre`,`clave`,`activo`,`created_at`,
 (17,'Ingeniería','Alimentos','Alimentos',1,NULL,NULL),
 (18,'Licenciatura','Protección Civil y Emergencias','IPCE',1,NULL,NULL),
 (19,'Licenciatura','Negocios y Mercadotecnia','INM',1,NULL,NULL),
-(20,'Licenciatura','Enfermería','LE',1,NULL,NULL),
-(21,'Ingenirera','bitecnologia','BIO',1,NULL,NULL);
+(20,'Licenciatura','Enfermería','LE',1,NULL,NULL);
 
 /*Table structure for table `respuestas` */
 
@@ -15477,7 +15505,7 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `roles` */
 
@@ -15485,8 +15513,7 @@ insert  into `roles`(`id`,`nombre`,`descripcion`,`created_at`,`updated_at`) valu
 (1,'Director de Carrera','Hola',NULL,NULL),
 (2,'PTC/Tutor','Hola',NULL,NULL),
 (3,'Estudiante','Hola',NULL,NULL),
-(4,'Psicología','Hola',NULL,NULL),
-(5,'nuevo ingreso','este no hara nada',NULL,NULL);
+(4,'Psicología','Hola',NULL,NULL);
 
 /*Table structure for table `secciones` */
 
@@ -15526,12 +15553,14 @@ CREATE TABLE `t_grupos` (
   PRIMARY KEY (`id`),
   KEY `programa_e` (`programa_e`),
   CONSTRAINT `t_grupos_ibfk_1` FOREIGN KEY (`programa_e`) REFERENCES `programa_edu` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `t_grupos` */
 
 insert  into `t_grupos`(`id`,`nombre`,`programa_e`,`nomenclatura`,`activo`) values 
-(1,'idgs',2,'MIKE',1);
+(1,'DSM',1,'DSM-108',1),
+(2,'IRD',2,'IRD - 11',1),
+(3,'IDGS',12,'IDGS - 101',1);
 
 /*Table structure for table `tutores` */
 
@@ -15546,12 +15575,13 @@ CREATE TABLE `tutores` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `tutores_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tutores` */
 
 insert  into `tutores`(`id`,`usuario_id`,`clave_sp`,`telefono`,`activo`) values 
-(1,17,'00794492','7226598068',1);
+(1,17,'00794492','7226598068',1),
+(2,18,'1129599','7224308544',1);
 
 /*Table structure for table `usuarios` */
 
@@ -15567,19 +15597,19 @@ CREATE TABLE `usuarios` (
   `pass` text NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `rol_id` bigint(20) unsigned NOT NULL,
-  `activo` int(11) NOT NULL DEFAULT 1,
+  `activo` int(11) DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`) USING HASH,
   KEY `users_rol_id_foreign` (`rol_id`),
   CONSTRAINT `users_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`email`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`activo`,`created_at`,`updated_at`) values 
-(1,'Director','UTVTS','UTVT','director@gmail.com',NULL,'$2y$10$JILiKF.1mHxsemuggePdkeWLRVwbPmn45aG8YTt3G7ZDi.j1Bgx5a',NULL,1,1,NULL,NULL),
+(1,'Director','UTVT','UTVT','director@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,NULL,NULL),
 (2,'Mike','UTVT','UTVT','ptc@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
 (3,'Mike','Arriola','Ortega','estudiante@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (4,'Jimena','Diaz','Diaz','psicologia@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),
@@ -15596,147 +15626,7 @@ insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`ema
 (15,'Ian','Gonzales','Gomez','ian@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (16,'Eduardo','edu','edu','eduard@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (17,'Pamela Elisa','Rosales','Aviles','pamela.rosales@utvtol.edu.mx',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
-(22,'Mike','Arriola','Ortega','al222010230@gmail.com',NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
-(23,'Gustavo ','Ovando','Moreno','al222410815@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(24,'Jackson Alejandro','Flores','Vega','al222410895@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(25,'VALENTIN','CARLOS','ESQUILA','al222410922@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(26,'Uriel Tonatuh ','Gonzalez','Miranda','al222410834@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(27,'Marco Antonio ','Guadarrama','Rojas ','al222410861@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(28,'XIMENA','CORDERO','MONTOYA ','al222410938@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(29,'Jesus Ivan','Romero','Ortega','al222410828@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(30,'Stephany Guadalupe','Araujo','Rubi','al222410966@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(31,'Angélica Lucero','Mejía','Soriano','alms222411196@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(32,'Alex Garet ','Atilano','Crisoforo','al222411174@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(33,'YULIANA LIZETH','BETANCOURT ','MEDINA','al222411198@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(34,'Aline Iveth','Vazquez','Diaz','al222410848@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(35,'Nadia Monserrath','Diaz','Mayen','al222410965@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(36,'Katia Jimena ','Reza','Sánchez','al222411208@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(37,'Atziri Sarai ','Rodríguez','Gómez','al222411180@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(38,'Alan Osiris','Almaraz','Tovar','al222410962@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(39,'Cristopher ','Quiroz','Perez','al222411204@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(40,'Santiago Adonai','Gutierrez ','Morales','al2024222410927@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(41,'Brenda','Escobar','Cabrera','al222410840@gmai.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(42,'Alison Betzabeth','fuentes','de Jesús','al222411583@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(43,'Alondra Estefany  ','Tellez','Salcedo','al222410958@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(44,'Alexander','Peña','Hernández','al222410899@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(45,'Uriel','Rodríguez ','Castillo ','al22241118@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(46,'Angel Ivan ','Jiménez','Hernández','al222410830@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(47,'Betzabeth Dayanm ','Ruiz','Trujillo','al222410983@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(48,'Leonardo Alejandro ','Martinez ','Aquiles','al222411197@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(49,'Diego Abraham','Octaviano','Ramirez','al222410100@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(50,'pedro','rojas','hurtado','al222410846@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(51,'Juan Pablo','Romero ','Ortega','al222410888@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(52,'Alan','Alcantara','Valencia','al222410908@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(53,'Angel de Jesus ','Martinez','Cervantes','al222410961@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(54,'KEIRA','MORALES','PIÑA','al222410913@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(55,'Ximena','Florencio','Cisneros','la22410863@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(56,'DIEGO ALVARO','ARRIAGA','PEREZ','al222410845@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(57,'Adolfo Angel ','Esquivel','Aguilar ','al222410890@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(58,'maria de la cruz ','jardon','medina','al222410823@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(59,'JAEL SEBASTIAN','SEGURA','SEGURA','al222410981@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(60,'Manuel Isaac  ','Garduño','Hernandez','al222410872@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(61,'Consuelo Estrella','Posadas','Garcia','al222410083@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(62,'Yire Abdiel','Ramirez','Sanchez','al222411183@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(63,'hanz andres ','gonzalez','ocampo','al222410917@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(64,'Gustavo Angel ','Palomares ','Duro','gustavopalomaresduro@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(65,'Fernanda','Ramirez','Garcia','al222410980@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(66,'bianca','gutierrez','diaz','al222411050@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(67,'Crhystopher Kevin ','Luis','Esteban ','al222411218@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(68,'Hugo','Hernández','Reyes','al222411339@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(69,'Victor Manuel','De la Cruz','Alcántara','al222410860@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(70,'Irving Alejandro','Gonzalez','Bermudez','al222411210@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(71,'Giovanni','Calzada','Castañeda','al222411192@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(72,'Jonathan ','Anduaga','Gonzalez','al222411173@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(73,'cassandra','medina','lerma','al222410826@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(74,'Dayanna Consuelo ','Reyes','García','al222410870@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(75,'miguel','nava ','meza','al2224109946@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(76,'Gabriel Jair','Bernal','De Jesus','al222410880@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(77,'Jaredtzi Aide','Noyola','Sanabria','al222410893@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(78,'Sebastian Uriel','Mendez','Flores','al222410637@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(79,'Luis Rodrigo','Briseño','Valencia','al222411202@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(80,'Gabriel','Chavez','Enriquez','al222411175@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(81,'Nilzehat Azucena','García','Guadarrama','al222410926@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(82,'Sebastian Yael','Martinez ','Martinez','al419085307@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(83,'Cristhian','Hernandez','Salinas','al224550053@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(84,'Mai Adiyareth','Ponce','Sanchez','al222411179@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(85,'DIEGO','GUERRERO','RAMIREZ','al222410887@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(86,'Alexandra ','Banderilla ','Romero ','al222410847@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(87,'Santiago','Farfan','Anduaga','al222411107@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(88,'Diego','Hernandez','Barranco','al222410837@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(89,'Kevin Horacio ','Dominguez','Posadas','al222410875@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(90,'Rita Karla Rubí ','Botello ','Rodríguez ','al222410871@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(91,'Kevin','Quiroz','Balderas','al222410936@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(92,'Rhaziel ','García ','López ','al222410822@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(93,'Abril Adilene','Hernandez','Romero','al222411216@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(94,'Alexa','Díaz ','Loperena','al222410877@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(95,'Edith','Villanueva','Vázquez','al222410792@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(96,'alexis ','valdes','avila','al222411219@gmail.ccom',NULL,'123456',NULL,3,1,NULL,NULL),
-(97,'MONICA  WENDOLYNE','ROMERO','GONZALEZ','al222410984@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(98,'Karol Masiel ','Morales ','de la Cruz ','al222410975@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(99,'Monica Guadalupe','Flores','Segundo','al222410914@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(100,'David','García','Genaro','al222410881@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(101,'Raul','Valdes','Villavicencio ','al222411222@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(102,'Antonio','Ruaro','Pedraza','al222411207@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(103,'Zuheidi','Mendoza','Sanchez','al222410849@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(104,'Samar Alejandra','Arriaga','Mancera','al222411181@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(105,'Jesus Efren ','Granda ','Pichardo','al222411176@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(106,'Christopher Alejandro','Henandez ','Salas','al222411597@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(107,'Levid','Fuentes','Mireles','al242410892@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(108,'Sharon Mariel ','Hernandez ','Guzman ','al222410960@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(109,'Zadquiel Emanuel','Jimenez','Sanchez','al222410952@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(110,'Angel','Ventura','Gonzalez','al222411205@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(111,'Alexandre ','Morales','Almeida ','al222410829@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(112,'Luis Angel','Hernández ','Piña','al222410825@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(113,'cristian ','ruiz','flores','al222410992@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(114,'Evelyn ','Elías ','Vicencio ','al222411323@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(115,'Gustavo Arael','Consuelos','Hernández','al222411217@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(116,'Andry Gabriel','Rosales ','Loyo','al222410919@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(117,'Yocelin','Meliton','Esquivel','esquivelyocelin9@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(118,'Einar Ivan','Lazcano','Luna','al222411190@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(119,'Itzel','Martínez ','Bonifacio','al222410968@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(120,'LIZET ESTRELLA','PALOMARES','VILLEGAS','al222410876@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(121,'Dorian Brisa','Robledo','Padilla','al222411200@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(122,'Monica Daely','Isidro','Silva','al222410859@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(123,'Oliver Alexander','Escobar','Maya','al222410891@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(124,'maria fernanda ','flores ','flores','al222410931@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(125,'Eduardo','Gonzalez','Villalva','al222410988@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(126,'Pablo','Ramírez','Romero','al222410915@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(127,'ulises','zamoza','nava','al222411203@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(128,'Dylan Santiago','Alonso','Carrillo','al22410852@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(129,'Alexzandro','Garay','Lorenzo','al222410901@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(130,'Ricardo','Diaz','Avila','al222411209@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(131,'Angel Rafael','Rojas','Caballero','al222410939@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(132,'Marisol ','Cortez','González ','al222410909@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(133,'Danna Perla ','Garcia','Guzman','al222411172@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(134,'moises michel','bolaños','martinez','al222410038@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(135,'Jorge Abraham','Guerra','Gutiérrez','al222410884@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(136,'Juan Pablo','Vega','Lopez','al222410944@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(137,'NAHUM YAVET ','CASTILLO','RAMIREZ','al222411182@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(138,'Guadalupe Itzel ','Pineda','Cisneros','lupiispineda@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(139,'Uriel ','Rodríguez ','Castillo','al22241118-duplicado-116@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(140,'AXEL EMANUEL','HERNANDEZ','TOMAS','222410295@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(141,'Andrea ','Sanabria','Almonte','al222410945@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(142,'Angel Gabriel ','Torrez','Garcia','al222410843@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(143,'Bryan ','Torres','Jimenez','al222410943@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(144,'Miriam Sarahi ','Hernández ','Fuentes ','mirih222410042@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(145,'Valeria','Peña','Romero','al222410959@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(146,'Ana Karen ','Miranda','Huerta ','al222411177@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(147,'Mario Alberto','Almeida','Ancira','al222410916@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(148,'Isaac','Diaz','Sanchez','isaac.diazsanchez196@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(149,'Samuel','Gutierrez','Ugalde','al222410897@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(150,'Aldo emmanuel','Rubio','Valencia ','al2224109030@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(151,'Santiago Angel','MORENO','FLORES','al222410898@gmal.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(152,'Manuel','Rodriguez','Calderon','al222410850@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(153,'pedro ariel','paniagua','gonzalez','al24552001@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(154,'Victoria ','García ','Herrera','al222411195@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(155,'Rafael','Telles','Medrano','al222411168@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(156,'Diego','Garcia','Bustamante','diegobustamante535@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(157,'MARIA GUADALUPE','RUIZ','ROMERO','al222410977@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(158,'Osvaldo','Salinas','Aranda','al222411167@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(159,'Ailen','Zagaceta ','Garcia ','al222410947@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(160,'Cristian Antonio ','Sara ','Escutia ','al222410824@gmail.com',NULL,'123456',NULL,3,1,NULL,NULL),
-(161,'MIGUEL EMMANUEL','ARRIOLA','ORTEGA','al222010277878@gmail.com',NULL,'$2y$10$qz4b4Qd9MkISUQvHfYjf1.C/VAdAnZ.mSI2W1gmDqCBsAGqNlIxF2',NULL,3,1,NULL,NULL),
-(162,'MIGUEL EMMANUEL','ARRIOLA','ORTEGA','al2220654277878@gmail.com',NULL,'$2y$10$LvEfat.NM9yzmQtic2NNRu2Q9Dw13PqY6jD1leOylDAGVCgRbZs2m',NULL,3,1,NULL,NULL);
+(18,'Miguel Angel','Orona','Lopez','miguel.orona@utvtol.edu.mx',NULL,'$2y$10$sZEv.NZ9jqxU4/EfQcY4xOUmHKtXjAwrzvux.VkqZ7i75rJDMoId6',NULL,2,1,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
