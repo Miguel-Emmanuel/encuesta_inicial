@@ -11,7 +11,7 @@ if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
 }
 
-// Obtener `estudiante_id` usando `usuario_id` de la sesión
+// Obtener estudiante_id usando usuario_id de la sesión
 $stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
 $stmt->bind_param("i", $_SESSION["id"]);
 $stmt->execute();
@@ -96,8 +96,8 @@ $result = $conexion->query($sql);
       
               echo "<tr>";
               echo "<td>" . $row["id"]  . ' | ' . $row["descripcion"] . "</td>";
-              echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
-            //   echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+            //   echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
+              echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
               echo "<td class='centrar'>" . $iconoCompletado . "</td>";
               echo "</tr>";
       

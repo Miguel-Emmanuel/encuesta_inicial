@@ -10,7 +10,6 @@ if (isset($_POST['grupo_vulnerable'])) {
     // Consultas según el grupo vulnerable
     switch ($grupoVulnerable) {
         case 'paternal':
-            $grupoVulnerable = 'Paternal';
             $sql = "
                 SELECT 
                     e.matricula,
@@ -26,7 +25,7 @@ if (isset($_POST['grupo_vulnerable'])) {
                 JOIN usuarios u ON e.usuario_id = u.id
                 JOIN preguntas p ON er.pregunta_id = p.id -- Relación con preguntas
                 WHERE 
-                    (er.pregunta_id = 10 AND er.respuesta IN ('Divorciado(a)', 'Viudo(a)', 'Unión libre'))
+                    (er.pregunta_id = 10 AND er.respuesta IN ('Divorciado(a)', 'Viudo(a)', 'Unión libre', 'Casado(a)'))
                     OR
                     (er.pregunta_id = 11 AND er.respuesta IN ('2 hijos(as)', 'Más de 2 hijos(as)'))
                 GROUP BY e.id;
@@ -34,7 +33,6 @@ if (isset($_POST['grupo_vulnerable'])) {
             break;
 
             case 'economico':
-                $grupoVulnerable = 'Económico';
                 $sql = "
                 SELECT 
                     e.matricula,
@@ -81,8 +79,6 @@ if (isset($_POST['grupo_vulnerable'])) {
                 break;
                 
             case 'salud':
-                $grupoVulnerable = 'Salud';
-
                 $sql = "
                 SELECT 
                     e.matricula,
@@ -112,6 +108,22 @@ if (isset($_POST['grupo_vulnerable'])) {
                         -- Pregunta 74: Respuesta 'Sí'
                         (r.pregunta_id = 74 AND r.respuesta = 'Si')
                     )
+                                 OR
+                    (
+                        -- Pregunta 76: Respuesta 'Sí'
+                        (r.pregunta_id = 76 AND r.respuesta = 'Si')
+                    )
+                                       OR
+                    (
+                        -- Pregunta 77: Respuesta 'alergia'
+                        (r.pregunta_id = 77)
+                    )
+                                           OR
+                    (
+                        -- Pregunta 78: Respuesta 'si'
+                        (r.pregunta_id = 78)
+                    )
+
                 GROUP BY e.id;
             ";
             
@@ -119,8 +131,6 @@ if (isset($_POST['grupo_vulnerable'])) {
                 break;
 
                 case 'baja':
-                $grupoVulnerable = 'Deserción Académic';
-
                     $sql = "
     SELECT 
         e.matricula,
@@ -146,8 +156,6 @@ if (isset($_POST['grupo_vulnerable'])) {
                     break;
 
                     case 'etnia':
-                        $grupoVulnerable = 'Indígena';
-
                         $sql = "
                         SELECT 
                             e.matricula,

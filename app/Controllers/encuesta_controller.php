@@ -9,7 +9,7 @@
 
         // $idUser = $_SESSION["id"];
 
-// Obtener `estudiante_id` usando `usuario_id` de la sesión
+// Obtener estudiante_id usando usuario_id de la sesión
 $stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
 $stmt->bind_param("i", $_SESSION["id"]);
 $stmt->execute();
@@ -45,7 +45,7 @@ $stmt->close();
     //     // Separar el valor recibido (id y nombre)
     //     list($opcionId, $respuestaTexto) = explode(',', $respuesta);
         
-    //     // Guardar el ID en `opcion_id` y el nombre en `respuesta_texto`
+    //     // Guardar el ID en opcion_id y el nombre en respuesta_texto
     //     guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
     // } 
 
@@ -65,10 +65,10 @@ $stmt->close();
                     // Caso de una sola opción (radio button o select simple)
                     $opcionId = obtenerOpcionId($conexion, $idPregunta, $respuesta);
                     if ($opcionId !== null) {
-                        // Guardar tanto en `opcion_id` como en `respuesta_texto`
+                        // Guardar tanto en opcion_id como en respuesta_texto
                         guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto ?: $respuesta);
                     } else {
-                        // Fallback en caso de no encontrar un `opcion_id`, guarda el texto en `respuesta_texto`
+                        // Fallback en caso de no encontrar un opcion_id, guarda el texto en respuesta_texto
                         guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuestaTexto ?: $respuesta);
                     }
                 }
@@ -161,18 +161,18 @@ $stmt->close();
             }
             
             // Verificar si la pregunta es sobre género (por ejemplo, si la pregunta tiene ID 9)
-            if ($idPregunta == 9) {
-                // Actualizar la tabla usuarios con el género seleccionado
-                $stmtActualizarGenero = $conexion->prepare("UPDATE estudiantes SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
-                $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
+            // if ($idPregunta == 9) {
+            //     // Actualizar la tabla usuarios con el género seleccionado
+            //     $stmtActualizarGenero = $conexion->prepare("UPDATE estudiantes SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
+            //     $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
                 
-                $stmtActualizarGenero->execute();
+            //     $stmtActualizarGenero->execute();
                 
-                if ($stmtActualizarGenero->affected_rows <= 0) {
-                    echo "Error al actualizar el género en la tabla de usuarios.";
-                }
-                $stmtActualizarGenero->close();
-            }
+            //     if ($stmtActualizarGenero->affected_rows <= 0) {
+            //         echo "Error al actualizar el género en la tabla de usuarios.";
+            //     }
+            //     $stmtActualizarGenero->close();
+            // }
             // if (in_array($idPregunta, [17, 18, 19])) {
             //     // Preguntas de país (17), estado (18) y municipio (19)
             //     if ($idPregunta == 17) {
