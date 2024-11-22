@@ -17,7 +17,7 @@
                         <select id="grupoVulnerable" name="grupoVulnerable" class="form-select" required>
                             <option value="" disabled selected>Selecciona un grupo</option>
                             <option value="paternal">Paternal</option>
-                            <option value="economico">Economico</option>
+                            <option value="economico">Económico</option>
                             <option value="salud">Salud</option>
                             <option value="baja">Deserción Académica</option>
                             <option value="etnia">Población Indígena Linguística</option>

@@ -10,6 +10,7 @@ if (isset($_POST['grupo_vulnerable'])) {
     // Consultas según el grupo vulnerable
     switch ($grupoVulnerable) {
         case 'paternal':
+            $grupoVulnerable = 'Paternal';
             $sql = "
                 SELECT 
                     e.matricula,
@@ -33,6 +34,7 @@ if (isset($_POST['grupo_vulnerable'])) {
             break;
 
             case 'economico':
+                $grupoVulnerable = 'Económico';
                 $sql = "
                 SELECT 
                     e.matricula,
@@ -79,6 +81,8 @@ if (isset($_POST['grupo_vulnerable'])) {
                 break;
                 
             case 'salud':
+                $grupoVulnerable = 'Salud';
+
                 $sql = "
                 SELECT 
                     e.matricula,
@@ -115,6 +119,8 @@ if (isset($_POST['grupo_vulnerable'])) {
                 break;
 
                 case 'baja':
+                $grupoVulnerable = 'Deserción Académic';
+
                     $sql = "
     SELECT 
         e.matricula,
@@ -140,6 +146,8 @@ if (isset($_POST['grupo_vulnerable'])) {
                     break;
 
                     case 'etnia':
+                        $grupoVulnerable = 'Indígena';
+
                         $sql = "
                         SELECT 
                             e.matricula,
