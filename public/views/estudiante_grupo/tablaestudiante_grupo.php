@@ -21,7 +21,10 @@ $estugrup = $conexion->query($sqlEstuGrup);
     <h2 class="text-center">Estudiante_Grupo</h2>
     <div class="row justify-content-end">
         <div class="col-auto">
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambiomodal">Cambio de Grupo</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambioGrupoModal">
+    Cambio de Grupo
+</button>
+
         </div>
         <div class="col-auto">
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
@@ -89,7 +92,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
 
 
 <?php include "modalcreate.php"; ?>
-<?php include "modalcambio.php"; ?>
+<?php include "modalcambio2.php"; ?>
 
 <?php
 $estu->data_seek(0);

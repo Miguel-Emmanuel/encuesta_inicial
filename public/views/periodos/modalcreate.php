@@ -10,7 +10,7 @@
                 <form action="../../../app/Controllers/Periodos/registro_periodos.php" method="POST" enctype="multipart/form-data">
                     <div class="col-md-4">
                         <label for="validationDefault01" class="form-label">Alias:</label>
-                        <input type="text" class="form-control" id="alias" name="alias" required>
+                        <input type="text" class="form-control" id="alias" placeholder="Septiembre - Diciembre 2024" name="alias" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Inicio del cuatrimestre:</label>
