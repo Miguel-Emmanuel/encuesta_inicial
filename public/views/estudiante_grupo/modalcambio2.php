@@ -2,6 +2,9 @@
 require("../../../app/Controllers/Estudiante_grupo/obtener_estudiante.php");
 $sqlGrupos = "SELECT * FROM t_grupos";
 $grupos = $conexion->query($sqlGrupos);
+
+$sqlPeriodos = "SELECT * FROM periodos_escolar";
+$periodos = $conexion->query($sqlPeriodos);
 ?>
 
 <style>
@@ -22,6 +25,8 @@ $grupos = $conexion->query($sqlGrupos);
         border-radius: 0.25rem;
         /* Bordes redondeados */
         border: 2px solid #198754;
+        display: block; /* Asegura que el checkbox sea un bloque alineable */
+    margin: 0 auto; /* Centrado horizontal */
     }
 
     /* Efecto cuando está seleccionado */
@@ -45,7 +50,7 @@ $grupos = $conexion->query($sqlGrupos);
             </div>
             <div class="modal-body">
                 <!-- Formulario dentro del modal -->
-                <form action="enviar_estudiantes.php" method="POST">
+                <form action="../../../app/Controllers/Estudiante_grupo/cambio_estudiante_grupo.php" method="POST">
                     <div class="mb-3">
                         <label for="grupo" class="form-label">Seleccionar Grupo</label>
                         <select class="form-select" id="grupo" name="grupo" required>
