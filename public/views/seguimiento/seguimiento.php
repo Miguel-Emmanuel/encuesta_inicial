@@ -13,12 +13,12 @@ require '../../../app/Models/conexion.php';
 $usuarios = "SELECT 
                     e.id AS id,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
-                    e.matricula,
+                    e.matricula, e.activo,
                     t_gr.nomenclatura AS grupo,
                     CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno) AS tutor,
                     p.alias AS periodo_escolar,
                     prog.nombre AS carrera,
-                    eg.activo AS activo
+                    eg.activo AS egactivo
                 FROM estudiante_grupo eg
                 INNER JOIN estudiantes e ON eg.estudiante_id = e.id
                 INNER JOIN usuarios u ON e.usuario_id = u.id
@@ -39,7 +39,6 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programa Educativo</title>
 </head>
 
 <style>
@@ -48,25 +47,13 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
         background-color: #8E70D0;
         border: solid 1px;
     }
-
-    .group1 {
-        padding-bottom: 5%;
-    }
 </style>
 
 <body>
+
+<h2 class="text-center">Seguimiento de Estudiantes</h2> 
     <div class="container py-3">
         <div class="row justify-content-center">
-            <form action="indexresultados.php" method="POST">
-                <div class="input-group group1">
-                    <span class="input-group-text w-25">Nombre y Apellidos</span>
-                    <input type="hidden" value="1" name="tipo">
-                    <input type="text" aria-label="Nombre" name="nombre" class="form-control" placeholder="Nombre: Fer">
-                    <input type="text" aria-label="ApellidoP" name="ap" class="form-control" placeholder="Apellido Paterno: San">
-                    <input type="text" aria-label="ApellidoM" name="am" class="form-control" placeholder="Apellido Materno: Guz">
-                    <button type="submit" class="btn btn-buscar"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
-                </div>
-            </form>
             <form action="indexresultados.php" method="POST">
                 <input type="hidden" value="2" name="tipo">
                 <div class="input-group mb-3 w-25">
@@ -76,6 +63,16 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                 </div>
                 <div class="form-text">
                     Es necesaria una matrícula completa para obtener un resultado.
+                </div>
+            </form>
+            <form action="indexresultados.php" method="POST">
+                <div class="input-group group1">
+                    <span class="input-group-text w-25">Nombre y Apellidos</span>
+                    <input type="hidden" value="1" name="tipo">
+                    <input type="text" aria-label="Nombre" name="nombre" class="form-control" placeholder="Nombre: Fer">
+                    <input type="text" aria-label="ApellidoP" name="ap" class="form-control" placeholder="Apellido Paterno: San">
+                    <input type="text" aria-label="ApellidoM" name="am" class="form-control" placeholder="Apellido Materno: Guz">
+                    <button type="submit" class="btn btn-buscar"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
                 </div>
             </form>
         </div>
@@ -90,7 +87,8 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                         <th>Grupo</th>
                         <th>Tutor</th>
                         <th>Periodo Escolar</th>
-                        <th>Activo</th>
+                        <th>Usuario Activo</th>
+                        <th>Grupo Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,6 +106,14 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                                 if ($estudiante['activo'] == 1) { ?>
                                     <span class="badge bg-success">Activo</span>
                                 <?php } else if ($estudiante['activo'] == 0) { ?>
+                                    <span class="badge bg-danger">Baja</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ($estudiante['egactivo'] == 1) { ?>
+                                    <span class="badge bg-success">Activo</span>
+                                <?php } else if ($estudiante['egactivo'] == 0) { ?>
                                     <span class="badge bg-danger">Baja</span>
                                 <?php } ?>
                             </td>

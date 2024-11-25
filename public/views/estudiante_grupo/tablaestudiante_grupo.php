@@ -1,16 +1,25 @@
 <?php
 require '../../../database/conexion.php';
 
-$sqlEstuGrup = "SELECT e.id, e.activo, u.nombre, u.apellido_paterno, u.apellido_materno, g.nomenclatura AS nombreg, p.alias 
-                FROM estudiante_grupo AS e
-                INNER JOIN estudiantes AS estu ON estu.id = e.estudiante_id
-                INNER JOIN usuarios AS u ON u.id = estu.usuario_id
-                INNER JOIN t_grupos AS g ON g.id = e.grupo_id
-                INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id
-                WHERE e.activo = 1";
+// Consulta para obtener los estudiantes activos en estudiante_grupo
+$sqlEstuGrup_cambio = "SELECT 
+        e.id, 
+        e.activo, 
+        u.nombre, 
+        u.apellido_paterno, 
+        u.apellido_materno, 
+        g.nomenclatura AS nombreg, 
+        p.alias 
+    FROM 
+        estudiante_grupo AS e
+    INNER JOIN estudiantes AS estu ON estu.id = e.estudiante_id
+    INNER JOIN usuarios AS u ON u.id = estu.usuario_id
+    INNER JOIN t_grupos AS g ON g.id = e.grupo_id
+    INNER JOIN periodos_escolar AS p ON p.id = e.periodo_id
+    WHERE 
+        e.activo = 1";  // Filtramos solo los registros activos
 
-
-$estugrup = $conexion->query($sqlEstuGrup);
+$estugrup = $conexion->query($sqlEstuGrup_cambio);
 ?>
 
 <head>
@@ -21,19 +30,15 @@ $estugrup = $conexion->query($sqlEstuGrup);
     <h2 class="text-center">Estudiante_Grupo</h2>
     <div class="row justify-content-end">
         <div class="col-auto">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambioGrupoModal">
-    Cambio de Grupo
-</button>
-
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cambioGrupoModal">Cambio de Grupo</a>
         </div>
         <div class="col-auto">
             <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevomodal">Nuevo Registro</a>
         </div>
     </div>
-    <?php
-    //Mensaje de registro exitoso
-    if(isset($_REQUEST['e'])){ ?>
-	<div class="row pt-3">
+    
+    <?php if (isset($_REQUEST['e'])) { ?>
+    <div class="row pt-3">
         <div class="col-12">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Registro éxitoso!
@@ -42,6 +47,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
         </div>
     </div>
     <?php } ?>
+
     <table class="table table-sm table-striped table-hover mt-4">
         <thead>
             <tr>
@@ -50,7 +56,7 @@ $estugrup = $conexion->query($sqlEstuGrup);
                 <th>Grupo</th>
                 <th>Periodo Educativo</th>
                 <th>Estado</th>
-                <th>Acciones </th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -58,40 +64,46 @@ $estugrup = $conexion->query($sqlEstuGrup);
                 <tr>
                     <td><?= $row_estugrup['id']; ?></td>
                     <td><?= $row_estugrup['nombre']; ?> <?= $row_estugrup['apellido_paterno']; ?> <?= $row_estugrup['apellido_materno']; ?></td>
-                    <td> <?= $row_estugrup['nombreg']; ?></td>
-                    <td> <?= $row_estugrup['alias']; ?></td>
+                    <td><?= $row_estugrup['nombreg']; ?></td>
+                    <td><?= $row_estugrup['alias']; ?></td>
                     <td><?= $row_estugrup['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
-                        <a href="" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-trash"></i></a>
+                        <a href="#" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="#" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             <?php } ?>
-
         </tbody>
     </table>
+
     <?php
+    // Consulta para obtener estudiantes que no están registrados en estudiante_grupo
     $sqlestuA = "SELECT estu.id, u.nombre, u.apellido_paterno, u.apellido_materno FROM estudiantes AS estu 
     INNER JOIN usuarios AS u ON u.id = estu.usuario_id 
     WHERE estu.id NOT IN (SELECT estudiante_id FROM estudiante_grupo)";
     $estu = $conexion->query($sqlestuA);
 
+    // Consulta para obtener todos los estudiantes
     $sqlestuE = "SELECT estu.id, u.nombre, u.apellido_paterno, u.apellido_materno FROM estudiantes AS estu 
     INNER JOIN usuarios AS u ON u.id = estu.usuario_id";
     $estuE = $conexion->query($sqlestuE);
 
+    // Consulta para obtener los grupos
     $sqlGrupos = "SELECT g.id, g.nomenclatura 
     FROM t_grupos g 
     INNER JOIN grupo_tutor  gt ON g.id = gt.grupo_id";
     $grupos = $conexion->query($sqlGrupos);
 
+    // Consulta para obtener los periodos escolares
     $sqlPer = "SELECT id, alias FROM periodos_escolar";
     $per = $conexion->query($sqlPer);
     ?>
 </div>
 
 
+
 <?php include "modalcreate.php"; ?>
+<?php include "modalcambio.php"; ?>
 <?php include "modalcambio2.php"; ?>
 
 <?php

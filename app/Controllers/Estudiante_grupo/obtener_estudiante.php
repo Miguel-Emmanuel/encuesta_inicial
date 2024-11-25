@@ -15,7 +15,7 @@ if (isset($_POST['grupo_id'])) {
                       JOIN 
                         estudiante_grupo eg ON e.id = eg.estudiante_id
                       WHERE 
-                        eg.grupo_id = ? AND e.activo = 1";
+                        eg.grupo_id = ? AND eg.activo = 1";
     
     $stmt = $conexion->prepare($sqlestudiantes);
     $stmt->bind_param("i", $grupo_id);

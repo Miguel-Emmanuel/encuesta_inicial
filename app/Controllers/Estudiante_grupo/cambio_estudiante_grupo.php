@@ -8,6 +8,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $estudiantes_ids = $_POST['estudiantes']; // IDs de los estudiantes seleccionados
 
     if (!empty($grupo_id) && !empty($nuevo_grupo) && !empty($periodo) && !empty($estudiantes_ids)) {
+        // Desactivar los registros de los estudiantes en el grupo actual
+        $stmt_baja = $conexion->prepare("UPDATE estudiante_grupo SET activo = 0 WHERE grupo_id = ? AND estudiante_id = ?");
+        
+        // Ejecutar la actualización de baja para cada estudiante en el grupo actual
+        foreach ($estudiantes_ids as $estudiante_id) {
+            $stmt_baja->bind_param('ii', $grupo_id, $estudiante_id);
+            if (!$stmt_baja->execute()) {
+                echo "Error al desactivar el estudiante con ID $estudiante_id: " . $stmt_baja->error;
+                exit; // Salir si hay error en la actualización
+            }
+        }
+
         // Obtener el tutor asociado al nuevo grupo
         $stmt_tutor = $conexion->prepare("SELECT grupo_tutor.tutor_id 
                                           FROM grupo_tutor 
@@ -20,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tutor_id = $tutor['tutor_id'] ?? null; // Asegúrate de manejar el caso de tutor no encontrado
 
         if ($tutor_id) {
-            // Preparar la consulta de inserción
-            $stmt_insert = $conexion->prepare("INSERT INTO estudiante_grupo (estudiante_id, grupo_id, tutor_id, periodo_id) 
-                                               VALUES (?, ?, ?, ?)");
+            // Preparar la consulta de inserción para los nuevos registros
+            $stmt_insert = $conexion->prepare("INSERT INTO estudiante_grupo (estudiante_id, grupo_id, tutor_id, periodo_id, activo) 
+                                               VALUES (?, ?, ?, ?, 1)");
 
             foreach ($estudiantes_ids as $estudiante_id) {
                 // Ejecutar la consulta para cada estudiante
