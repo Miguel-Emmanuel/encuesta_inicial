@@ -50,8 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "No se encontró un tutor para el grupo seleccionado.";
         }
-    } else {
-        echo "Faltan parámetros necesarios para procesar la solicitud.";
+    } else { ?>
+    
+    <script>
+        alert("Faltan parámetros necesarios para procesar la solicitud.");
+        window.location.href = '/public/views/estudiante_grupo/index.php';
+
+    </script>
+        <?php
     }
 } else {
     echo "Método no permitido.";
