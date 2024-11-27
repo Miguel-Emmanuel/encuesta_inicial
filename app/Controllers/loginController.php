@@ -25,29 +25,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             //  Compara la contraseña ingresada por el usuario con la que se encuentra en BD
             if (password_verify($passwordUser, $passwordDB)) {
-                session_start();    //  Creando la sesión ya que los datos son validados
+                session_start();    // Creando la sesión ya que los datos son validados
 
-                $_SESSION['id'] = $rowData['id'];
-                $_SESSION['email'] = $rowData['email'];
-                $_SESSION['rol'] = $rowData['rol'];
+            $_SESSION['id'] = $rowData['id'];
+            $_SESSION['email'] = $rowData['email'];
+            $_SESSION['rol'] = $rowData['rol'];
 
-                $rol = $rowData['rol'];
+            $rol = $rowData['rol'];
 
-                //  Redirección a partir del rol del usuario
-                switch ($rol) {
-                    case 1:
-                        header("Location: ../../public/views/sesiones/index.php");
-                        exit();
-                    case 2:
-                        header("Location: ../../public/views/sesiones/index.php");
-                        exit();
-                    case 3:
-                        header("Location: ../../public/views/encuesta/menu_secciones.php");
-                        exit();
-                    case 4:
-                        header("Location: ../../public/views/encuesta/menu_secciones.php");
-                        exit();
-                }
+            // Redirección a partir del rol del usuario
+            switch ($rol) {
+                case 1: // Admin
+                case 2: // PTC
+                case 4: // Otro
+                    header("Location: ../../public/views/sesiones/index.php");
+                    exit();
+                case 3: // Estudiante
+                    header("Location: ../../public/views/encuesta/menu_secciones.php");
+                    exit();
+                default: // Rol desconocido
+                    header("Location: ../../public/views/sesiones/login.php");
+                    exit();
+            }
             } else {
                 // echo "Login incorrecto por contraseña";
                 header("Location: ../../public/views/sesiones/login.php?e=1");

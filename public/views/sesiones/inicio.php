@@ -137,7 +137,8 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
             }
 
             .filtro:hover .dropdown {
-                display: none; /* Desactivamos el hover en móviles */
+                display: none;
+                /* Desactivamos el hover en móviles */
             }
         }
     </style>
@@ -146,18 +147,20 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 <body>
 
     <div class="container">
-        <div class="filtro">
-            Programas Educativos
-            <div class="dropdown">
-                <ul>
-                    <?php foreach ($programas as $item): ?>
-                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=1" . "&nombre=" . urlencode($item['nombre']); ?>">
-                            <li><?php echo htmlspecialchars($item['nombre']); ?></li>
-                        </a>
-                    <?php endforeach; ?>
-                </ul>
+        <?php if ($rol == 1 || $rol == 2): ?>
+            <div class="filtro">
+                Programas Educativos
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($programas as $item): ?>
+                            <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=1" . "&nombre=" . urlencode($item['nombre']); ?>">
+                                <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                            </a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <?php endif ?>
 
         <!-- //<a href="../gruposV/filtro.html" class="" > -->
         <a href="../filtros/index.php?f=2" class="" >
@@ -166,18 +169,20 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
                     </div>
                     </a>
 
-        <div class="filtro">
-            Grupo Tutor
-            <div class="dropdown">
-                <ul>
-                    <?php foreach ($tutores as $item): ?>
-                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=3" . "&nombre=" . urlencode($item['nombre']); ?>">
-                            <li><?php echo htmlspecialchars($item['nombre']); ?></li>
-                        </a>
-                    <?php endforeach; ?>
-                </ul>
+        <?php if ($rol == 1 || $rol == 2): ?>
+            <div class="filtro">
+                Grupo Tutor
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($tutores as $item): ?>
+                            <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=3" . "&nombre=" . urlencode($item['nombre']); ?>">
+                                <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                            </a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <?php endif ?>
 
         <div class="filtro">
             Padecimientos de Salud
@@ -190,7 +195,7 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
         if (isMobile) {
             document.querySelectorAll('.filtro').forEach(filtro => {
-                filtro.addEventListener('click', function () {
+                filtro.addEventListener('click', function() {
                     const dropdown = this.querySelector('.dropdown');
                     const isVisible = dropdown.style.display === 'block';
                     // Cerrar todos los dropdowns
@@ -203,7 +208,7 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
             });
 
             // Cerrar el dropdown si se hace clic fuera
-            window.addEventListener('click', function (e) {
+            window.addEventListener('click', function(e) {
                 if (!e.target.closest('.filtro')) {
                     document.querySelectorAll('.dropdown').forEach(dd => dd.style.display = 'none');
                 }
@@ -211,12 +216,12 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
         } else {
             // En PC usamos el hover para mostrar los dropdowns
             document.querySelectorAll('.filtro').forEach(filtro => {
-                filtro.addEventListener('mouseenter', function () {
+                filtro.addEventListener('mouseenter', function() {
                     const dropdown = this.querySelector('.dropdown');
                     dropdown.style.display = 'block';
                 });
 
-                filtro.addEventListener('mouseleave', function () {
+                filtro.addEventListener('mouseleave', function() {
                     const dropdown = this.querySelector('.dropdown');
                     dropdown.style.display = 'none';
                 });

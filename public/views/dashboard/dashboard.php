@@ -35,7 +35,7 @@
                         <a href="/public/views/sesiones/index.php">Inicio</a>
                     </li>
 
-                
+                    <?php if($rol==1 || $rol==2){ ?>
                     <li>
                         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -62,6 +62,7 @@
                             </li>
                         </ul>
                     </li>
+                    <?php } ?>
               
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apartados extra</a>

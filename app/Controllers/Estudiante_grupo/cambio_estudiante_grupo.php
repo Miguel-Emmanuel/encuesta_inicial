@@ -1,48 +1,59 @@
 <?php
-require '../../../database/conexion.php';
+require '../../../database/conexion.php'; // Archivo de conexión a la base de datos
 
-// $estudiante_id  = $conexion->real_escape_string($_POST['estudiante_id']);
-if (isset($_POST['estudiante_cambio_id'])) {
-    $estudiante_id = $_POST['estudiante_cambio_id'];
-    $estudiantes_id = explode(',', $estudiante_id[0]);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $grupo_id = $_POST['grupo']; // Grupo actual
+    $nuevo_grupo = $_POST['nuevo_grupo']; // Nuevo grupo al que se moverán
+    $periodo = $_POST['periodo']; // Periodo educativo
+    $estudiantes_ids = $_POST['estudiantes']; // IDs de los estudiantes seleccionados
 
+    if (!empty($grupo_id) && !empty($nuevo_grupo) && !empty($periodo) && !empty($estudiantes_ids)) {
+        // Desactivar los registros de los estudiantes en el grupo actual
+        $stmt_baja = $conexion->prepare("UPDATE estudiante_grupo SET activo = 0 WHERE grupo_id = ? AND estudiante_id = ?");
+        
+        // Ejecutar la actualización de baja para cada estudiante en el grupo actual
+        foreach ($estudiantes_ids as $estudiante_id) {
+            $stmt_baja->bind_param('ii', $grupo_id, $estudiante_id);
+            if (!$stmt_baja->execute()) {
+                echo "Error al desactivar el estudiante con ID $estudiante_id: " . $stmt_baja->error;
+                exit; // Salir si hay error en la actualización
+            }
+        }
 
-    for ($i = 0; $i < count($estudiantes_id); $i++) {
-        $grupo_id  = $conexion->real_escape_string($_POST['grupo_id']);
+        // Obtener el tutor asociado al nuevo grupo
+        $stmt_tutor = $conexion->prepare("SELECT grupo_tutor.tutor_id 
+                                          FROM grupo_tutor 
+                                          INNER JOIN t_grupos ON grupo_tutor.grupo_id = t_grupos.id
+                                          WHERE t_grupos.id = ?");
+        $stmt_tutor->bind_param('i', $nuevo_grupo);
+        $stmt_tutor->execute();
+        $result_tutor = $stmt_tutor->get_result();
+        $tutor = $result_tutor->fetch_assoc();
+        $tutor_id = $tutor['tutor_id'] ?? null; // Asegúrate de manejar el caso de tutor no encontrado
 
-        $obtener_tutor = "SELECT 
-                                grupo_tutor.tutor_id
-                            FROM 
-                                grupo_tutor
-                            INNER JOIN 
-                                t_grupos ON grupo_tutor.grupo_id = t_grupos.id
-                            WHERE 
-                                t_grupos.id = $grupo_id";
+        if ($tutor_id) {
+            // Preparar la consulta de inserción para los nuevos registros
+            $stmt_insert = $conexion->prepare("INSERT INTO estudiante_grupo (estudiante_id, grupo_id, tutor_id, periodo_id, activo) 
+                                               VALUES (?, ?, ?, ?, 1)");
 
-        $result = $conexion->query($obtener_tutor);
+            foreach ($estudiantes_ids as $estudiante_id) {
+                // Ejecutar la consulta para cada estudiante
+                $stmt_insert->bind_param('iiii', $estudiante_id, $nuevo_grupo, $tutor_id, $periodo);
+                if (!$stmt_insert->execute()) {
+                    echo "Error al insertar estudiante con ID $estudiante_id: " . $stmt_insert->error;
+                }
+            }
 
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $tutor_id = $row['tutor_id']; // Extraer el tutor_id correctamente
-
-            $baja = "UPDATE estudiante_grupo SET activo = 0 WHERE estudiante_id = $estudiantes_id[$i]";
-            $baja2 = $conexion->query($baja);
+            // Redireccionar con éxito
+            header('Location: /public/views/estudiante_grupo/index.php?e=1');
+            exit;
         } else {
-            echo "No se encontró tutor para el grupo especificado.";
+            echo "No se encontró un tutor para el grupo seleccionado.";
         }
-
-
-        $periodo_id = $conexion->real_escape_string($_POST['periodo_id']);
-
-
-
-        $sql = "INSERT INTO estudiante_grupo (estudiante_id , grupo_id, tutor_id , periodo_id) VALUES ('$estudiantes_id[$i]','$grupo_id ','$tutor_id','$periodo_id')";
-        if ($conexion->query($sql)) {
-            $id = $conexion->insert_id;
-        }
+    } else {
+        echo "Faltan parámetros necesarios para procesar la solicitud.";
     }
 } else {
-    echo "Error en alguno de los elementos.";
+    echo "Método no permitido.";
 }
-
-header('Location: /public/views/estudiante_grupo/index.php?e=1');
+?>

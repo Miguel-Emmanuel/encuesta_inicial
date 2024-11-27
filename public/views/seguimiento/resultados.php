@@ -26,15 +26,20 @@
                     e.id AS estudiante_id, -- ID del estudiante
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     e.matricula,
+                    eg.activo AS egactivo,
                     prog.nombre AS carrera,
                     t_gr.nomenclatura AS grupo,
-                    u.activo AS activo  -- Indica si el usuario está activo
+                    u.activo AS activo     -- Indica si el usuario está activo
                 FROM estudiante_grupo eg
                 INNER JOIN estudiantes e ON eg.estudiante_id = e.id
                 INNER JOIN usuarios u ON e.usuario_id = u.id
                 INNER JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
-                WHERE eg.activo = 1";
+                WHERE eg.id = (
+                    SELECT MAX(eg_sub.id)
+                    FROM estudiante_grupo eg_sub
+                    WHERE eg_sub.estudiante_id = eg.estudiante_id
+                )";
 
         // Aplicar filtros dinámicos si los campos no están vacíos
         if (!empty($nombre)) {
@@ -46,6 +51,7 @@
         if (!empty($apellido_materno)) {
             $qbusqueda .= " AND u.apellido_materno LIKE '%" . $conexion->real_escape_string($apellido_materno) . "%'";
         }
+
     } else if ($tipo == 2) {
 
         $matricula = intval($_POST['matricula']);
@@ -54,6 +60,7 @@
                     e.id AS estudiante_id, -- ID del estudiante
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     e.matricula,
+                    eg.activo AS egactivo,
                     prog.nombre AS carrera,
                     t_gr.nomenclatura AS grupo,
                     u.activo AS activo  -- Indica si el usuario está activo
@@ -62,8 +69,11 @@
                 INNER JOIN usuarios u ON e.usuario_id = u.id
                 INNER JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
-                WHERE eg.activo = 1 AND e.matricula = $matricula";
-
+                WHERE e.matricula = $matricula AND eg.id = (
+                    SELECT MAX(eg_sub.id)
+                    FROM estudiante_grupo eg_sub
+                    WHERE eg_sub.estudiante_id = eg.estudiante_id
+                )";
     }
 
     // Ejecutar la consulta
@@ -97,7 +107,8 @@
                         <th>Matrícula</th>
                         <th>Carrera</th>
                         <th>Grupo</th>
-                        <th>Estatus</th>
+                        <th>Estatus de usuario</th>
+                        <th>Estatus de grupo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -113,6 +124,14 @@
                                 if ($estudiante['activo'] == 1) { ?>
                                     <span class="badge bg-success">Activo</span>
                                 <?php } else if ($estudiante['activo'] == 0) { ?>
+                                    <span class="badge bg-danger">Baja</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ($estudiante['egactivo'] == 1) { ?>
+                                    <span class="badge bg-success">Activo</span>
+                                <?php } else if ($estudiante['egactivo'] == 0) { ?>
                                     <span class="badge bg-danger">Baja</span>
                                 <?php } ?>
                             </td>

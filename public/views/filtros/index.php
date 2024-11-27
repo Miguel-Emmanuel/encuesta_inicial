@@ -1,6 +1,6 @@
 <?php
 
-
+require ("../../../app/Controllers/auth.php");
 $filtro= (int) $_GET['f'];
 
 if ($filtro == 1) {

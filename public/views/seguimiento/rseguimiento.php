@@ -8,22 +8,24 @@ $usuario = intval($_POST['usuario']);
 $usuarios = "SELECT 
                     e.id AS id,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
-                    e.matricula,
+                    e.matricula, e.activo,
                     t_gr.nomenclatura AS grupo,
                     CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno) AS tutor,
                     p.alias AS periodo_escolar,
                     prog.nombre AS carrera,
-                    eg.activo AS activo
+                    eg.activo AS egactivo,
+                    eg.created_at
                 FROM estudiante_grupo eg
                 INNER JOIN estudiantes e ON eg.estudiante_id = e.id
                 INNER JOIN usuarios u ON e.usuario_id = u.id
                 INNER JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
                 LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
                 LEFT JOIN tutores t ON gt.tutor_id = t.id
-                LEFT JOIN usuarios tu ON t.usuario_id = tu.id  -- Para obtener el nombre completo del tutor
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
                 LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
-                WHERE e.id = $estudiante";  // Filtra por el id del estudiante
+                WHERE e.id = $estudiante
+                ORDER BY eg.created_at DESC";
 
 
 $consulta = mysqli_query($conexion, $usuarios);
@@ -55,7 +57,9 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                         <th>Grupo</th>
                         <th>Tutor</th>
                         <th>Periodo Escolar</th>
-                        <th>Activo</th>
+                        <th>Fecha</th>
+                        <th>Usuario Activo</th>
+                        <th>Grupo Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,11 +72,20 @@ $data = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
                             <td><?php echo $estudiante['grupo']; ?></td>
                             <td><?php echo $estudiante['tutor']; ?></td>
                             <td><?php echo $estudiante['periodo_escolar']; ?></td>
+                            <td><?php echo $estudiante['created_at']; ?></td>
                             <td>
                                 <?php
                                 if ($estudiante['activo'] == 1) { ?>
                                     <span class="badge bg-success">Activo</span>
                                 <?php } else if ($estudiante['activo'] == 0) { ?>
+                                    <span class="badge bg-danger">Baja</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ($estudiante['egactivo'] == 1) { ?>
+                                    <span class="badge bg-success">Activo</span>
+                                <?php } else if ($estudiante['egactivo'] == 0) { ?>
                                     <span class="badge bg-danger">Baja</span>
                                 <?php } ?>
                             </td>
