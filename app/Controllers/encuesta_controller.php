@@ -7,10 +7,17 @@
             exit;
         }
 
-        $idUsuario = $_SESSION["id"];
+        // $idUser = $_SESSION["id"];
 
+// Obtener estudiante_id usando usuario_id de la sesión
+$stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
+$stmt->bind_param("i", $_SESSION["id"]);
+$stmt->execute();
+$stmt->bind_result($idUsuario);
+$stmt->fetch();
+$stmt->close();
 
-        // Inspeccionar el contenido de $_POST
+        // Inspeccionar el contenido de $_POSTp
         // echo "<pre>";
         // var_dump($_POST);  // Muestra toda la información enviada en el formulario
         // echo "</pre>";
@@ -38,7 +45,7 @@
     //     // Separar el valor recibido (id y nombre)
     //     list($opcionId, $respuestaTexto) = explode(',', $respuesta);
         
-    //     // Guardar el ID en `opcion_id` y el nombre en `respuesta_texto`
+    //     // Guardar el ID en opcion_id y el nombre en respuesta_texto
     //     guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
     // } 
 
@@ -58,10 +65,10 @@
                     // Caso de una sola opción (radio button o select simple)
                     $opcionId = obtenerOpcionId($conexion, $idPregunta, $respuesta);
                     if ($opcionId !== null) {
-                        // Guardar tanto en `opcion_id` como en `respuesta_texto`
+                        // Guardar tanto en opcion_id como en respuesta_texto
                         guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto ?: $respuesta);
                     } else {
-                        // Fallback en caso de no encontrar un `opcion_id`, guarda el texto en `respuesta_texto`
+                        // Fallback en caso de no encontrar un opcion_id, guarda el texto en respuesta_texto
                         guardarRespuesta($conexion, $idUsuario, $idPregunta, null, $seccionId, $respuestaTexto ?: $respuesta);
                     }
                 }
@@ -122,14 +129,29 @@
 
         function guardarRespuesta($conexion, $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto) {
 
+            /////insercion a tabla respuestas/////////////
+            $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO respuestas (pregunta_id, estudiante_id, respuesta, created_at) VALUES (?, ?, ?, NOW())");
+
+            if (!$stmtUsuarioRespuesta) {
+                echo "Error en prepare(): " . $conexion->error;
+            }
+            
+            $stmtUsuarioRespuesta->bind_param("iis", $idPregunta, $idUsuario, $respuestaTexto);
+            
+            if (!$stmtUsuarioRespuesta->execute()) {
+                echo "Error en execute(): " . $stmtUsuarioRespuesta->error;
+            }
+            /////////////////////////////////////////////////////////
+
+            //////////////////insercion a tbabla estudiantes_respiestas///////////////
             // var_dump( "Respuestas generales" .$respuestas . "respuestas dimanicas" . $respuestas_otro   );
             // var_dump(in_array($idPregunta, [17, 18, 19]));
             if ($opcionId === null) {
-                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
+                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO estudiante_respuesta (estudiante_id, pregunta_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiis", $idUsuario, $idPregunta, $seccionId, $respuestaTexto);
 
             } else {
-                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO usuario_respuesta (usuario_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+                $stmtUsuarioRespuesta = $conexion->prepare("INSERT INTO estudiante_respuesta (estudiante_id, pregunta_id, opcion_id, seccion_id, respuesta_texto, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
                 $stmtUsuarioRespuesta->bind_param("iiiis", $idUsuario, $idPregunta, $opcionId, $seccionId, $respuestaTexto);
             }
             
@@ -139,18 +161,18 @@
             }
             
             // Verificar si la pregunta es sobre género (por ejemplo, si la pregunta tiene ID 9)
-            if ($idPregunta == 9) {
-                // Actualizar la tabla usuarios con el género seleccionado
-                $stmtActualizarGenero = $conexion->prepare("UPDATE usuarios SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
-                $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
+            // if ($idPregunta == 9) {
+            //     // Actualizar la tabla usuarios con el género seleccionado
+            //     $stmtActualizarGenero = $conexion->prepare("UPDATE estudiantes SET i_genero = (SELECT id FROM i_genero WHERE nombreig = ?) WHERE id = ?");
+            //     $stmtActualizarGenero->bind_param("si", $respuestaTexto, $idUsuario);
                 
-                $stmtActualizarGenero->execute();
+            //     $stmtActualizarGenero->execute();
                 
-                if ($stmtActualizarGenero->affected_rows <= 0) {
-                    echo "Error al actualizar el género en la tabla de usuarios.";
-                }
-                $stmtActualizarGenero->close();
-            }
+            //     if ($stmtActualizarGenero->affected_rows <= 0) {
+            //         echo "Error al actualizar el género en la tabla de usuarios.";
+            //     }
+            //     $stmtActualizarGenero->close();
+            // }
             // if (in_array($idPregunta, [17, 18, 19])) {
             //     // Preguntas de país (17), estado (18) y municipio (19)
             //     if ($idPregunta == 17) {

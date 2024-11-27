@@ -2116,11 +2116,11 @@ CREATE TABLE `tutores` (
 
 /*Data for the table `tutores` */
 
-/*Table structure for table `usuario_respuesta` */
+/*Table structure for table `estudiante_respuesta` */
 
-DROP TABLE IF EXISTS `usuario_respuesta`;
+DROP TABLE IF EXISTS `estudiante_respuesta`;
 
-CREATE TABLE `usuario_respuesta` (
+CREATE TABLE `estudiante_respuesta` (
   `id` bigint(200) unsigned NOT NULL AUTO_INCREMENT,
   `usuario_id` bigint(200) unsigned NOT NULL,
   `pregunta_id` bigint(200) unsigned NOT NULL,
@@ -2130,19 +2130,19 @@ CREATE TABLE `usuario_respuesta` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `usuario_respuesta_usuario_id_foreign` (`usuario_id`),
-  KEY `usuario_respuesta_pregunta_id_foreign` (`pregunta_id`),
-  KEY `usuario_respuesta_opcion_id_foreign` (`opcion_id`),
-  KEY `usuario_respuesta_seccion_id_foreign` (`seccion_id`),
-  CONSTRAINT `usuario_respuesta_opcion_id_foreign` FOREIGN KEY (`opcion_id`) REFERENCES `opciones_respuesta` (`id`),
-  CONSTRAINT `usuario_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`),
-  CONSTRAINT `usuario_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`),
-  CONSTRAINT `usuario_respuesta_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
+  KEY `estudiante_respuesta_usuario_id_foreign` (`usuario_id`),
+  KEY `estudiante_respuesta_pregunta_id_foreign` (`pregunta_id`),
+  KEY `estudiante_respuesta_opcion_id_foreign` (`opcion_id`),
+  KEY `estudiante_respuesta_seccion_id_foreign` (`seccion_id`),
+  CONSTRAINT `estudiante_respuesta_opcion_id_foreign` FOREIGN KEY (`opcion_id`) REFERENCES `opciones_respuesta` (`id`),
+  CONSTRAINT `estudiante_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`),
+  CONSTRAINT `estudiante_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`),
+  CONSTRAINT `estudiante_respuesta_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `usuario_respuesta` */
+/*Data for the table `estudiante_respuesta` */
 
-insert  into `usuario_respuesta`(`id`,`usuario_id`,`pregunta_id`,`opcion_id`,`seccion_id`,`respuesta_texto`,`created_at`,`updated_at`) values 
+insert  into `estudiante_respuesta`(`id`,`usuario_id`,`pregunta_id`,`opcion_id`,`seccion_id`,`respuesta_texto`,`created_at`,`updated_at`) values 
 (1186,11,1,NULL,1,'fernanda@gmail.com','2024-09-03 17:59:03','2024-09-03 17:59:03'),
 (1187,11,2,NULL,1,'2','2024-09-03 17:59:03','2024-09-03 17:59:03'),
 (1188,11,3,NULL,1,'Fernanda','2024-09-03 17:59:03','2024-09-03 17:59:03'),

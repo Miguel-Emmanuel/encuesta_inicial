@@ -1,7 +1,7 @@
 <?php
 include("../../../database/conexion.php");
 session_start();
-if (empty($_SESSION["id"])){
+if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
     exit;
 }
@@ -9,6 +9,21 @@ if (empty($_SESSION["id"])){
 // Verificar conexión
 if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
+}
+
+// Obtener estudiante_id usando usuario_id de la sesión
+$stmt = $conexion->prepare("SELECT id FROM estudiantes WHERE usuario_id = ?");
+$stmt->bind_param("i", $_SESSION["id"]);
+$stmt->execute();
+$stmt->bind_result($estudianteId);
+$stmt->fetch();
+$stmt->close();
+
+// Verificar estudianteId
+// echo "<p><strong>Estudiante ID:</strong> $estudianteId</p>";
+
+if (!$estudianteId) {
+    die("No se encontró el estudiante correspondiente al usuario actual.");
 }
 
 // Función para contar preguntas en una sección
@@ -19,13 +34,15 @@ function contarPreguntasSeccion($conexion, $seccionId) {
     $stmt->bind_result($totalPreguntas);
     $stmt->fetch();
     $stmt->close();
+    // echo "<p><strong>Total de Preguntas en la Sección $seccionId:</strong> $totalPreguntas</p>";
     return $totalPreguntas;
 }
 
+
 // Función para contar respuestas del usuario en una sección
-function contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId) {
-    $stmt = $conexion->prepare("SELECT COUNT(DISTINCT pregunta_id) as total FROM usuario_respuesta WHERE seccion_id = ? AND usuario_id = ?");
-    $stmt->bind_param("ii", $seccionId, $usuarioId);
+function contarRespuestasUsuarioSeccion($conexion, $seccionId, $estudianteId) {
+    $stmt = $conexion->prepare("SELECT COUNT(DISTINCT pregunta_id) as total FROM estudiante_respuesta WHERE seccion_id = ? AND estudiante_id = ?");
+    $stmt->bind_param("ii", $seccionId, $estudianteId);
     $stmt->execute();
     $stmt->bind_result($totalRespuestas);
     $stmt->fetch();
@@ -34,9 +51,10 @@ function contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId) {
 }
 
 // Función para verificar si la sección está completada
-function seccionCompletada($conexion, $seccionId, $usuarioId) {
+function seccionCompletada($conexion, $seccionId, $estudianteId) {
     $totalPreguntas = contarPreguntasSeccion($conexion, $seccionId);
-    $totalRespuestas = contarRespuestasUsuarioSeccion($conexion, $seccionId, $usuarioId);
+    $totalRespuestas = contarRespuestasUsuarioSeccion($conexion, $seccionId, $estudianteId);
+    // echo "<p><strong>Sección $seccionId:</strong> Total Preguntas = $totalPreguntas, Total Respuestas = $totalRespuestas</p>";
     return $totalPreguntas == $totalRespuestas;
 }
 
@@ -68,27 +86,29 @@ $result = $conexion->query($sql);
             </thead>
             <tbody>
                 <?php
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        // Verificar si la sección está completada
-                        $completado = seccionCompletada($conexion, $row["id"], $_SESSION["id"]);
-                        $iconoCompletado = $completado ? '✅' : '❌';
-                
-                        // Deshabilitar el botón si la sección está completada
-                        $botonEstado = $completado ? 'disabled' : '';
-                
-                        echo "<tr>";
-                        echo "<td>" . $row["id"]  . '   |   ' . $row["descripcion"] . "</td>";
-                        echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
-                        // echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
-                        echo "<td class='centrar'>" . $iconoCompletado . "</td>";
-                        echo "</tr>";
-                    }
-                } else {
+
+      if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+              // Verificar si la sección está completada
+              $completado = seccionCompletada($conexion, $row["id"], $estudianteId);
+              $iconoCompletado = $completado ? '✅' : '❌';
+              $botonEstado = $completado ? 'disabled' : '';
+      
+              echo "<tr>";
+              echo "<td>" . $row["id"]  . ' | ' . $row["descripcion"] . "</td>";
+            //   echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
+              echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+              echo "<td class='centrar'>" . $iconoCompletado . "</td>";
+              echo "</tr>";
+      
+              // Depuración en HTML
+            //   echo "<p>Sección ID: {$row['id']}, Completado: $completado, Icono: $iconoCompletado, Botón Desactivado: $botonEstado</p>";
+          }
+      }
+       else {
                     echo "<tr><td colspan='3'>0 resultados</td></tr>";
                 }
                 $conexion->close();
-                
                 ?>
             </tbody>
         </table>

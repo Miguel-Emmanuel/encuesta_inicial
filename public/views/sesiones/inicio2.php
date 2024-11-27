@@ -4,10 +4,10 @@ require '../../../app/Models/conexion.php';
 $sqlCarreras = "SELECT id, nombre FROM programa_edu";
 $carreras = $conexion->query($sqlCarreras);
 
-$sqlRespuestas = "SELECT id, usuario_id, pregunta_id, seccion_id, respuesta_texto
-FROM usuario_respuesta
+$sqlRespuestas = "SELECT id, estudiante_id, pregunta_id, seccion_id, respuesta_texto
+FROM estudiante_respuesta
 WHERE pregunta_id = 8 OR pregunta_id = 2 OR pregunta_id = 15
-ORDER BY usuario_id";
+ORDER BY estudiante_id";
 $respuestas = $conexion->query($sqlRespuestas);
 
 $data = array(); // Array para almacenar los resultados
@@ -65,7 +65,7 @@ if ($respuestas->num_rows > 0) {
         Object.values(resultadosSQL).forEach(resultado => {
 
             Object.values(usuariosCarrera).forEach(usuario => {
-                if (resultado.usuario_id == usuario.usuario_id && resultado.pregunta_id == 8 && resultado.respuesta_texto === 'Femenino') {
+                if (resultado.estudiante_id == usuario.estudiante_id && resultado.pregunta_id == 8 && resultado.respuesta_texto === 'Femenino') {
                     cantidadFemenino++;
                 }
             });
@@ -76,7 +76,7 @@ if ($respuestas->num_rows > 0) {
         Object.values(resultadosSQL).forEach(resultado => {
 
             Object.values(usuariosCarrera).forEach(usuario => {
-                if (resultado.usuario_id == usuario.usuario_id && resultado.pregunta_id == 8 && resultado.respuesta_texto === 'Masculino') {
+                if (resultado.estudiante_id == usuario.estudiante_id && resultado.pregunta_id == 8 && resultado.respuesta_texto === 'Masculino') {
                     cantidadMasculino++;
                 }
             });
@@ -87,7 +87,7 @@ if ($respuestas->num_rows > 0) {
         Object.values(resultadosSQL).forEach(resultado => {
 
             Object.values(usuariosCarrera).forEach(usuario => {
-                if (resultado.usuario_id == usuario.usuario_id && resultado.pregunta_id == 15) {
+                if (resultado.estudiante_id == usuario.estudiante_id && resultado.pregunta_id == 15) {
                     usuariosEdades = [...usuariosEdades, resultado.respuesta_texto];
                     usuariosEdades.sort();
                 }

@@ -1,5 +1,7 @@
 /* Estilo general para el contenedor de cada pregunta */
-.pregunta {
+.pregunta ,
+.preguntas-dependientes
+{
     margin-bottom: 20px;
     padding: 10px 15px;
     background-color: #f8f9fa;
@@ -7,6 +9,22 @@
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+/* ////////////////// ERRORES DE VALIDACION ////////////// */
+
+
+
+.pregunta.error {
+    border-left: 4px solid red; /* Cambia el borde a rojo cuando hay un error */
+    background-color: #fbe9e9; /* Fondo ligeramente rosado para dar un efecto de error */
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25em;
+}
+
+/* //////////////////////////////////////////////////// */
 
 /* Estilo para el título de las secciones */
 .pregunta h3 {
@@ -117,7 +135,7 @@
 .pregunta table th,
 .pregunta table td {
     padding: 10px;
-    text-align: left;
+    /* text-align: left; */
     /* border-bottom: 1px solid #dee2e6; */
 }
 
@@ -129,6 +147,12 @@
 .pregunta table td {
     background-color: #fff;
 }
+
+
+.hola {
+    width: 25%;
+}
+
 
 /* Estilo para radio buttons */
 .custom-radio {
@@ -302,8 +326,11 @@
     transform: scale(0.98);
 }/* Ocultar el input radio */
 .custom-radio {
-    display: none; /* Ocultamos el radio nativo */
+    opacity: 0; /* Ocultamos visualmente el radio nativo pero permitimos que reciba eventos */
+    position: absolute;
+    z-index: -1; /* Opcional, para asegurarnos de que no interfiera */
 }
+
 
 /* Estilo del label que se verá como un checkbox */
 .custom-radio-label {
@@ -341,5 +368,25 @@
 .custom-radio-text {
     margin-left: 10px;
     cursor: pointer;
+}
+
+/* Aplica borde rojo a cualquier campo requerido que no sea válido */
+/* Aplica borde rojo cuando no está seleccionado y es requerido */
+input[type="radio"]:required:invalid + .custom-radio-label {
+    border-color: red;
+    background-color: #ffe6e6; /* Cambia el fondo del radio cuando hay error */
+}
+
+/* Otras reglas para otros campos como select, textarea, etc. */
+input:required:invalid,
+select:required:invalid,
+textarea:required:invalid {
+    border: 2px solid red;
+}
+
+
+/* Para los checkbox, si también tienes estilos customizados */
+input[type="checkbox"]:required:invalid + .custom-checkbox-label {
+    border-color: red;
 }
 

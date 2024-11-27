@@ -162,18 +162,12 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
             </div>
         <?php endif ?>
 
+        <!-- //<a href="../gruposV/filtro.html" class="" > -->
+        <a href="../filtros/index.php?f=2" class="" >
         <div class="filtro">
             Grupos Vulnerables
-            <div class="dropdown">
-                <ul>
-                    <?php foreach ($grupos_v as $item): ?>
-                        <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=2" . "&nombre=" . urlencode($item['nombregv']); ?>">
-                            <li><?php echo htmlspecialchars($item['nombregv']); ?></li>
-                        </a>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
+                    </div>
+                    </a>
 
         <?php if ($rol == 1 || $rol == 2): ?>
             <div class="filtro">

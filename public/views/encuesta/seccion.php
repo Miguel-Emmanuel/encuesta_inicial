@@ -80,6 +80,11 @@ if ($row) {
                     campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
                     campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
                     console.log("Campo 'Otro' desplegado");
+                    if(idPregunta === 73){
+                        campoOtro.slideDown(); // Mostrar el campo de texto "Otro:"
+                    campoOtro.find('input').prop('required', true); // Hacer obligatorio el campo
+                    console.log("Campo 'Otro' desplegado");
+                    }
                 } else {
                     campoOtro.slideUp(); // Ocultar el campo de texto si se selecciona cualquier otra opción
                     campoOtro.find('input').prop('required', false); // Hacer opcional el campo
@@ -105,7 +110,7 @@ if ($row) {
         <div class="col-12 text-center">
             <h1 class="bebas-neue-regular" style="font-size: 100px;">Entrevista Inicial</h1>
         </div>
-        <h1> <?php echo ucfirst($seccion_descripcion); ?> <p>   SECCIÓN - <?php echo ucfirst($seccion); ?></p>
+        <h1> <?php echo ucfirst($seccion_descripcion); ?> <p> SECCIÓN - <?php echo ucfirst($seccion); ?></p>
         </h1>
 
         <form id="encuestaForm" action="../../../app/Controllers/encuesta_controller.php" method="post" class="form-encuesta" onsubmit="limpiarStorage();">
@@ -113,7 +118,7 @@ if ($row) {
 
             function obtenerRespuestasUsuario($conexion, $idUsuario)
             {
-                $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM usuario_respuesta WHERE usuario_id = ?");
+                $stmt = $conexion->prepare("SELECT pregunta_id, respuesta_texto FROM estudiante_respuesta WHERE estudiante_id = ?");
                 $stmt->bind_param("i", $idUsuario);
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -145,44 +150,52 @@ if ($row) {
                 $ayu = $preguntas->ayuda;
 
                 echo "<div class='pregunta'>";
-                if ($mostrarTituloNacimiento && in_array($idPregunta, [16,17, 18, 19])) {
+                if ($mostrarTituloNacimiento && in_array($idPregunta, [16, 17, 18, 19])) {
                     echo "<br><h3>Datos de Nacimiento</h3><br>";
                     $mostrarTituloNacimiento = false; // Cambiar a false para no volver a mostrar el título
-                  
+
                 }
 
                 // Mostrar el título "Fin de Sección Nacimiento" al llegar a la pregunta 20
-if ($idPregunta == 20) {
-    echo "<br><h3>Datos Personales</h3><br>";
-}
+                if ($idPregunta == 20) {
+                    echo "<br><h3>Datos Personales</h3><br>";
+                }
 
                 echo "<p class='pregunta-texto'>$idPregunta. <b>$preguntaTexto</b>";
                 if ($ayu !== null) {
-                    echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' data-bs-toggle='tooltip' style='margin-left: 10px;'  data-bs-placement='top' data-bs-title='Tooltip on top' title='[$ayu]'>!</button>";
+echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill' 
+        data-bs-toggle='tooltip' 
+        style='margin-left: 10px;'  
+        data-bs-placement='top' 
+        data-bs-title='Tooltip on top' 
+        title='[$ayu]' 
+        id='tooltipButton'>
+        !
+      </button>";
                 }
                 echo "</p>";
 
 
-                
-                
-                
+
+
+
                 switch ($tipoPregunta) {
                     case 'texto':
-                     
+
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='' value='$respuestaTexto' required>";
                         break;
                     case 'fecha':
                         echo "<input type='date' name='respuestas[$idPregunta]' class='respuesta-fecha' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
                         break;
                     case 'correo':
-                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
+                        echo "<input type='email' name='respuestas[$idPregunta]' class='respuesta-correo' data-idpregunta='$idPregunta' placeholder='al225163489@gmail.com' value='$respuestaTexto' required>";
                         break;
                     case 'curp':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' placeholder='RACW050729MMCSHNA2' value='$respuestaTexto'  required>";
                         break;
 
                     case 'rfc':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
+                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' placeholder='VECJ8803260V8' value='$respuestaTexto' required>";
                         break;
                     case 'telefono':
                         echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-telefono' data-idpregunta='$idPregunta' value='$respuestaTexto' pattern='\d+' required>";
@@ -191,7 +204,7 @@ if ($idPregunta == 20) {
                         echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  required>";
                         break;
                     case 'r_social':
-                        echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' required></input>";
+                        echo "<textarea name='respuestas[$idPregunta]' class='respuesta-r_social' placeholder='https://www.facebook.com/perfil' data-idpregunta='$idPregunta'>$respuestaTexto</textarea>";
                         break;
                     case 'c_postal':
                         echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' required>";
@@ -199,51 +212,83 @@ if ($idPregunta == 20) {
                     case 'texto_a':
                         echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' required></textarea>";
                         break;
-                        case 'genero':
-                            $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
-                            echo "<div class='select-container'>";
-                            echo "<select name='respuestas[$idPregunta]' id='genero-select-$idPregunta' class='respuesta-genero' data-idpregunta='$idPregunta' required>";
-                            echo "<option value=''>Seleccione su género</option>";
-                            while ($genero = $generos->fetch_assoc()) {
-                                $selected = ($respuestaTexto == $genero['nombre']) ? 'selected' : '';
-                                echo "<option value='{$genero['nombre']}' $selected>{$genero['nombre']}</option>";
-                            }
-                            echo "</select>";
-                            echo "</div>";
-                            break;
-                        
+                    case 'genero':
+                        $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
+                        echo "<div class='select-container'>";
+                        echo "<select name='respuestas[$idPregunta]' id='genero-select-$idPregunta' class='respuesta-genero' data-idpregunta='$idPregunta' required>";
+                        echo "<option value=''>Seleccione su género</option>";
+                        while ($genero = $generos->fetch_assoc()) {
+                            $selected = ($respuestaTexto == $genero['nombre']) ? 'selected' : '';
+                            echo "<option value='{$genero['nombre']}' $selected>{$genero['nombre']}</option>";
+                        }
+                        echo "</select>";
+                        echo "</div>";
+                        break;
+
                         case 'pais':
-                            echo "<div class='select-container'>";
-                            echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' required>";
-                            echo "<option value=''>Seleccione su país</option>";
-                            
+                            echo "<div class='pregunta'>"; // Clase principal para el contenedor
                             $resultPais = $conexion->query("SELECT * FROM paises");
+                            $opciones = array();
+                        
                             while ($pais = $resultPais->fetch_assoc()) {
-                                echo "<option value='{$pais['id']},{$pais['nombre']}'>{$pais['nombre']}</option>";
+                                $opciones[$pais['id']] = $pais['nombre'];
                             }
-                            echo "<option value='otro'>Otro</option>";
-                            echo "</select>";
+                        
+                            if (!empty($opciones)) {
+                                echo "<table>";
+                                echo "<tr><th>País</th></tr>"; // Encabezado del radio
+                        
+                                foreach ($opciones as $id => $nombre) {
+                                    echo "<tr>";
+                                    echo "<td class='hola'>$nombre</td>";
+                                    echo "<td><input class='form-check-input $idPregunta' type='radio' name='respuestas[$idPregunta]' id='pais_{$id}_$idPregunta' value='{$id},{$nombre}' onchange='cargarEstados(this, $idPregunta)' required></td>";
+                                    echo "</tr>";
+                                }
+                        
+                                // Opción "Otro"
+                                echo "<tr>";
+                                echo "<td class='hola'>Otro</td>";
+                                echo "<td><input class='form-check-input $idPregunta' type='radio' name='respuestas[$idPregunta]' id='pais_otro_$idPregunta' value='otro' onchange='cargarEstados(this, $idPregunta)' required></td>";
+                                echo "</tr>";
+                        
+                                // Campo oculto para "Otro"
+                                echo "<div class='container-dinamico'>";
+                                echo "<tr id='campo_otro_$idPregunta' style='display:none;'>
+                                        <td colspan='2'>
+                                            <label for='otro_texto_$idPregunta'>Especifica:</label>
+                                            <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                        </td>
+                                      </tr>";
+                                echo "</div>";
+                        
+                                echo "</table>";
+                            } else {
+                                echo "<p class='pregunta-texto'>No se encontraron países disponibles.</p>";
+                            }
                             echo "</div>";
                             break;
                         
-                        case 'estado':
-                            echo "<div class='select-container'>";
-                            echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' required>";
-                            echo "<option value=''>Seleccione su estado</option>";
-                            echo "</select>";
-                            echo "</div>";
-                            break;
-                        
-                        case 'municipio':
-                            echo "<div class='select-container'>";
-                            echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' required>";
-                            echo "<option value=''>Seleccione su municipio</option>";
-                            echo "</select>";
-                            echo "</div>";
-                            break;
                         
                             
-    
+
+                    case 'estado':
+                        echo "<div class='select-container'>";
+                        echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' required>";
+                        echo "<option value=''>Seleccione su estado</option>";
+                        echo "</select>";
+                        echo "</div>";
+                        break;
+
+                    case 'municipio':
+                        echo "<div class='select-container'>";
+                        echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' required>";
+                        echo "<option value=''>Seleccione su municipio</option>";
+                        echo "</select>";
+                        echo "</div>";
+                        break;
+
+
+
                     case 'opcion':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                         if ($opciones_respuesta->num_rows > 0) {
@@ -255,16 +300,16 @@ if ($idPregunta == 20) {
                             }
 
                             if (!empty($opciones)) {
-                                echo "<table>";
+                                echo "<table >";
                                 echo "<tr><th></th>";
                                 foreach ($opciones[array_key_first($opciones)] as $opcion2) {
-                                    echo "<th>$opcion2</th>";
+                                    echo "<th >$opcion2</th>";
                                 }
                                 echo "</tr>";
 
                                 foreach ($opciones as $opcion1 => $valoresOpcion2) {
                                     echo "<tr>";
-                                    echo "<td>$opcion1</td>";
+                                    echo "<td class='hola'>$opcion1</td>";
                                     $cont = 0;
 
                                     foreach ($valoresOpcion2 as $opcion2) {
@@ -272,7 +317,7 @@ if ($idPregunta == 20) {
 
                                         // Verifica si la opción seleccionada anteriormente es igual al valor del radio actual
                                         $checked = ($respuestaTexto == $opcion1) ? 'checked' : '';
-                                        echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onchange='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' required></td>";
+                                        echo "<td ><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onchange='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' required></td>";
                                     }
 
                                     echo "</tr>";
@@ -338,22 +383,28 @@ if ($idPregunta == 20) {
                                 foreach ($opciones as $opcion1 => $valoresOpcion2) {
                                     $cont = $cont + 1;
                                     echo "<tr>";
-                                    echo "<td>$opcion1</td>";
+                                    echo "<td class='hola'>$opcion1</td>";
                                     foreach ($valoresOpcion2 as $opcion2) {
-                                 
+
                                         $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
                                         echo "
-                                        <td>
-                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2'>
+                                        <td class='espaciadoo'>
+                                            <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' onchange='obtenerValor(\"$opcion1\", $idPregunta)'>
                                             <label for='$radioId' class='custom-radio-label'></label>
                                         </td>";
-                                   
-                                        
-                                
                                     }
                                     echo "</tr>";
                                 }
-
+                                echo "<div class='container-dinamico'>";
+                                echo "<tr id='campo_otro_$idPregunta'  style='display:none;'>
+                                        <td colspan='2'>
+                                       <label for='otro_texto'>Especifica:</label>
+                                      <!-- Cambiar el name para que contenga 'otro' además del idPregunta -->
+                                                <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                            </td>
+                                        </tr>
+                                        </div>
+                                        ";
                                 echo "</table>";
                             } else {
                                 echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
@@ -402,7 +453,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                         echo "</div>";
                         switch ($pregunta_tipo) {
                             case 'texto':
-                     
+
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-input' data-idpregunta='$idPregunta' placeholder='' value='$respuestaTexto' >";
                                 break;
                             case 'fecha':
@@ -414,7 +465,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                             case 'curp':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-curp' data-idpregunta='$idPregunta' value='$respuestaTexto'  >";
                                 break;
-        
+
                             case 'rfc':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-rfc' data-idpregunta='$idPregunta' value='$respuestaTexto' >";
                                 break;
@@ -425,7 +476,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                 echo "<input type='number' name='respuestas[$idPregunta]' class='respuesta-numero' data-idpregunta='$idPregunta' value='$respuestaTexto'  >";
                                 break;
                             case 'r_social':
-                                echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-r_social' data-idpregunta='$idPregunta' value='$respuestaTexto' ></input>";
+                                echo "<textarea name='respuestas[$idPregunta]' class='respuesta-r_social' placeholder='https://www.facebook.com/perfil' data-idpregunta='$idPregunta'>$respuestaTexto</textarea>";
                                 break;
                             case 'c_postal':
                                 echo "<input type='text' name='respuestas[$idPregunta]' class='respuesta-c_postal' data-idpregunta='$idPregunta' value='$respuestaTexto' >";
@@ -433,51 +484,51 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                             case 'texto_a':
                                 echo "<textarea type='text' name='respuestas[$idPregunta]' class='respuesta-texto_a' data-idpregunta='$idPregunta' value='$respuestaTexto' ></textarea>";
                                 break;
-                                case 'genero':
-                                    $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
-                                    echo "<div class='select-container'>";
-                                    echo "<select name='respuestas[$idPregunta]' id='genero-select-$idPregunta' class='respuesta-genero' data-idpregunta='$idPregunta' >";
-                                    echo "<option value=''>Seleccione su género</option>";
-                                    while ($genero = $generos->fetch_assoc()) {
-                                        $selected = ($respuestaTexto == $genero['nombre']) ? 'selected' : '';
-                                        echo "<option value='{$genero['nombre']}' $selected>{$genero['nombre']}</option>";
-                                    }
-                                    echo "</select>";
-                                    echo "</div>";
-                                    break;
-                                
-                                case 'pais':
-                                    echo "<div class='select-container'>";
-                                    echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' >";
-                                    echo "<option value=''>Seleccione su país</option>";
-                                    
-                                    $resultPais = $conexion->query("SELECT * FROM paises");
-                                    while ($pais = $resultPais->fetch_assoc()) {
-                                        echo "<option value='{$pais['id']},{$pais['nombre']}'>{$pais['nombre']}</option>";
-                                    }
-                                    echo "<option value='otro'>Otro</option>";
-                                    echo "</select>";
-                                    echo "</div>";
-                                    break;
-                                
-                                case 'estado':
-                                    echo "<div class='select-container'>";
-                                    echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' >";
-                                    echo "<option value=''>Seleccione su estado</option>";
-                                    echo "</select>";
-                                    echo "</div>";
-                                    break;
-                                
-                                case 'municipio':
-                                    echo "<div class='select-container'>";
-                                    echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' >";
-                                    echo "<option value=''>Seleccione su municipio</option>";
-                                    echo "</select>";
-                                    echo "</div>";
-                                    break;
-                                
-                                    
-            
+                            case 'genero':
+                                $generos = $conexion->query("SELECT id, nombreig as nombre FROM i_genero");
+                                echo "<div class='select-container'>";
+                                echo "<select name='respuestas[$idPregunta]' id='genero-select-$idPregunta' class='respuesta-genero' data-idpregunta='$idPregunta' >";
+                                echo "<option value=''>Seleccione su género</option>";
+                                while ($genero = $generos->fetch_assoc()) {
+                                    $selected = ($respuestaTexto == $genero['nombre']) ? 'selected' : '';
+                                    echo "<option value='{$genero['nombre']}' $selected>{$genero['nombre']}</option>";
+                                }
+                                echo "</select>";
+                                echo "</div>";
+                                break;
+
+                            case 'pais':
+                                echo "<div class='select-container'>";
+                                echo "<select name='respuestas[$idPregunta]' id='pais_$idPregunta' class='respuesta-pais' onchange='cargarEstados(this, $idPregunta)' >";
+                                echo "<option value=''>Seleccione su país</option>";
+
+                                $resultPais = $conexion->query("SELECT * FROM paises");
+                                while ($pais = $resultPais->fetch_assoc()) {
+                                    echo "<option value='{$pais['id']},{$pais['nombre']}'>{$pais['nombre']}</option>";
+                                }
+                                echo "<option value='otro'>Otro</option>";
+                                echo "</select>";
+                                echo "</div>";
+                                break;
+
+                            case 'estado':
+                                echo "<div class='select-container'>";
+                                echo "<select name='respuestas[$idPregunta]' id='estado_$idPregunta' class='respuesta-estado' onchange='cargarMunicipios(this, $idPregunta)' >";
+                                echo "<option value=''>Seleccione su estado</option>";
+                                echo "</select>";
+                                echo "</div>";
+                                break;
+
+                            case 'municipio':
+                                echo "<div class='select-container'>";
+                                echo "<select name='respuestas[$idPregunta]' id='municipio_$idPregunta' class='respuesta-municipio' >";
+                                echo "<option value=''>Seleccione su municipio</option>";
+                                echo "</select>";
+                                echo "</div>";
+                                break;
+
+
+
                             case 'opcion':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
@@ -487,7 +538,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     while ($opcion = $opciones_respuesta->fetch_object()) {
                                         $opciones[$opcion->opcion1][] = $opcion->opcion2;
                                     }
-        
+
                                     if (!empty($opciones)) {
                                         echo "<table>";
                                         echo "<tr><th></th>";
@@ -495,20 +546,20 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                             echo "<th>$opcion2</th>";
                                         }
                                         echo "</tr>";
-        
+
                                         foreach ($opciones as $opcion1 => $valoresOpcion2) {
                                             echo "<tr>";
-                                            echo "<td>$opcion1</td>";
+                                            echo "<td class='hola'>$opcion1</td>";
                                             $cont = 0;
-        
+
                                             foreach ($valoresOpcion2 as $opcion2) {
                                                 $cont++;
-        
+
                                                 // Verifica si la opción seleccionada anteriormente es igual al valor del radio actual
                                                 $checked = ($respuestaTexto == $opcion1) ? 'checked' : '';
                                                 echo "<td><input type='radio' class='$idPregunta' name='respuestas[$idPregunta]' id='$cont' value='$opcion1' onchange='obtenerValor(\"$opcion1\", $idPregunta)' data-idpregunta='$idPregunta' ></td>";
                                             }
-        
+
                                             echo "</tr>";
                                         }
                                         // Aquí se genera el campo oculto que aparecerá solo si selecciona "Otro:"
@@ -531,7 +582,7 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-        
+
                             case 'select':
                                 $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
                                 if ($opciones_respuesta->num_rows > 0) {
@@ -550,56 +601,65 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
                                     echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                 }
                                 break;
-        
-                            case 'multi':
-                                $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                                if ($opciones_respuesta->num_rows > 0) {
-                                    echo "<div class='pregunta'>";
-                                    // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
-                                    $opciones = array();
-                                    while ($opcion = $opciones_respuesta->fetch_object()) {
-                                        $opciones[$opcion->opcion1][] = $opcion->opcion2;
-                                    }
-        
-                                    if (!empty($opciones)) {
-                                        echo "<table>";
-                                        echo "<tr><th></th>";
-                                        foreach ($opciones[array_key_first($opciones)] as $opcion2) {
-                                            echo "<th>$opcion2</th>";
+                                case 'multi':
+                                    $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+                                    if ($opciones_respuesta->num_rows > 0) {
+                                        echo "<div class='pregunta'>";
+                                        // echo "<p class='pregunta-texto'>Opciones para pregunta ID: $idPregunta</p>";
+                                        $opciones = array();
+                                        while ($opcion = $opciones_respuesta->fetch_object()) {
+                                            $opciones[$opcion->opcion1][] = $opcion->opcion2;
                                         }
-                                        echo "</tr>";
-                                        $cont = 0;
-                                        foreach ($opciones as $opcion1 => $valoresOpcion2) {
-                                            $cont = $cont + 1;
-                                            echo "<tr>";
-                                            echo "<td>$opcion1</td>";
-                                            foreach ($valoresOpcion2 as $opcion2) {
-                                                $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
-                                                echo "<td>
-                                                        <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2'>
-                                                        <label for='$radioId' class='custom-radio-label'></label>
-                                                      </td>";
+            
+                                        if (!empty($opciones)) {
+                                            echo "<table>";
+                                            echo "<tr><th></th>";
+                                            foreach ($opciones[array_key_first($opciones)] as $opcion2) {
+                                                echo "<th>$opcion2</th>";
                                             }
                                             echo "</tr>";
+                                            $cont = 0;
+                                            foreach ($opciones as $opcion1 => $valoresOpcion2) {
+                                                $cont = $cont + 1;
+                                                echo "<tr>";
+                                                echo "<td class='hola'>$opcion1</td>";
+                                                foreach ($valoresOpcion2 as $opcion2) {
+            
+                                                    $radioId = "custom-radio-$idPregunta-$cont-" . md5($opcion2);
+                                                    echo "
+                                                    <td class='espaciadoo'>
+                                                        <input type='radio' id='$radioId' class='custom-radio' name='respuestas[$idPregunta][$opcion1]-$cont' value='$opcion2' data-idpregunta='$idPregunta-$cont-$opcion2' onchange='obtenerValor(\"$opcion1\", $idPregunta)'>
+                                                        <label for='$radioId' class='custom-radio-label'></label>
+                                                    </td>";
+                                                }
+                                                echo "</tr>";
+                                            }
+                                            echo "<div class='container-dinamico'>";
+                                            echo "<tr id='campo_otro_$idPregunta'  style='display:none;'>
+                                                    <td colspan='2'>
+                                                   <label for='otro_texto'>Especifica:</label>
+                                                  <!-- Cambiar el name para que contenga 'otro' además del idPregunta -->
+                                                            <input type='text' id='otro_texto_$idPregunta' name='respuestas_otro[$idPregunta]' value='$respuestaTexto' data-idpregunta='$idPregunta'>
+                                                        </td>
+                                                    </tr>
+                                                    </div>
+                                                    ";
+                                            echo "</table>";
+                                        } else {
+                                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                         }
-        
-                                        echo "</table>";
+                                        echo "</div>";
                                     } else {
                                         echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                                     }
-                                    echo "</div>";
-                                } else {
-                                    echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
-                                }
-                                break;
-        
-        
-                            default:
+                                    break;
+            
+            
+            
+                                default:
                                 echo "Tipo de pregunta no soportado";
                                 break;
                         }
-        
-        
                     }
                 } else {
                     // echo "No hay preguntas dependientes para esta pregunta.";
@@ -620,54 +680,76 @@ WHERE dp.depende_de_pregunta_id = $idPregunta";
             // echo "</div>";
 
             ?>
-         <center>
-    <div id="alert-container"></div>
-    <input type="submit" value="Enviar respuestas" class="btn-enviar">
-</center>
+            <center>
+                <div id="alert-container"></div>
+                <input type="submit" value="Enviar respuestas" class="btn-enviar">
+            </center>
 
-</form> <!-- Asegúrate de que esta etiqueta cierre correctamente tu formulario -->
+        </form> <!-- Asegúrate de que esta etiqueta cierre correctamente tu formulario -->
 
-<div class="botones">
-    <a href="menu_secciones.php" class="btn-menu" onclick="return confirmarRegreso();">Regresar</a>
-    <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion" onclick="return confirmarLogout();">Cerrar sesión</a>
-</div>
+        <div class="botones">
+            <a href="menu_secciones.php" class="btn-menu" onclick="return confirmarRegreso();">Regresar</a>
+            <a href="../../../app/Controllers/sessiondestroy_controller.php" class="btn-cerrar-sesion" onclick="return confirmarLogout();">Cerrar sesión</a>
+        </div>
 
     </div>
     <script>
+        ////////////////////////////////BOTON DE REGRESAR |ALERTA|///////////////////////
+        function confirmarRegreso() {
+            return confirm("¿Estás seguro de regresar al menú?");
+        }
 
-////////////////////////////////BOTON DE REGRESAR |ALERTA|///////////////////////
-function confirmarRegreso() {
-        return confirm("¿Estás seguro de regresar al menú?");
-    }
-    function confirmarLogout() {
-        return confirm("¿Estás seguro de cerrar sesión?");
-    }
+        function confirmarLogout() {
+            return confirm("¿Estás seguro de cerrar sesión?");
+        }
 
-////////////////////////////////////////////////////////////////////////////////////
-//////////////VALIDACION DE CAMPOS Y MUESTRA DE ERRORES ///////////////////////
-        document.getElementById('encuestaForm').addEventListener('submit', function(event) {
-            var form = event.target;
-            var alertContainer = document.getElementById('alert-container');
-            var valid = true;
-            var errorMessages = [];
+        ////////////////////////////////////////////////////////////////////////////////////
+        //////////////VALIDACION DE CAMPOS Y MUESTRA DE ERRORES ///////////////////////
+    // Agregar evento de validación en submit
+document.getElementById('encuestaForm').addEventListener('submit', function(event) {
+    var form = event.target;
+    var alertContainer = document.getElementById('alert-container');
+    var valid = true;
+    var errorMessages = [];
+    var firstErrorElement = null; // Para hacer scroll hacia la primera pregunta con error
 
-            // Limpiar contenedor de alertas
-            alertContainer.innerHTML = '';
-            var errorElements = form.querySelectorAll('.error-message');
-            errorElements.forEach(function(el) {
-                el.remove();
-            });
+    // Limpiar contenedor de alertas
+    alertContainer.innerHTML = '';
+    
+    // Eliminar mensajes de error previos
+    var errorElements = form.querySelectorAll('.error-message');
+    errorElements.forEach(function(el) {
+        el.remove();
+    });
 
+    // Limpiar clases de error visual
+    var preguntaElements = form.querySelectorAll('.pregunta');
+    preguntaElements.forEach(function(pregunta) {
+        pregunta.classList.remove('error'); // Remueve el borde rojo u otra clase de error
+    });
+
+
+    
             // Validar campos específicos
             var rfcInputs = form.querySelectorAll('input.respuesta-rfc');
             rfcInputs.forEach(function(input) {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateRFC(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ':RFC no es válido. Debe seguir el formato correcto.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ':RFC no es válido. Debe seguir el formato correcto.  Ejemplo: VECJ8803268V0';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
@@ -676,10 +758,20 @@ function confirmarRegreso() {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateCURP(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ': CURP no es válido. Debe seguir el formato correcto.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ': CURP no es válido. Debe seguir el formato correcto.  Ejemplo: RACW050729MMCSHNA2';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
@@ -689,10 +781,20 @@ function confirmarRegreso() {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateEmail(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ':Correo no es válido. Debe seguir el formato correcto.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ':Correo no es válido. Debe seguir el formato correcto.  Ejemplo: usuario@gmail.com ';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
@@ -701,10 +803,20 @@ function confirmarRegreso() {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateNumber(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ':Número no es válido. Debe contener solo dígitos.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ':Número no es válido. Debe contener solo dígitos. (10)';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
@@ -713,10 +825,20 @@ function confirmarRegreso() {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validateURL(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ':URL no es válida. Debe seguir el formato correcto.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ':URL no es válida. Debe seguir el formato correcto. Ej. "https://www.facebook.com/profile"';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
@@ -725,19 +847,37 @@ function confirmarRegreso() {
                 var idPregunta = input.getAttribute('data-idpregunta');
                 if (input.value !== '' && !validatePostalCode(input.value)) {
                     valid = false;
-                    var errorMessage = 'Pregunta #' + idPregunta + ':Código postal no es válido. Debe contener solo 5 dígitos.';
+                    var errorMessage = 'Pregunta #' + idPregunta + ':Código postal no es válido. Debe contener solo 5 dígitos.  Ejemplo: 52050';
                     errorMessages.push(errorMessage);
                     var errorElement = createErrorElement(errorMessage);
                     input.parentElement.appendChild(errorElement);
+                    // Resaltar la pregunta en rojo (añadiendo una clase de error)
+                    var preguntaElement = input.closest('.pregunta');
+                    if (preguntaElement) {
+                        preguntaElement.classList.add('error');
+
+                        // Si es la primera pregunta con error, guardarla para hacer scroll
+                        if (!firstErrorElement) {
+                            firstErrorElement = preguntaElement;
+                        }
+                    }
                 }
             });
 
-            if (!valid) {
-                event.preventDefault();
-                var alert = createAlert(errorMessages.join('<br>'));
-                alertContainer.appendChild(alert);
-            }
-        });
+        // Si el formulario no es válido, evitar que se envíe y mostrar alerta
+    if (!valid) {
+        event.preventDefault();
+
+        // Mostrar alerta general en el contenedor de alertas
+        var alert = createAlert('Algunas preguntas tienen errores. Por favor corrígelos.');
+        alertContainer.appendChild(alert);
+
+        // Hacer scroll hacia la primera pregunta con error
+        if (firstErrorElement) {
+            firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+});
 
         function validateRFC(rfc) {
             var rfcPattern = /^([A-ZÑ&]{3,4})\d{2}(0[1-9]|1[0-2])([0-2][1-9]|3[0-1])[A-Z\d]{2}[A\d]$/;
@@ -769,66 +909,68 @@ function confirmarRegreso() {
             return postalCodePattern.test(postalCode);
         }
 
-        function createErrorElement(message) {
-            var errorElement = document.createElement('div');
-            errorElement.className = 'error-message';
-            errorElement.innerText = message;
-            return errorElement;
-        }
+    // Crear el mensaje de error debajo de una pregunta
+function createErrorElement(message) {
+    var errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.innerText = message;
+    return errorElement;
+}
 
-        function createAlert(message) {
-            var alert = document.createElement('div');
-            alert.className = 'alert alert-danger';
-            alert.role = 'alert';
-            alert.innerHTML = '<h4 class="alert-heading">Error en el formulario</h4>' +
-                '<p>' + message + '</p>' +
-                '<hr />' +
-                '<p class="mb-0">Por favor corrige los errores y vuelve a intentarlo.</p>';
-            return alert;
-        }
+// Crear una alerta general en la parte superior del formulario
+function createAlert(message) {
+    var alert = document.createElement('div');
+    alert.className = 'alert alert-danger';
+    alert.role = 'alert';
+    alert.innerHTML = '<h4 class="alert-heading">Error en el formulario</h4>' +
+        '<p>' + message + '</p>' +
+        '<hr />' +
+        '<p class="mb-0">Por favor corrige los errores y vuelve a intentarlo.</p>';
+    return alert;
+}
 
         document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
-    const form = document.querySelector('form'); // Asegúrate de que tu formulario tenga la etiqueta <form>
+            const inputs = document.querySelectorAll('input[data-idpregunta], textarea[data-idpregunta], select[data-idpregunta]');
+            const form = document.querySelector('form'); // Asegúrate de que tu formulario tenga la etiqueta <form>
 
-    // Cargar valores de localStorage
-    inputs.forEach(function(input) {
-        let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
+            // Cargar valores de localStorage
+            inputs.forEach(function(input) {
+                let storedValue = localStorage.getItem('respuesta_' + input.dataset.idpregunta);
 
-        if (storedValue) {
-            if (input.type === 'radio') {
-                // Marcar el radio como 'checked' si su valor coincide con el almacenado
-                if (input.value === storedValue) {
-                    input.checked = true; // Asegúrate de que el radio esté seleccionado
-                    obtenerValor(storedValue, input.dataset.idpregunta); // Ejecuta la función para desplegar el campo dinámico
+                if (storedValue) {
+                    if (input.type === 'radio') {
+                        // Marcar el radio como 'checked' si su valor coincide con el almacenado
+                        if (input.value === storedValue) {
+                            input.checked = true; // Asegúrate de que el radio esté seleccionado
+                            obtenerValor(storedValue, input.dataset.idpregunta); // Ejecuta la función para desplegar el campo dinámico
+                        }
+                    } else {
+                        // Restaurar otros tipos de input (text, select, etc.)
+                        input.value = storedValue;
+                    }
                 }
-            } else {
-                // Restaurar otros tipos de input (text, select, etc.)
-                input.value = storedValue;
-            }
-        }
 
-        // Guardar el valor en localStorage cuando el usuario interactúe
-        input.addEventListener('input', function() {
-            if (input.type === 'radio') {
-                // Para radios, almacenar el valor cuando se selecciona
-                if (input.checked) {
-                    localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
-                    obtenerValor(input.value, input.dataset.idpregunta); // Llama a la función al seleccionar
+                // Guardar el valor en localStorage cuando el usuario interactúe
+                input.addEventListener('input', function() {
+                    if (input.type === 'radio') {
+                        // Para radios, almacenar el valor cuando se selecciona
+                        if (input.checked) {
+                            localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                            obtenerValor(input.value, input.dataset.idpregunta); // Llama a la función al seleccionar
+                        }
+                    } else {
+                        // Para otros inputs
+                        localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                    }
+                });
+
+                // Para selects, también escuchar el evento 'change'
+                if (input.tagName === 'SELECT') {
+                    input.addEventListener('change', function() {
+                        localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
+                    });
                 }
-            } else {
-                // Para otros inputs
-                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
-            }
-        });
-
-        // Para selects, también escuchar el evento 'change'
-        if (input.tagName === 'SELECT') {
-            input.addEventListener('change', function() {
-                localStorage.setItem('respuesta_' + input.dataset.idpregunta, input.value);
             });
-        }
-    });
 
             // Eliminar los valores de localStorage cuando se envía el formulario
             form.addEventListener('submit', function() {
@@ -837,7 +979,7 @@ function confirmarRegreso() {
                 });
             });
         });
-//////////////////////PAISES OTROS TEXTO PLANO //////////////////
+        //////////////////////PAISES OTROS TEXTO PLANO //////////////////
 
 
 
@@ -847,55 +989,66 @@ function confirmarRegreso() {
         ////////////////////////////////////////////////////////////////
         /////////COMBO DINAMICO DE ESTADOS MUNICIPIOS///////////////////////
         let estadoOriginal = '';
-let municipioOriginal = '';
+        let municipioOriginal = '';
 
-function cargarEstados(selectPais, idPregunta) {
-    const paisId = selectPais.value; // ID del país seleccionado
-    const estadoIdPregunta = idPregunta + 1; // El siguiente select es el de estados
-    const estadoSelect = document.getElementById("estado_" + estadoIdPregunta);
-    const municipioIdPregunta = estadoIdPregunta + 1; // El siguiente select es el de municipios
-    const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta);
+        function cargarEstados(selectPais, idPregunta) {
+            
+            const paisId = selectPais.value; // ID del país seleccionado
+            const estadoIdPregunta = idPregunta + 1; // El siguiente select es el de estados
+            const estadoSelect = document.getElementById("estado_" + estadoIdPregunta);
+            const municipioIdPregunta = estadoIdPregunta + 1; // El siguiente select es el de municipios
+            const municipioSelect = document.getElementById("municipio_" + municipioIdPregunta);
 
-    // Guardar HTML original si aún no está guardado
-    if (!estadoOriginal) estadoOriginal = estadoSelect.outerHTML;
-    if (!municipioOriginal) municipioOriginal = municipioSelect.outerHTML;
-    console.log("Buscando estado con ID:", "estado_" + estadoIdPregunta); // Verifica que esté buscando el estado correcto
-    
-    console.log("pais:  "+paisId);
-    if (estadoSelect) {
-        // Si el país seleccionado es "Otro"
-        if (paisId === "otro") {
-            // Cambiar los selects a inputs de texto
-            estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='respuestas[${estadoIdPregunta}]' placeholder='Especifica tu estado'  />`;
-            municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='respuestas[${municipioIdPregunta}]' placeholder='Especifica tu municipio' required />`;
-        } else {
-            // Restaurar los selects originales si se selecciona un país de la base de datos
-            estadoSelect.outerHTML = estadoOriginal;
-            municipioSelect.outerHTML = municipioOriginal;
+            // const paisId = selectPais.value; // ID del país seleccionado
 
-            // Refresca los elementos de select
-            const estadoSelectUpdated = document.getElementById("estado_" + estadoIdPregunta);
-            const municipioSelectUpdated = document.getElementById("municipio_" + municipioIdPregunta);
+// Obtener el div para el campo de texto
+const campoOtro = document.getElementById('campo_otro_' + idPregunta);
 
-            // Ahora se carga el select de estados
-            if (paisId) {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'cargar_datos.php', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        estadoSelectUpdated.innerHTML = xhr.responseText; // Actualiza el select de estados
+
+            // Guardar HTML original si aún no está guardado
+            if (!estadoOriginal) estadoOriginal = estadoSelect.outerHTML;
+            if (!municipioOriginal) municipioOriginal = municipioSelect.outerHTML;
+            console.log("Buscando estado con ID:", "estado_" + estadoIdPregunta); // Verifica que esté buscando el estado correcto
+
+            console.log("pais:  " + paisId);
+            if (estadoSelect) {
+                // Si el país seleccionado es "Otro"
+                if (paisId === "otro") {
+                    // Cambiar los selects a inputs de texto
+                    estadoSelect.outerHTML = `<input type='text' id='estado_${estadoIdPregunta}' name='respuestas[${estadoIdPregunta}]' placeholder='Especifica tu estado'  />`;
+                    municipioSelect.outerHTML = `<input type='text' id='municipio_${municipioIdPregunta}' name='respuestas[${municipioIdPregunta}]' placeholder='Especifica tu municipio' required />`;
+    campoOtro.style.display = 'block';
+
+                } else {
+    campoOtro.style.display = 'none';
+
+                    // Restaurar los selects originales si se selecciona un país de la base de datos
+                    estadoSelect.outerHTML = estadoOriginal;
+                    municipioSelect.outerHTML = municipioOriginal;
+
+                    // Refresca los elementos de select
+                    const estadoSelectUpdated = document.getElementById("estado_" + estadoIdPregunta);
+                    const municipioSelectUpdated = document.getElementById("municipio_" + municipioIdPregunta);
+
+                    // Ahora se carga el select de estados
+                    if (paisId) {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'cargar_datos.php', true);
+                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                estadoSelectUpdated.innerHTML = xhr.responseText; // Actualiza el select de estados
+                            }
+                        };
+                        xhr.send('accion=estados&pais_id=' + paisId); // Envía el ID del país seleccionado
+                    } else {
+                        estadoSelectUpdated.innerHTML = "<option value=''>Selecciona un estado</option>"; // Si no hay país, restablece el select
                     }
-                };
-                xhr.send('accion=estados&pais_id=' + paisId); // Envía el ID del país seleccionado
+                }
             } else {
-                estadoSelectUpdated.innerHTML = "<option value=''>Selecciona un estado</option>"; // Si no hay país, restablece el select
+                console.error("El elemento con ID 'estado_" + estadoIdPregunta + "' no existe en el DOM.");
             }
         }
-    } else {
-        console.error("El elemento con ID 'estado_" + estadoIdPregunta + "' no existe en el DOM.");
-    }
-}
 
 
 
@@ -936,25 +1089,96 @@ function cargarEstados(selectPais, idPregunta) {
             }
         }
 
-        
 
 
-        document.querySelectorAll('.custom-radio').forEach(function(radio) {
-    // Guardamos el estado anterior para saber si se seleccionó antes
-    radio.dataset.wasChecked = radio.checked;
+// Obtener todos los radio buttons generados dinámicamente
+// Variable para almacenar el último radio seleccionado
+let lastChecked = null;
 
-    radio.addEventListener('change', function() {
-        // Si ya estaba seleccionado y se vuelve a hacer clic, lo deseleccionamos
-        if (radio.dataset.wasChecked == "true") {
-            radio.checked = false;
-            radio.dataset.wasChecked = "false";
+// Obtener todos los radio buttons generados dinámicamente
+const radios = document.querySelectorAll('input[type="radio"][name^="respuestas"]');
+
+radios.forEach(radio => {
+    radio.addEventListener('click', function() {
+        // Si el radio ya estaba seleccionado, deseleccionarlo
+        if (this === lastChecked) {
+            this.checked = false;
+            lastChecked = null; // Reiniciar la variable
         } else {
-            // Si no estaba seleccionado, lo marcamos como seleccionado
-            radio.dataset.wasChecked = "true";
+            // Si no estaba seleccionado, actualizar la variable
+            lastChecked = this;
         }
     });
 });
 
+
+
+document.getElementById('encuestaForm').addEventListener('submit', function(event) {
+    var form = event.target;
+    var alertContainer = document.getElementById('alert-container');
+    var valid = true;
+    var errorMessages = [];
+
+    // Limpiar el contenedor de alertas
+    alertContainer.innerHTML = '';
+    
+    // Eliminar mensajes de error previos
+    var errorElements = form.querySelectorAll('.error-message');
+    errorElements.forEach(function(el) {
+        el.remove();
+    });
+
+    // Verificar todos los campos requeridos
+    var requiredFields = form.querySelectorAll('[required]');
+    requiredFields.forEach(function(input) {
+        // Verificar si está vacío o no es válido
+        if (input.type === 'radio') {
+            // Verificar si algún radio con el mismo 'name' está seleccionado
+            var name = input.name;
+            if (!form.querySelector('input[name="' + name + '"]:checked')) {
+                valid = false;
+                var idPregunta = input.getAttribute('data-idpregunta') || 'sin ID';
+                var errorMessage = 'Pregunta #' + idPregunta + ': Debe seleccionar una opción.';
+                errorMessages.push(errorMessage);
+
+                // Agregar mensaje de error a la pregunta (en lugar de al input individual)
+                var parentTd = input.closest('td'); // Encuentra el 'td' que contiene el radio
+                var errorElement = createErrorElement(errorMessage);
+                parentTd.appendChild(errorElement);
+            }
+        } else if (input.value.trim() === '') {
+            // Otros campos como input text, select, textarea, etc.
+            valid = false;
+            var idPregunta = input.getAttribute('data-idpregunta') || 'sin ID';
+            var errorMessage = 'Pregunta #' + idPregunta + ': Este campo es requerido.';
+            errorMessages.push(errorMessage);
+
+            // Agregar mensaje de error al campo
+            var errorElement = createErrorElement(errorMessage);
+            input.parentElement.appendChild(errorElement);
+        }
+    });
+
+    // Validación personalizada para otros campos (ejemplo de CURP)
+    var curpInputs = form.querySelectorAll('input.respuesta-curp');
+    curpInputs.forEach(function(input) {
+        var idPregunta = input.getAttribute('data-idpregunta');
+        if (input.value !== '' && !validateCURP(input.value)) {
+            valid = false;
+            var errorMessage = 'Pregunta #' + idPregunta + ': CURP no es válido. Debe seguir el formato correcto.';
+            errorMessages.push(errorMessage);
+            var errorElement = createErrorElement(errorMessage);
+            input.parentElement.appendChild(errorElement);
+        }
+    });
+
+    // Si hay errores, mostrar alerta y detener el envío del formulario
+    if (!valid) {
+        var alert = createAlert('Hay errores en el formulario.');
+        alertContainer.appendChild(alert);
+        event.preventDefault(); // Detener el envío del formulario
+    }
+});
     </script>
 
 </body>
