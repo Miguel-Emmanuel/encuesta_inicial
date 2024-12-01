@@ -147,7 +147,7 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 <body>
 
     <div class="container">
-        <?php if ($rol == 1 || $rol == 2): ?>
+        <?php if ($rol == 1): ?>
             <div class="filtro">
                 Programas Educativos
                 <div class="dropdown">
