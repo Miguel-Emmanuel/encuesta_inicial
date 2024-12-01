@@ -1,16 +1,22 @@
 <?php
-include("../../../app/Models/conexion.php");
-session_start();
-if (isset($_SESSION['id']) != "") {
-    $idUsuario = $_SESSION['id'];
-    $rolu = "SELECT rol_id FROM usuarios WHERE id = $idUsuario";
-    $result = $conexion->query($rolu);
-    $row = $result->fetch_assoc();
-    $rol = $row['rol_id']; 
+require("../../../app/Controllers/auth.php"); // Valida la sesión y obtiene el rol
+include("../../../app/Models/conexion.php"); // Incluye la conexión a la base de datos
 
-    $emailUsuario = $_SESSION['email'];
-    $content = 'inicio.php';
-    include('../dashboard/dashboard.php');
-} else {
-    header("location: login.php");
-}
+
+switch ($rol):
+    case 1:
+    case 2:
+    case 4:
+        $content = 'inicio.php'; // Define el contenido principal
+        include('../dashboard/dashboard.php'); // Incluye la plantilla del dashboard
+        break;
+    case 3:
+        header("location: /public/views/sesiones/login.php");
+        break;
+    default:
+        header("location: /public/views/sesiones/login.php");
+        break;
+endswitch;
+
+
+
