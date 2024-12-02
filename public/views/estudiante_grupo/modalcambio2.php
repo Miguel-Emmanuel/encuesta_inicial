@@ -1,10 +1,40 @@
 <?php
 require("../../../app/Controllers/Estudiante_grupo/obtener_estudiante.php");
+
+if($rol == 2):
+    $idU = intval($idUsuario);
+
+// Consulta para obtener el ID del tutor relacionado
+$tutor = "SELECT t.id AS tutor_id 
+          FROM tutores AS t
+          INNER JOIN usuarios AS u ON t.usuario_id = u.id
+          WHERE u.id = $idU";
+
+// Ejecutar la consulta
+$tres = mysqli_query($conexion, $tutor);
+
+if ($tres && $row = mysqli_fetch_assoc($tres)) {
+    $tutor_id = $row['tutor_id']; // Aquí obtienes el ID del tutor como número
+} else {
+    echo "Su usuario no esta registrado como tutor";
+}
+endif;
+if($rol == 1):
 $sqlGrupos = "SELECT * FROM t_grupos";
 $grupos = $conexion->query($sqlGrupos);
+elseif($rol == 2):
+    $sqlGrupos = "SELECT g.* 
+              FROM t_grupos AS g
+              INNER JOIN grupo_tutor AS gt ON gt.grupo_id = g.id
+              WHERE gt.tutor_id = $tutor_id";
+    $grupos = $conexion->query($sqlGrupos);
+endif;
+
 
 $sqlPeriodos = "SELECT * FROM periodos_escolar";
 $periodos = $conexion->query($sqlPeriodos);
+
+
 ?>
 
 <style>

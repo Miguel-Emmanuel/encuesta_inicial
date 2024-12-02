@@ -42,11 +42,18 @@
                         <li>
                             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
                             <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <?php if ($rol == 1): ?>
+                                <?php
+                                // if ($rol == 1): 
+                                ?>
+                                <!--
                                     <li>
                                         <a href="/public/views/roles/index.php">Roles</a>
                                     </li>
-                                <?php endif ?>
+                                    -->
+                                <?php
+                                // endif 
+                                ?>
+
                                 <?php if ($rol == 1): ?>
                                     <li>
                                         <a href="/public/views/educativo/index.php">Programas Educativos</a>

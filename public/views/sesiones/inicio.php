@@ -27,7 +27,9 @@ $T = "SELECT
 $consulta3 = mysqli_query($conexion, $T);
 $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
-$idU = intval($idUsuario);
+
+if($rol == 2):
+    $idU = intval($idUsuario);
 
 // Consulta para obtener el ID del tutor relacionado
 $tutor = "SELECT t.id AS tutor_id 
@@ -40,10 +42,17 @@ $tres = mysqli_query($conexion, $tutor);
 
 if ($tres && $row = mysqli_fetch_assoc($tres)) {
     $tutor_id = $row['tutor_id']; // Aquí obtienes el ID del tutor como número
-    echo $tutor_id; // Mostramos el ID del tutor
 } else {
     echo "Su usuario no esta registrado como tutor";
 }
+
+$GrupoTutor = "SELECT g.id AS grupo_id, g.nomenclatura 
+              FROM t_grupos AS g
+              INNER JOIN grupo_tutor AS gt ON g.id = gt.grupo_id
+              WHERE gt.tutor_id = $tutor_id AND g.activo = 1";
+$consultagt = mysqli_query($conexion, $GrupoTutor);
+$tutores2 = mysqli_fetch_all($consultagt, MYSQLI_ASSOC);
+endif;
 ?>
 
 <!DOCTYPE html>
@@ -189,21 +198,21 @@ if ($tres && $row = mysqli_fetch_assoc($tres)) {
         <?php endif ?>
 
         <!-- //<a href="../gruposV/filtro.html" class="" > -->
-        <a href="../filtros/index.php?f=2" class="" >
-        <div class="filtro">
-            Grupos Vulnerables
-                    </div>
-                    </a>
+        <a href="../filtros/index.php?f=2" class="">
+            <div class="filtro">
+                Grupos Vulnerables
+            </div>
+        </a>
 
         <?php if ($rol == 2): ?>
             <div class="filtro">
                 Grupo Tutor
                 <div class="dropdown">
                     <ul>
-                        <?php foreach ($tutores as $item): ?>
-                            <?php  ?>
-                            <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=3" . "&nombre=" . urlencode($item['nombre']); ?>">
-                                <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                        <?php foreach ($tutores2 as $item): ?>
+                        <?php $grupoid = intval($item['grupo_id']); ?>
+                            <a href="<?php echo "../filtros/index.php?it=" . $tutor_id . "&ig=" . $grupoid . "&f=4" . "&nombre=" . urlencode($item['nomenclatura']); ?>">
+                                <li><?php echo htmlspecialchars($item['nomenclatura']); ?></li>
                             </a>
                         <?php endforeach; ?>
                     </ul>
