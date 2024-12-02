@@ -4,8 +4,7 @@ include("../../../app/Models/conexion.php"); // Incluye la conexión a la base d
 
 switch ($rol):
     case 1:
-        $content = 'tablausuario.php';
-        $content = 'tablagrupo_tutor.php'; // Define el contenido principal
+        $content = 'tablausuario.php'; // Define el contenido principal
         include('../dashboard/dashboard.php'); // Incluye la plantilla del dashboard
         break;
     case 2:

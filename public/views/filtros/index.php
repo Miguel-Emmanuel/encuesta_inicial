@@ -15,7 +15,7 @@ switch ($filtro):
         $content = 'GT.php';  // Acción para cuando filtro es 3
         break;
     case 4:
-        $content = 'Contenido para filtro 4';  // Acción para cuando filtro es 4
+        $content = 'GTT.php';  // Acción para cuando filtro es 4
         break;
 
     default:

@@ -18,8 +18,34 @@ $T = "SELECT
 $consulta3 = mysqli_query($conexion, $T);
 $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
+$T = "SELECT 
+                t.id AS id,
+                t.usuario_id,
+                CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre
+            FROM tutores t
+            INNER JOIN usuarios u ON t.usuario_id = u.id;";
+$consulta3 = mysqli_query($conexion, $T);
+$tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
+$idU = intval($idUsuario);
+
+// Consulta para obtener el ID del tutor relacionado
+$tutor = "SELECT t.id AS tutor_id 
+          FROM tutores AS t
+          INNER JOIN usuarios AS u ON t.usuario_id = u.id
+          WHERE u.id = $idU";
+
+// Ejecutar la consulta
+$tres = mysqli_query($conexion, $tutor);
+
+if ($tres && $row = mysqli_fetch_assoc($tres)) {
+    $tutor_id = $row['tutor_id']; // Aquí obtienes el ID del tutor como número
+    echo $tutor_id; // Mostramos el ID del tutor
+} else {
+    echo "Su usuario no esta registrado como tutor";
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -169,7 +195,23 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
                     </div>
                     </a>
 
-        <?php if ($rol == 1 || $rol == 2): ?>
+        <?php if ($rol == 2): ?>
+            <div class="filtro">
+                Grupo Tutor
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($tutores as $item): ?>
+                            <?php  ?>
+                            <a href="<?php echo "../filtros/index.php?id=" . $item['id'] . "&f=3" . "&nombre=" . urlencode($item['nombre']); ?>">
+                                <li><?php echo htmlspecialchars($item['nombre']); ?></li>
+                            </a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <?php if ($rol == 1): ?>
             <div class="filtro">
                 Grupo Tutor
                 <div class="dropdown">
@@ -183,10 +225,6 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
                 </div>
             </div>
         <?php endif ?>
-
-        <div class="filtro">
-            Padecimientos de Salud
-        </div>
     </div>
 
     <script>
