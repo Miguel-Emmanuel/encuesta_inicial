@@ -1,5 +1,6 @@
 <?php
 // Incluir la conexión
+
 include("../../../database/conexion.php");
 
 // Verificar si se envió el grupo vulnerable
@@ -13,173 +14,171 @@ if (isset($_POST['grupo_vulnerable'])) {
             $sql = "
                 SELECT 
                     e.matricula,
-                    u.nombre,
-                    u.apellido_paterno,
-                    u.apellido_materno,
+                    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
+                    COALESCE(t_gr.nomenclatura, '') AS grupo,
+                    COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
+                    COALESCE(p.alias, '') AS periodo_escolar,
+                    COALESCE(prog.nombre, '') AS carrera,
                     er.respuesta AS respuesta,
-                     p.pregunta AS pregunta, -- Incluimos la pregunta
+                    pr.pregunta AS pregunta,
                     er.created_at
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
-                JOIN preguntas p ON er.pregunta_id = p.id -- Relación con preguntas
+                JOIN preguntas pr ON er.pregunta_id = pr.id
+                JOIN estudiante_grupo eg ON eg.estudiante_id = e.id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
+                LEFT JOIN tutores t ON gt.tutor_id = t.id
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
+                LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
                     (er.pregunta_id = 10 AND er.respuesta IN ('Divorciado(a)', 'Viudo(a)', 'Unión libre', 'Casado(a)'))
                     OR
                     (er.pregunta_id = 11 AND er.respuesta IN ('2 hijos(as)', 'Más de 2 hijos(as)'))
-                GROUP BY e.id;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
             ";
             break;
 
-            case 'economico':
-                $sql = "
+        case 'economico':
+            $sql = "
                 SELECT 
                     e.matricula,
-                    u.nombre,
-                    u.apellido_paterno,
-                    u.apellido_materno,
+                    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
-                    r.respuesta AS respuesta,
-                        p.pregunta AS pregunta, -- Incluimos la pregunta
-                    r.created_at
-     
-                FROM respuestas r
-                JOIN estudiantes e ON r.estudiante_id = e.id
+                    COALESCE(t_gr.nomenclatura, '') AS grupo,
+                    COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
+                    COALESCE(p.alias, '') AS periodo_escolar,
+                    COALESCE(prog.nombre, '') AS carrera,
+                    er.respuesta AS respuesta,
+                    pr.pregunta AS pregunta,
+                    er.created_at
+                FROM respuestas er
+                JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
-                JOIN preguntas p ON r.pregunta_id = p.id -- Relación con preguntas
+                JOIN preguntas pr ON er.pregunta_id = pr.id
+                JOIN estudiante_grupo eg ON eg.estudiante_id = e.id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
+                LEFT JOIN tutores t ON gt.tutor_id = t.id
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
+                LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
-                    (
-                        -- Pregunta 12: Cualquier respuesta diferente a 'No' se considera vulnerable
-                        (r.pregunta_id = 12 AND r.respuesta != 'no')
-                    )
+                    (er.pregunta_id = 12 AND er.respuesta != 'no')
                     OR
-                    (
-                        -- Pregunta 50: Respuesta 'Sí'
-                        (r.pregunta_id = 50 AND r.respuesta = 'Si')
-                    )
+                    (er.pregunta_id = 50 AND er.respuesta = 'Si')
                     OR
-                    (
-                        -- Pregunta 60: Ingreso familiar mensual, comparado con el umbral.
-                        (r.pregunta_id = 60 AND r.respuesta <= 6223.20)  -- Consideramos el umbral de un salario mínimo
-                    )
+                    (er.pregunta_id = 60 AND er.respuesta <= 6223.20)
                     OR
-                    (
-                        -- Pregunta 63: Respuesta 'Departamento cerca de la Universidad'
-                        (r.pregunta_id = 63 AND r.respuesta = 'Departamento cerca de la Universidad')
-                    )
+                    (er.pregunta_id = 63 AND er.respuesta = 'Departamento cerca de la Universidad')
                     OR
-                    (
-                        -- Pregunta 67: Respuestas que indican un tiempo de transporte largo
-                        (r.pregunta_id = 67 AND r.respuesta IN ('De 60 a 90 minutos', 'De 90 a 120 minutos', 'Más de 120 minutos'))
-                    )
-                GROUP BY e.id;
+                    (er.pregunta_id = 67 AND er.respuesta IN ('De 60 a 90 minutos', 'De 90 a 120 minutos', 'Más de 120 minutos'))
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
             ";
+            break;
             
-                break;
-                
-            case 'salud':
-                $sql = "
+        case 'salud':
+            $sql = "
                 SELECT 
                     e.matricula,
-                    u.nombre,
-                    u.apellido_paterno,
-                    u.apellido_materno,
+                    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
-                    r.respuesta AS respuesta,
-                        p.pregunta AS pregunta, -- Incluimos la pregunta
-                    r.created_at
-                FROM respuestas r
-                JOIN estudiantes e ON r.estudiante_id = e.id
+                    COALESCE(t_gr.nomenclatura, '') AS grupo,
+                    COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
+                    COALESCE(p.alias, '') AS periodo_escolar,
+                    COALESCE(prog.nombre, '') AS carrera,
+                    er.respuesta AS respuesta,
+                    pr.pregunta AS pregunta,
+                    er.created_at
+                FROM respuestas er
+                JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
-                JOIN preguntas p ON r.pregunta_id = p.id -- Relación con preguntas
+                JOIN preguntas pr ON er.pregunta_id = pr.id
+                JOIN estudiante_grupo eg ON eg.estudiante_id = e.id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
+                LEFT JOIN tutores t ON gt.tutor_id = t.id
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
+                LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
-                    (
-                        -- Pregunta 73: Tienes alguna deficiencia auditiva, problemas de movilidad motriz, o 'Otro'
-                        (r.pregunta_id = 73 AND r.respuesta IN ('Tienes alguna deficiencia auditiva', 'Problemas de movilidad motriz', 'Otro:'))
-                    )
+                    (er.pregunta_id = 73 AND er.respuesta IN ('Tienes alguna deficiencia auditiva', 'Problemas de movilidad motriz', 'Otro:'))
                     OR
-                    (
-                        -- Pregunta 80: Respuesta 'Sí'
-                        (r.pregunta_id = 80 AND r.respuesta = 'Si')
-                    )
+                    (er.pregunta_id = 80 AND er.respuesta = 'Si')
                     OR
-                    (
-                        -- Pregunta 74: Respuesta 'Sí'
-                        (r.pregunta_id = 74 AND r.respuesta = 'Si')
-                    )
-                                 OR
-                    (
-                        -- Pregunta 76: Respuesta 'Sí'
-                        (r.pregunta_id = 76 AND r.respuesta = 'Si')
-                    )
-                                       OR
-                    (
-                        -- Pregunta 77: Respuesta 'alergia'
-                        (r.pregunta_id = 77)
-                    )
-                                           OR
-                    (
-                        -- Pregunta 78: Respuesta 'si'
-                        (r.pregunta_id = 78)
-                    )
-
-                GROUP BY e.id;
+                    (er.pregunta_id = 74 AND er.respuesta = 'Si')
+                    OR
+                    (er.pregunta_id = 76 AND er.respuesta = 'Si')
+                    OR
+                    (er.pregunta_id = 77 AND er.respuesta = 'alergia')
+                    OR
+                    (er.pregunta_id = 78 AND er.respuesta = 'si')
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
             ";
-            
-            
-                break;
+            break;
 
-                case 'baja':
-                    $sql = "
-    SELECT 
-        e.matricula,
-        u.nombre,
-        u.apellido_paterno,
-        u.apellido_materno,
-        u.email,
-        r.respuesta AS respuesta,
-            p.pregunta AS pregunta, -- Incluimos la pregunta
-        r.created_at
-    FROM respuestas r
-    JOIN estudiantes e ON r.estudiante_id = e.id
-    JOIN usuarios u ON e.usuario_id = u.id
-    JOIN preguntas p ON r.pregunta_id = p.id -- Relación con preguntas
-    WHERE 
-        (
-            -- Pregunta 94: Respuesta 'Sí' indica posible deserción académica
-            (r.pregunta_id = 94 AND r.respuesta = 'Si')
-        )
-    GROUP BY e.id;
-";
+        case 'baja':
+            $sql = "
+                SELECT 
+                    e.matricula,
+                    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
+                    u.email,
+                    COALESCE(t_gr.nomenclatura, '') AS grupo,
+                    COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
+                    COALESCE(p.alias, '') AS periodo_escolar,
+                    COALESCE(prog.nombre, '') AS carrera,
+                    er.respuesta AS respuesta,
+                    pr.pregunta AS pregunta,
+                    er.created_at
+                FROM respuestas er
+                JOIN estudiantes e ON er.estudiante_id = e.id
+                JOIN usuarios u ON e.usuario_id = u.id
+                JOIN preguntas pr ON er.pregunta_id = pr.id
+                JOIN estudiante_grupo eg ON eg.estudiante_id = e.id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
+                LEFT JOIN tutores t ON gt.tutor_id = t.id
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
+                LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
+                WHERE 
+                    (er.pregunta_id = 94 AND er.respuesta = 'Si')
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+            ";
+            break;
 
-                    break;
-
-                    case 'etnia':
-                        $sql = "
-                        SELECT 
-                            e.matricula,
-                            u.nombre,
-                            u.apellido_paterno,
-                            u.apellido_materno,
-                            u.email,
-                            r.respuesta AS respuesta,
-                                p.pregunta AS pregunta, -- Incluimos la pregunta
-                            r.created_at
-                        FROM respuestas r
-                        JOIN estudiantes e ON r.estudiante_id = e.id
-                        JOIN usuarios u ON e.usuario_id = u.id
-                        JOIN preguntas p ON r.pregunta_id = p.id -- Relación con preguntas
-                        WHERE 
-                            (
-                                -- Pregunta 72: Cualquier respuesta diferente a 'no' indica que el estudiante habla una lengua indígena
-                                (r.pregunta_id = 72 AND r.respuesta != 'no')
-                            )
-                        GROUP BY e.id;
-                    ";
-                    
-    
-                        break;
+        case 'etnia':
+            $sql = "
+                SELECT 
+                    e.matricula,
+                    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
+                    u.email,
+                    COALESCE(t_gr.nomenclatura, '') AS grupo,
+                    COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
+                    COALESCE(p.alias, '') AS periodo_escolar,
+                    COALESCE(prog.nombre, '') AS carrera,
+                    er.respuesta AS respuesta,
+                    pr.pregunta AS pregunta,
+                    er.created_at
+                FROM respuestas er
+                JOIN estudiantes e ON er.estudiante_id = e.id
+                JOIN usuarios u ON e.usuario_id = u.id
+                JOIN preguntas pr ON er.pregunta_id = pr.id
+                JOIN estudiante_grupo eg ON eg.estudiante_id = e.id
+                JOIN t_grupos t_gr ON eg.grupo_id = t_gr.id
+                LEFT JOIN grupo_tutor gt ON t_gr.id = gt.grupo_id AND eg.periodo_id = gt.periodo_id
+                LEFT JOIN tutores t ON gt.tutor_id = t.id
+                LEFT JOIN usuarios tu ON t.usuario_id = tu.id
+                LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
+                WHERE 
+                    (er.pregunta_id = 72 AND er.respuesta != 'no')
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+            ";
+            break;
 
         default:
             echo json_encode(['error' => 'Grupo vulnerable no válido']);
@@ -195,19 +194,22 @@ if (isset($_POST['grupo_vulnerable'])) {
         while ($row = $result->fetch_assoc()) {
             $fechaOriginal = $row['created_at'];
             $formattedDate = $fechaOriginal ? strftime("%d de %B de %Y", strtotime($fechaOriginal)) : 'Sin fecha'; // Validación de fechas
-                $data[] = [
+            $data[] = [
                 'matricula' => $row['matricula'],
-                'nombre_completo' => $row['nombre'] . ' ' . $row['apellido_paterno'] . ' ' . $row['apellido_materno'],
+                'nombre_completo' => $row['estudiante'],
                 'email' => $row['email'],
-                'grupo_vulnerable' => $grupoVulnerable, // Agregar el grupo vulnerable seleccionado
-                'pregunta' => $row['pregunta'], // Respuesta clave que indica el criterio del grupo vulnerable
-                'respuesta' => $row['respuesta'], // Respuesta clave que indica el criterio del grupo vulnerable
-                'observaciones' => isset($row['observaciones']) ? $row['observaciones'] : null, // Observaciones o comentarios adicionales si existen
-                'created_at'       => $formattedDate        
-            ];
+                'grupo_vulnerable' => $grupoVulnerable,
+                'grupo' => $row['grupo'] ?? 'No asignado',
+                'tutor' => $row['tutor'] ?? 'Sin tutor',
+                'periodo_escolar' => $row['periodo_escolar'] ?? 'No definido',
+                'carrera' => $row['carrera'] ?? 'No especificada',
+                'pregunta' => $row['pregunta'] ?? 'Sin pregunta',
+                'respuesta' => $row['respuesta'] ?? 'Sin respuesta',
+                'observaciones' => $row['observaciones'] ?? 'Sin observaciones',
+                'created_at' => $formattedDate
+];
         }
     }
-    
 
     // Enviar datos en formato JSON
     header('Content-Type: application/json');
@@ -216,8 +218,6 @@ if (isset($_POST['grupo_vulnerable'])) {
     // Error si no se envió un grupo vulnerable
     echo json_encode(['error' => 'No se especificó un grupo vulnerable']);
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 $conexion->close();
 ?>
