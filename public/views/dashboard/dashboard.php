@@ -34,6 +34,7 @@
             <div class="p-4 pt-5">
                 <h1><a href="/public/views/sesiones/index.php" class="logo">Encuesta Inicial</a></h1>
                 <ul class="list-unstyled components mb-5">
+                <b>Usuario: <?php echo $nrol; ?></b> <p><?php echo $nombre; ?></p>
                     <li id="inicio" class="active">
                         <a href="/public/views/sesiones/index.php">Inicio</a>
                     </li>

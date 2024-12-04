@@ -68,7 +68,7 @@ $estugrup = $conexion->query($sqlEstuGrup_cambio);
                     <td><?= $row_estugrup['alias']; ?></td>
                     <td><?= $row_estugrup['activo'] == 1 ? 'Activo' : 'Inactivo'; ?></td>
                     <td>
-                        <a href="#" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <!--<a href="#" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#editarmodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-pen-to-square"></i></a>-->
                         <a href="#" class="btn btn-small btn-danger" data-bs-toggle="modal" data-bs-target="#eliminamodal" data-bs-id="<?= $row_estugrup['id']; ?>"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>

@@ -180,7 +180,7 @@ endif;
 </head>
 
 <body>
-
+    <h3>Bienvenid@:</h3><h4><?php echo $nombre; ?></h4>
     <div class="container">
         <?php if ($rol == 1): ?>
             <div class="filtro">
