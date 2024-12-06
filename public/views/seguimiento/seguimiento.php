@@ -27,7 +27,8 @@ $usuarios = "SELECT
                 LEFT JOIN tutores t ON gt.tutor_id = t.id
                 LEFT JOIN usuarios tu ON t.usuario_id = tu.id  -- Para obtener el nombre completo del tutor
                 LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
-                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id";
+                LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
+                WHERE eg.activo = 1";
 
 
 $consulta = mysqli_query($conexion, $usuarios);
