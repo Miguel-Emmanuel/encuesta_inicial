@@ -18,8 +18,43 @@ $T = "SELECT
 $consulta3 = mysqli_query($conexion, $T);
 $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
+$T = "SELECT 
+                t.id AS id,
+                t.usuario_id,
+                CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre
+            FROM tutores t
+            INNER JOIN usuarios u ON t.usuario_id = u.id;";
+$consulta3 = mysqli_query($conexion, $T);
+$tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 
+
+if($rol == 2):
+    $idU = intval($idUsuario);
+
+// Consulta para obtener el ID del tutor relacionado
+$tutor = "SELECT t.id AS tutor_id 
+          FROM tutores AS t
+          INNER JOIN usuarios AS u ON t.usuario_id = u.id
+          WHERE u.id = $idU";
+
+// Ejecutar la consulta
+$tres = mysqli_query($conexion, $tutor);
+
+if ($tres && $row = mysqli_fetch_assoc($tres)) {
+    $tutor_id = $row['tutor_id']; // Aquí obtienes el ID del tutor como número
+} else {
+    echo "Su usuario no esta registrado como tutor";
+}
+
+$GrupoTutor = "SELECT g.id AS grupo_id, g.nomenclatura 
+              FROM t_grupos AS g
+              INNER JOIN grupo_tutor AS gt ON g.id = gt.grupo_id
+              WHERE gt.tutor_id = $tutor_id AND g.activo = 1";
+$consultagt = mysqli_query($conexion, $GrupoTutor);
+$tutores2 = mysqli_fetch_all($consultagt, MYSQLI_ASSOC);
+endif;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -145,9 +180,9 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
 </head>
 
 <body>
-
+    <h3>Bienvenid@:</h3><h4><?php echo $nombre; ?></h4>
     <div class="container">
-        <?php if ($rol == 1 || $rol == 2): ?>
+        <?php if ($rol == 1): ?>
             <div class="filtro">
                 Programas Educativos
                 <div class="dropdown">
@@ -163,13 +198,29 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
         <?php endif ?>
 
         <!-- //<a href="../gruposV/filtro.html" class="" > -->
-        <a href="../filtros/index.php?f=2" class="" >
-        <div class="filtro">
-            Grupos Vulnerables
-                    </div>
-                    </a>
+        <a href="../filtros/index.php?f=2" class="">
+            <div class="filtro">
+                Grupos Vulnerables
+            </div>
+        </a>
 
-        <?php if ($rol == 1 || $rol == 2): ?>
+        <?php if ($rol == 2): ?>
+            <div class="filtro">
+                Grupo Tutor
+                <div class="dropdown">
+                    <ul>
+                        <?php foreach ($tutores2 as $item): ?>
+                        <?php $grupoid = intval($item['grupo_id']); ?>
+                            <a href="<?php echo "../filtros/index.php?it=" . $tutor_id . "&ig=" . $grupoid . "&f=4" . "&nombre=" . urlencode($item['nomenclatura']); ?>">
+                                <li><?php echo htmlspecialchars($item['nomenclatura']); ?></li>
+                            </a>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <?php if ($rol == 1): ?>
             <div class="filtro">
                 Grupo Tutor
                 <div class="dropdown">
@@ -183,10 +234,6 @@ $tutores = mysqli_fetch_all($consulta3, MYSQLI_ASSOC);
                 </div>
             </div>
         <?php endif ?>
-
-        <div class="filtro">
-            Padecimientos de Salud
-        </div>
     </div>
 
     <script>

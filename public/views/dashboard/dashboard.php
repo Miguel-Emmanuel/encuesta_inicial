@@ -15,10 +15,13 @@
 <body>
     <style>
         input.form-control {
-        border: 1px solid grey; /* Grosor y color del borde */
-        border-radius: 3px; /* Bordes redondeados */
-        padding: 10px; /* Espaciado interno */
-    }
+            border: 1px solid grey;
+            /* Grosor y color del borde */
+            border-radius: 3px;
+            /* Bordes redondeados */
+            padding: 10px;
+            /* Espaciado interno */
+        }
     </style>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
@@ -31,39 +34,59 @@
             <div class="p-4 pt-5">
                 <h1><a href="/public/views/sesiones/index.php" class="logo">Encuesta Inicial</a></h1>
                 <ul class="list-unstyled components mb-5">
+                <b>Usuario: <?php echo $nrol; ?></b> <p><?php echo $nombre; ?></p>
                     <li id="inicio" class="active">
                         <a href="/public/views/sesiones/index.php">Inicio</a>
                     </li>
 
-                    <?php if($rol==1 || $rol==2){ ?>
-                    <li>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li>
-                                <a href="/public/views/roles/index.php">Roles</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/educativo/index.php">Programas Educativos</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/usuarios/index.php">Usuarios</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/periodos/index.php">Periodos Escolares</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/grupos/index.php">Grupos</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/grupo_tutor/index.php">Grupo_Tutor</a>
-                            </li>
-                            <li>
-                                <a href="/public/views/estudiante_grupo/index.php">Estudiante_Grupo</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <?php } ?>
-              
+                    <?php if ($rol == 1 || $rol == 2): ?>
+                        <li>
+                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">CRUD's</a>
+                            <ul class="collapse list-unstyled" id="pageSubmenu">
+                                <?php
+                                // if ($rol == 1): 
+                                ?>
+                                <!--
+                                    <li>
+                                        <a href="/public/views/roles/index.php">Roles</a>
+                                    </li>
+                                    -->
+                                <?php
+                                // endif 
+                                ?>
+
+                                <?php if ($rol == 1): ?>
+                                    <li>
+                                        <a href="/public/views/educativo/index.php">Programas Educativos</a>
+                                    </li>
+                                <?php endif ?>
+                                <?php if ($rol == 1): ?>
+                                    <li>
+                                        <a href="/public/views/usuarios/index.php">Usuarios</a>
+                                    </li>
+                                <?php endif ?>
+                                <?php if ($rol == 1): ?>
+                                    <li>
+                                        <a href="/public/views/periodos/index.php">Periodos Escolares</a>
+                                    </li>
+                                <?php endif ?>
+                                <?php if ($rol == 1): ?>
+                                    <li>
+                                        <a href="/public/views/grupos/index.php">Grupos</a>
+                                    </li>
+                                <?php endif ?>
+                                <?php if ($rol == 1): ?>
+                                    <li>
+                                        <a href="/public/views/grupo_tutor/index.php">Grupo_Tutor</a>
+                                    </li>
+                                <?php endif ?>
+                                <li>
+                                    <a href="/public/views/estudiante_grupo/index.php">Estudiante_Grupo</a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php endif ?>
+
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Apartados extra</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">

@@ -14,7 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordUser = trim($_REQUEST['password']);
 
     //  Busca y valida en BD el correo que ingresó el usuario
-    $consultaLogin = ("SELECT id, email, pass, rol_id as rol FROM usuarios WHERE email = '$emailUser'");
+    $consultaLogin = "SELECT 
+        id, 
+        CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) AS nombre, 
+        email, 
+        pass, 
+        rol_id AS rol 
+    FROM usuarios 
+    WHERE email = '$emailUser'";
     $resultLogin = mysqli_query($conexion, $consultaLogin) or die(mysqli_error($conexion));;
     $numLogin = mysqli_num_rows($resultLogin);
 
@@ -27,26 +34,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($passwordUser, $passwordDB)) {
                 session_start();    // Creando la sesión ya que los datos son validados
 
-            $_SESSION['id'] = $rowData['id'];
-            $_SESSION['email'] = $rowData['email'];
-            $_SESSION['rol'] = $rowData['rol'];
+                $_SESSION['id'] = $rowData['id'];
+                $_SESSION['email'] = $rowData['email'];
+                $_SESSION['rol'] = $rowData['rol'];
+                $_SESSION['nombre'] = $rowData['nombre'];;
 
-            $rol = $rowData['rol'];
+                $rol = $rowData['rol'];
 
-            // Redirección a partir del rol del usuario
-            switch ($rol) {
-                case 1: // Admin
-                case 2: // PTC
-                case 4: // Otro
-                    header("Location: ../../public/views/sesiones/index.php");
-                    exit();
-                case 3: // Estudiante
-                    header("Location: ../../public/views/encuesta/menu_secciones.php");
-                    exit();
-                default: // Rol desconocido
-                    header("Location: ../../public/views/sesiones/login.php");
-                    exit();
-            }
+                // Redirección a partir del rol del usuario
+                switch ($rol) {
+                    case 1: // Admin
+                    case 2: // PTC
+                    case 4: // Otro
+                        header("Location: ../../public/views/sesiones/index.php");
+                        exit();
+                    case 3: // Estudiante
+                        header("Location: ../../public/views/encuesta/menu_secciones.php");
+                        exit();
+                    default: // Rol desconocido
+                        header("Location: ../../public/views/sesiones/login.php");
+                        exit();
+                }
             } else {
                 // echo "Login incorrecto por contraseña";
                 header("Location: ../../public/views/sesiones/login.php?e=1");
