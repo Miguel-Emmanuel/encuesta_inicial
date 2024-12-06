@@ -125,7 +125,7 @@ $(document).ready(function () {
     data-respuesta="${respuesta.respuesta}" 
     data-observaciones="${respuesta.observaciones}" 
     data-fecha="${respuesta.created_at}">
-    Ver Detalles
+    Más
 </button>
 
                     </td>

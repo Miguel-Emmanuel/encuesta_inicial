@@ -12,7 +12,7 @@ if (isset($_POST['grupo_vulnerable'])) {
     switch ($grupoVulnerable) {
         case 'paternal':
             $sql = "
-                SELECT 
+                SELECT DISTINCT 
                     e.matricula,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
@@ -20,9 +20,9 @@ if (isset($_POST['grupo_vulnerable'])) {
                     COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
                     COALESCE(p.alias, '') AS periodo_escolar,
                     COALESCE(prog.nombre, '') AS carrera,
-                    er.respuesta AS respuesta,
-                    pr.pregunta AS pregunta,
-                    er.created_at
+                  MAX(er.respuesta) AS respuesta, -- Seleccionamos una respuesta única
+    MAX(pr.pregunta) AS pregunta,   -- Seleccionamos una pregunta única
+    MAX(er.created_at) AS created_at -- Obtenemos la última fecha
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
@@ -38,13 +38,13 @@ if (isset($_POST['grupo_vulnerable'])) {
                     (er.pregunta_id = 10 AND er.respuesta IN ('Divorciado(a)', 'Viudo(a)', 'Unión libre', 'Casado(a)'))
                     OR
                     (er.pregunta_id = 11 AND er.respuesta IN ('2 hijos(as)', 'Más de 2 hijos(as)'))
-                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera;
             ";
             break;
 
         case 'economico':
             $sql = "
-                SELECT 
+                SELECT DISTINCT 
                     e.matricula,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
@@ -52,9 +52,9 @@ if (isset($_POST['grupo_vulnerable'])) {
                     COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
                     COALESCE(p.alias, '') AS periodo_escolar,
                     COALESCE(prog.nombre, '') AS carrera,
-                    er.respuesta AS respuesta,
-                    pr.pregunta AS pregunta,
-                    er.created_at
+                  MAX(er.respuesta) AS respuesta, -- Seleccionamos una respuesta única
+    MAX(pr.pregunta) AS pregunta,   -- Seleccionamos una pregunta única
+    MAX(er.created_at) AS created_at -- Obtenemos la última fecha
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
@@ -76,13 +76,13 @@ if (isset($_POST['grupo_vulnerable'])) {
                     (er.pregunta_id = 63 AND er.respuesta = 'Departamento cerca de la Universidad')
                     OR
                     (er.pregunta_id = 67 AND er.respuesta IN ('De 60 a 90 minutos', 'De 90 a 120 minutos', 'Más de 120 minutos'))
-                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera;
             ";
             break;
             
         case 'salud':
             $sql = "
-                SELECT 
+                SELECT DISTINCT 
                     e.matricula,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
@@ -90,9 +90,9 @@ if (isset($_POST['grupo_vulnerable'])) {
                     COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
                     COALESCE(p.alias, '') AS periodo_escolar,
                     COALESCE(prog.nombre, '') AS carrera,
-                    er.respuesta AS respuesta,
-                    pr.pregunta AS pregunta,
-                    er.created_at
+                  MAX(er.respuesta) AS respuesta, -- Seleccionamos una respuesta única
+    MAX(pr.pregunta) AS pregunta,   -- Seleccionamos una pregunta única
+    MAX(er.created_at) AS created_at -- Obtenemos la última fecha
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
@@ -116,13 +116,13 @@ if (isset($_POST['grupo_vulnerable'])) {
                     (er.pregunta_id = 77 AND er.respuesta = 'alergia')
                     OR
                     (er.pregunta_id = 78 AND er.respuesta = 'si')
-                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera;
             ";
             break;
 
         case 'baja':
             $sql = "
-                SELECT 
+                SELECT DISTINCT 
                     e.matricula,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
@@ -130,9 +130,9 @@ if (isset($_POST['grupo_vulnerable'])) {
                     COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
                     COALESCE(p.alias, '') AS periodo_escolar,
                     COALESCE(prog.nombre, '') AS carrera,
-                    er.respuesta AS respuesta,
-                    pr.pregunta AS pregunta,
-                    er.created_at
+                  MAX(er.respuesta) AS respuesta, -- Seleccionamos una respuesta única
+    MAX(pr.pregunta) AS pregunta,   -- Seleccionamos una pregunta única
+    MAX(er.created_at) AS created_at -- Obtenemos la última fecha
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
@@ -146,13 +146,13 @@ if (isset($_POST['grupo_vulnerable'])) {
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
                     (er.pregunta_id = 94 AND er.respuesta = 'Si')
-                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera;
             ";
             break;
 
         case 'etnia':
             $sql = "
-                SELECT 
+                SELECT DISTINCT 
                     e.matricula,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
                     u.email,
@@ -160,9 +160,9 @@ if (isset($_POST['grupo_vulnerable'])) {
                     COALESCE(CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno), '') AS tutor,
                     COALESCE(p.alias, '') AS periodo_escolar,
                     COALESCE(prog.nombre, '') AS carrera,
-                    er.respuesta AS respuesta,
-                    pr.pregunta AS pregunta,
-                    er.created_at
+                  MAX(er.respuesta) AS respuesta, -- Seleccionamos una respuesta única
+    MAX(pr.pregunta) AS pregunta,   -- Seleccionamos una pregunta única
+    MAX(er.created_at) AS created_at -- Obtenemos la última fecha
                 FROM respuestas er
                 JOIN estudiantes e ON er.estudiante_id = e.id
                 JOIN usuarios u ON e.usuario_id = u.id
@@ -176,7 +176,7 @@ if (isset($_POST['grupo_vulnerable'])) {
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
                     (er.pregunta_id = 72 AND er.respuesta != 'no')
-                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera, respuesta, pregunta, er.created_at;
+                GROUP BY e.matricula, estudiante, u.email, grupo, tutor, periodo_escolar, carrera;
             ";
             break;
 
