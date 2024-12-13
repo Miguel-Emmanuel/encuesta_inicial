@@ -4,6 +4,13 @@ $user="root";
 $pass="";
 $dbname="encuesta_01";
 
+
+// $host="162.240.99.108";
+// $user="desarrollosutvt_mike";
+// $pass="AIOM020605";
+// $dbname="desarrollosutvt_encuesta";
+
+
 $conexion= new mysqli($host, $user, $pass, $dbname);
 $conexion->set_charset("utf8");
 
