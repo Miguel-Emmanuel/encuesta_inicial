@@ -93,17 +93,13 @@
                             <li>
                                 <a href="/public/views/seguimiento/index.php">Seguimiento de Estudiantes</a>
                             </li>
-                            <li>
-                                <a href="#">Home 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 3</a>
-                            </li>
                         </ul>
                     </li>
+                    <!--
                     <li>
                         <a href="#">Gráficos</a>
                     </li>
+                                -->
                     <li>
                         <a href="../../../app/Controllers/sessiondestroy_controller.php">Cerrar Sesión</a>
                     </li>

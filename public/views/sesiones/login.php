@@ -27,11 +27,11 @@ if (isset($_SESSION['id']) == "") { ?>
                 <form name="formulario" method="post" action="/app/Controllers/loginController.php"> <!-- ESTE ES EL FORMULARIO -->
                     <!-- Email input -->
                     <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3" required>
-                    <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div>
+                    <!-- <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div> -->
                     <br>
                     <!-- Password input -->
                     <input type="password" name="password" class="form-control form-control-sm" placeholder="Contraseña" aria-describedby="basic-addon3" required>
-                    <div class="form-text" id="basic-addon3">No olvides cambiar tu contraseña si es primera vez que ingresas.</div>
+                    <!-- <div class="form-text" id="basic-addon3">No olvides cambiar tu contraseña si es primera vez que ingresas.</div> -->
                     <br>
                     <!-- Submit -->
                     <a href="../pass/recuperarpass.php">¿Olvidaste tu contraseña?</a>
