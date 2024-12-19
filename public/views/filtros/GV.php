@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 <body>
+ 
     <div class="container py-4">
         <h2 class="text-center">GRUPOS VULNERABLES</h2>
         <div class="row mb-4">
@@ -81,6 +83,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
+         
 $(document).ready(function () {
     // Manejar el envío del formulario
     $('#searchForm').on('submit', function (e) {
@@ -93,10 +96,29 @@ $(document).ready(function () {
             return;
         }
         jQuery.noConflict();
+        const rol = <?php echo json_encode($rol); ?>;
+        const idUsuario = <?php echo json_encode($idUsuario); ?>;
+        // const rol = <?php // echo json_encode($rol); ?>;
+
+
+let url = '';
+if (rol === "1") {
+ url = '../../../app/Controllers/GruposV/buscar_respuestas.php';
+ 
+} else if (rol !== "1") {
+ url = '../../../app/Controllers/GruposV/buscar_respuestas_tutor.php';
+} 
+ else {
+ alert('Rol no permitido.' + rol);
+ return;
+}
+          
         $.ajax({
-            url: '../../../app/Controllers/GruposV/buscar_respuestas.php',
+            url: url,
             type: 'POST',
-            data: { grupo_vulnerable: grupoVulnerable },
+            data: { grupo_vulnerable: grupoVulnerable,
+                id_usuario: idUsuario
+             },
             dataType: 'json',
             success: function (data) {
     console.log(data); // Inspecciona la respuesta

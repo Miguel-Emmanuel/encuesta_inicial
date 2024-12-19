@@ -35,6 +35,7 @@ if (isset($_POST['grupo_vulnerable'])) {
                 LEFT JOIN periodos_escolar p ON eg.periodo_id = p.id
                 LEFT JOIN programa_edu prog ON t_gr.programa_e = prog.id
                 WHERE 
+             
                     (er.pregunta_id = 10 AND er.respuesta IN ('Divorciado(a)', 'Viudo(a)', 'Unión libre', 'Casado(a)'))
                     OR
                     (er.pregunta_id = 11 AND er.respuesta IN ('2 hijos(as)', 'Más de 2 hijos(as)'))
