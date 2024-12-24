@@ -93,6 +93,9 @@
                             <li>
                                 <a href="/public/views/seguimiento/index.php">Seguimiento de Estudiantes</a>
                             </li>
+                            <li>
+                                <a href="/public/views/encreportes/index.php">Reporte Encuesta</a>
+                            </li>
                         </ul>
                     </li>
                     <!--

@@ -28,7 +28,5 @@ if (isset($_POST['grupo_id'])) {
     }
     
     echo json_encode($estudiantes);
-} else {
-    echo json_encode(['Esperando' => 'ID del grupo']);
 }
 ?>
