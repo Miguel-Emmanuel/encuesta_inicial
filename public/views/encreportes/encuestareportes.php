@@ -1,16 +1,33 @@
 <?php
-require("../../../app/Controllers/Estudiante_grupo/obtener_estudiante.php");
+require("../../../app/Controllers/reportes/obtener_estudiante.php");
 
 // Si es tutor, obtenemos el ID de tutor
 if ($rol == 2) {
-    $idU = intval($usuario_id);
-    $tutorQuery = "SELECT t.id AS tutor_id FROM tutores AS t INNER JOIN usuarios AS u ON t.usuario_id = u.id WHERE u.id = $idU";
-    $tutorResult = mysqli_query($conexion, $tutorQuery);
-    if ($tutorResult && $row = mysqli_fetch_assoc($tutorResult)) {
-        $tutor_id = $row['tutor_id'];
+    $idU = intval($idUsuario); // Asegurar que el ID del usuario es un entero válido
+
+    // Verificar si la conexión está establecida
+    if (!$conexion) {
+        die("Error de conexión a la base de datos: " . mysqli_connect_error());
+    }
+
+    // Consulta para obtener el ID del tutor correspondiente al usuario
+    $tutorQuery = "SELECT id FROM tutores WHERE usuario_id = ?";
+    
+    $stmt = $conexion->prepare($tutorQuery);
+    if ($stmt) {
+        $stmt->bind_param("i", $idU);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $tutor_id = $row['id']; // Guardamos el ID del tutor
+        } else {
+            echo "El usuario no está registrado como tutor.";
+            exit;
+        }
+        $stmt->close();
     } else {
-        echo "Su usuario no está registrado como tutor";
-        exit;
+        die("Error en la consulta: " . $conexion->error);
     }
 }
 
