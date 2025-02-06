@@ -2,9 +2,6 @@
 session_start();
 require_once('../../../database/conexion.php');  // Conexión a la base de datos
 
-// Obtener el ID del usuario y el rol desde la sesión
-$usuario_id = $_SESSION['usuario_id'];
-
 // Verificar si se ha enviado el estudiante
 if (isset($_POST['estudiante'])) {
     $estudiante_id = $_POST['estudiante'];

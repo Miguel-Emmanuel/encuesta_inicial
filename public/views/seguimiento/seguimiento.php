@@ -13,7 +13,7 @@ require '../../../app/Models/conexion.php';
 $usuarios = "SELECT 
                     e.id AS id,
                     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante,
-                    e.matricula, e.activo,
+                    e.matricula, u.activo,
                     t_gr.nomenclatura AS grupo,
                     CONCAT(tu.nombre, ' ', tu.apellido_paterno, ' ', tu.apellido_materno) AS tutor,
                     p.alias AS periodo_escolar,
