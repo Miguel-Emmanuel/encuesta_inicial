@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
         u.email,
         p.id AS numero_pregunta,
         p.pregunta,
-        s.nombre AS seccion_nombre,
+        s.descripcion AS seccion_nombre,
         r.respuesta
     FROM estudiantes AS e
     INNER JOIN usuarios AS u ON e.usuario_id = u.id
@@ -43,9 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
 
     if ($resultado->num_rows > 0) {
         // Crear PDF
+
+
+
         $pdf = new FPDF();
         $pdf->AddPage();
-        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->SetFont('Arial', 'B', 30);
         $pdf->Cell(0, 10, 'Reporte de Estudiante', 0, 1, 'C');
         $pdf->Ln(10);
 
@@ -53,11 +56,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
         $primera_fila = $resultado->fetch_assoc();
 
         // Información del estudiante
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(0, 10, mb_convert_encoding('Matrícula: ' . $primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
-        $pdf->Cell(0, 10, mb_convert_encoding('Nombre: ' . $primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
-        $pdf->Cell(0, 10, mb_convert_encoding('Grupo: ' . $primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
-        $pdf->Cell(0, 10, mb_convert_encoding('Correo: ' . $primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
+        // $pdf->SetFont('Arial', '', 12);
+        // $pdf->Cell(0, 10, mb_convert_encoding('Matrícula: ' . $primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
+        // $pdf->Cell(0, 10, mb_convert_encoding('Nombre: ' . $primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
+        // $pdf->Cell(0, 10, mb_convert_encoding('Grupo: ' . $primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
+        // $pdf->Cell(0, 10, mb_convert_encoding('Correo: ' . $primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
+        $pdf->SetFont('Arial', 'B', 12); // Texto estático en negrita
+$pdf->Cell(30, 10, mb_convert_encoding('Matrícula: ', 'windows-1252', 'UTF-8'), 0, 0);
+$pdf->SetFont('Arial', 'I', 12); // Datos en texto normal
+$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
+
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->Cell(30, 10, mb_convert_encoding('Nombre: ', 'windows-1252', 'UTF-8'), 0, 0);
+$pdf->SetFont('Arial', 'I', 12);
+$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
+
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->Cell(30, 10, mb_convert_encoding('Grupo: ', 'windows-1252', 'UTF-8'), 0, 0);
+$pdf->SetFont('Arial', 'I', 12);
+$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
+
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->Cell(30, 10, mb_convert_encoding('Correo: ', 'windows-1252', 'UTF-8'), 0, 0);
+$pdf->SetFont('Arial', 'I', 12);
+$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
+
                 $pdf->Ln(5);
 
         // Reiniciar el puntero de resultados
@@ -80,19 +103,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
 
             // Imprimir la pregunta
             if ($fila['pregunta'] !== null) {
-                $pdf->SetFont('Arial', 'B', 11);
-                $pdf->MultiCell(0, 8, 'Pregunta (' . $fila['numero_pregunta'] . '): ' . mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0);
+                $pdf->SetFont('Arial', 'BI', 15);
+                $pdf->Cell(38, 10, mb_convert_encoding('Pregunta ('   . $fila['numero_pregunta'] . '): ', 'windows-1252', 'UTF-8'), 0, 0);
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->Cell(0, 10,  mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 1);
+                
+
+                // $pdf->SetFont('Arial', 'B', 13);
+                // $pdf->MultiCell(0, 8, 'Pregunta ('   . $fila['numero_pregunta'] . '): ' . mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0);
                 
                 // Imprimir la respuesta
+                $pdf->SetFont('Arial', 'B', 12);
+                $pdf->Cell(24, 10, mb_convert_encoding('Respuesta: ', 'windows-1252', 'UTF-8'), 0, 0);
                 $pdf->SetFont('Arial', 'I', 10);
-                $pdf->MultiCell(0, 8, 'Respuesta: ' . mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0);
+                $pdf->Cell(0, 10,  mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0, 1);
+                
+           
                 $pdf->Ln(3);
             }
         }
 
         // Limpiar buffer antes de generar el PDF
         ob_end_clean();
+        
         $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+
+        // Descargar el archivo PDF
+        // $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
     } else {
         echo "No se encontró información para el estudiante seleccionado.";
     }
