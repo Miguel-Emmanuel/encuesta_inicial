@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'encuesta_01'
+  database: 'encuesta_inyeccion'
 });
 
 // Convertir consultas en promesas
@@ -40,12 +40,23 @@ async function obtenerPreguntaId(nombrePregunta) {
   return resultados.length > 0 ? resultados[0].id : null;
 }
 
+// Obtener ID de estudiante basado en el email del usuario
+async function obtenerEstudianteId(email) {
+  const query = `
+    SELECT e.id 
+    FROM estudiantes e
+    JOIN usuarios u ON e.usuario_id = u.id
+    WHERE u.email = ?
+  `;
+  const resultados = await ejecutarQuery(query, [email]);
+  return resultados.length > 0 ? resultados[0].id : null;
+}
 
-// Insertar respuestas en la tabla `respuestas`
+// Insertar respuestas en la tabla `respuestas` usando `estudiante_id`
 async function insertarRespuestas(email, respuestas) {
-  const usuarioId = await obtenerUsuarioId(email);
-  if (!usuarioId) {
-    console.error(`No se encontró el usuario con email: ${email}`);
+  const estudianteId = await obtenerEstudianteId(email);
+  if (!estudianteId) {
+    console.error(`No se encontró el estudiante asociado al email: ${email}`);
     return;
   }
 
@@ -56,17 +67,18 @@ async function insertarRespuestas(email, respuestas) {
       continue;
     }
 
-    const query = `INSERT INTO respuestas (pregunta_id, usuario_id, respuesta, created_at) VALUES (?, ?, ?, ?)`;
-    const valores = [preguntaId, usuarioId, respuesta, new Date()];
+    const query = `INSERT INTO respuestas (pregunta_id, estudiante_id, respuesta, created_at) VALUES (?, ?, ?, ?)`;
+    const valores = [preguntaId, estudianteId, respuesta, new Date()];
 
     try {
       await ejecutarQuery(query, valores);
-      console.log(`Respuesta insertada para usuario ${email} en pregunta ${pregunta}`);
+      console.log(`Respuesta insertada para estudiante ${email} en pregunta ${pregunta}`);
     } catch (err) {
       console.error('Error al insertar respuesta:', err);
     }
   }
 }
+
 
 // Función principal para procesar las respuestas
 async function procesarRespuestas() {

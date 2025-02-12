@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-   database: 'encuesta_01'
+  database: 'encuesta_inyeccion'
 });
 
 // Convertir consultas en promesas
@@ -36,7 +36,6 @@ function obtenerDatos() {
     const apellidoPaterno = sheet[`E${fila}`] ? sheet[`E${fila}`].v : null;
     const apellidoMaterno = sheet[`F${fila}`] ? sheet[`F${fila}`].v : null;
 
-    // Asegurarse de que el email no esté vacío antes de agregarlo a los datos
     if (email) {
       datos.push({ email, nombre, apellido_paterno: apellidoPaterno, apellido_materno: apellidoMaterno });
     }
@@ -47,7 +46,7 @@ function obtenerDatos() {
   return datos;
 }
 
-// Función para obtener el rol_id a partir del nombre del rol
+// Obtener el rol_id a partir del nombre del rol
 async function obtenerRolId(nombreRol) {
   const query = 'SELECT id FROM roles WHERE nombre = ?';
   const resultados = await ejecutarQuery(query, [nombreRol]);
@@ -59,7 +58,7 @@ async function obtenerRolId(nombreRol) {
   return resultados[0].id;
 }
 
-// Insertar los datos en la tabla correspondiente
+// Insertar en usuarios y luego en estudiantes
 async function insertarDatos(datos, nombreRol) {
   const pass = '123456';
   const rolId = await obtenerRolId(nombreRol);
@@ -67,28 +66,42 @@ async function insertarDatos(datos, nombreRol) {
   for (let index = 0; index < datos.length; index++) {
     const { email, nombre, apellido_paterno, apellido_materno } = datos[index];
 
-    // Verificar si el email está siendo leído correctamente
     console.log(`Fila ${index + 1}: Email extraído: "${email}"`);
 
-    // Verificar si el email está vacío
     if (!email || email.trim() === '') {
       console.log(`El campo email está vacío en la fila ${index + 1}. Se omite la inserción.`);
       continue;
     }
 
-    const query = `INSERT INTO usuarios (email, nombre, apellido_paterno, apellido_materno, pass, rol_id) VALUES (?, ?, ?, ?, ?, ?)`;
+    const queryUsuario = `INSERT INTO usuarios (email, nombre, apellido_paterno, apellido_materno, pass, rol_id) VALUES (?, ?, ?, ?, ?, ?)`;
 
-    try {
-      await ejecutarQuery(query, [email, nombre, apellido_paterno, apellido_materno, pass, rolId]);
-      console.log(`Dato insertado: ${email}, Nombre: ${nombre}, Apellido Paterno: ${apellido_paterno}`);
+    try {const resultadoUsuario = await ejecutarQuery(queryUsuario, [email, nombre, apellido_paterno, apellido_materno, pass, rolId]);
+      const usuarioId = resultadoUsuario.insertId; // Obtener el ID del usuario recién insertado
+      
+      console.log(`Usuario insertado: ${email}, Nombre: ${nombre}, Apellido Paterno: ${apellido_paterno}, ID: ${usuarioId}`);
+      
+      // Extraer números del email (formato "al"+números+"@gmail.com")
+      const match = email.match(/\d+/); // Busca los números en el email
+      const matricula = match ? match[0] : null; // Si encuentra números, los usa; si no, deja null
+      
+      // Insertar en la tabla `estudiantes`
+      const queryEstudiante = `INSERT INTO estudiantes (usuario_id, matricula, telefono, genero) VALUES (?, ?, ?, ?)`;
+      await ejecutarQuery(queryEstudiante, [usuarioId, matricula, null, null]); // Se usa `matricula` extraída
+      
+      console.log(`Estudiante insertado con usuario_id: ${usuarioId}, Matricula: ${matricula}`);
+      
     } catch (err) {
       if (err.code === 'ER_DUP_ENTRY') {
         let nuevoEmail = `${email.split('@')[0]}-duplicado-${index}@${email.split('@')[1]}`;
         console.log(`Correo duplicado encontrado. Insertando como: ${nuevoEmail}`);
 
         try {
-          await ejecutarQuery(query, [nuevoEmail, nombre, apellido_paterno, apellido_materno, pass, rolId]);
-          console.log(`Dato insertado con nuevo correo: ${nuevoEmail}`);
+          const resultadoUsuario = await ejecutarQuery(queryUsuario, [nuevoEmail, nombre, apellido_paterno, apellido_materno, pass, rolId]);
+          const usuarioId = resultadoUsuario.insertId;
+
+          await ejecutarQuery(queryEstudiante, [usuarioId, null, null, null]);
+          console.log(`Estudiante insertado con usuario_id: ${usuarioId}`);
+
         } catch (err2) {
           console.error(`Error al reinsertar el correo duplicado: ${nuevoEmail}`, err2);
         }
@@ -99,22 +112,21 @@ async function insertarDatos(datos, nombreRol) {
   }
 }
 
-// Función principal para procesar los datos del Excel
+// Función principal
 async function procesarDatos() {
   try {
-    const datos = obtenerDatos(); // Obtener los datos filtrados
+    const datos = obtenerDatos();
 
     if (datos.length === 0) {
       console.log('No se encontraron datos para insertar.');
       return;
     }
 
-    await insertarDatos(datos, 'Estudiante'); // Insertar datos
+    await insertarDatos(datos, 'Estudiante');
 
   } catch (error) {
     console.error('Error al procesar datos:', error);
   } finally {
-    // Cerrar la conexión a la base de datos al final
     connection.end(err => {
       if (err) {
         console.error('Error al cerrar la conexión:', err);
@@ -123,7 +135,7 @@ async function procesarDatos() {
       }
     });
   }
-} 
+}
 
-// Ejecutar la función principal
+// Ejecutar la función
 procesarDatos();

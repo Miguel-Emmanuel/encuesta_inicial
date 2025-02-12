@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.0 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - encuesta
+MySQL - 10.4.32-MariaDB : Database - inyeccion
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 10.4.32-MariaDB : Database - encuesta
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`inyeccion` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `encuesta`;
+USE `inyeccion`;
 
 /*Table structure for table `colonias` */
 
@@ -280,18 +280,18 @@ CREATE TABLE `programa_edu` (
 
 /*Table structure for table `respuestas` */
 
-DROP TABLE IF EXISTS `respuestas`;
+  DROP TABLE IF EXISTS `respuestas`;
 
-CREATE TABLE `respuestas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pregunta_id` varchar(50) NOT NULL,
-  `estudiante_id` bigint(20) unsigned NOT NULL,
-  `respuesta` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `estudiante_id` (`estudiante_id`),
-  CONSTRAINT `respuestas_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=53074 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CREATE TABLE `respuestas` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `pregunta_id` varchar(50) NOT NULL,
+    `estudiante_id` bigint(20) unsigned NOT NULL,
+    `respuesta` text DEFAULT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`),
+    KEY `estudiante_id` (`estudiante_id`),
+    CONSTRAINT `respuestas_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE
+  ) ENGINE=InnoDB AUTO_INCREMENT=53074 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `roles` */
 
