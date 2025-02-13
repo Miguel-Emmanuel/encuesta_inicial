@@ -39,14 +39,14 @@ const data = xlsx.utils.sheet_to_json(sheet, { header: 1 }); // Leer todos los d
 
 // Obtener un mapeo de preguntas para evitar consultas repetidas
 async function obtenerMapaPreguntas() {
-  const query = "SELECT id, pregunta FROM preguntas";
+  const query = "SELECT p.id as id, p.pregunta as pregunta, s.descripcion AS seccion FROM preguntas AS p, secciones AS s WHERE p.seccion_id = s.id;";
   const resultados = await ejecutarQuery(query);
-  
+  // console.log(resultados)
   const mapa = {};
   resultados.forEach((row) => {
     mapa[row.pregunta.trim().toLowerCase()] = row.id;
   });
-
+console.log(resultados);
   return mapa;
 }
 
@@ -69,6 +69,8 @@ async function insertarRespuestas(estudianteId, respuestas, mapaPreguntas) {
 
   for (const [pregunta, respuesta] of Object.entries(respuestas)) {
     const preguntaId = mapaPreguntas[pregunta.trim().toLowerCase()];
+    // Validar que la pregunta exista en la base de datos y que la respuesta no sea vacía
+    // console.log(pregunta);
     if (preguntaId) {
       valores.push([preguntaId, estudianteId, respuesta, new Date()]);
     } else {
@@ -109,6 +111,7 @@ async function procesarRespuestas() {
 
         if (preguntaNombre && respuesta) {
           respuestas[preguntaNombre] = respuesta;
+          // console.log(`�� Respuesta insertada para la pregunta "${preguntaNombre}" en el estudiante ${respuesta}`);
         }
       }
 
