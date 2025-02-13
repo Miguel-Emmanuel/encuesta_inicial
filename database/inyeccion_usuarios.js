@@ -22,7 +22,7 @@ function ejecutarQuery(query, valores) {
 }
 
 // Cargar archivo Excel
-const workbook = xlsx.readFile("C:/Users/al222/OneDrive/Documentos/UTVT/CUATRIMESTRE_10/dual/encuesta inicial/db/inyeccion de datos reales/entrevista.xlsx");
+const workbook = xlsx.readFile("C:/Users/al222/OneDrive/Documentos/UTVT/CUATRIMESTRE_10/dual/encuesta inicial/db/inyeccion de datos reales/entrevista1.xlsx");
 const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
 // Obtener los datos de las columnas deseadas

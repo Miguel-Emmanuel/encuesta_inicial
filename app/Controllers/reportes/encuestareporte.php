@@ -17,29 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
     $estudiante_id = intval($_POST['estudiante']);
     
     $query = $conexion->prepare("
-    SELECT 
-        e.matricula, 
-        CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre_completo,
-        g.nomenclatura AS grupo, 
-        u.email,
-        p.id AS numero_pregunta,
-        p.pregunta,
-        s.descripcion AS seccion_nombre,
-        r.respuesta,
-        COUNT(p.id) OVER (PARTITION BY s.id) AS total_preguntas_seccion,
-        ROW_NUMBER() OVER (PARTITION BY s.id ORDER BY p.id) AS numero_pregunta_seccion,
-        MIN(p.id) OVER (PARTITION BY s.id) AS primera_pregunta,
-        MAX(p.id) OVER (PARTITION BY s.id) AS ultima_pregunta
-    FROM estudiantes AS e
-    INNER JOIN usuarios AS u ON e.usuario_id = u.id
-    INNER JOIN estudiante_grupo AS eg ON eg.estudiante_id = e.id
-    INNER JOIN t_grupos AS g ON g.id = eg.grupo_id
-    LEFT JOIN respuestas AS r ON r.estudiante_id = e.id
-    LEFT JOIN preguntas AS p ON p.id = r.pregunta_id
-    LEFT JOIN secciones AS s ON s.id = p.seccion_id
-    WHERE e.id = ?
-   
-    ORDER BY s.nombre AND p.id ASC;
+SELECT 
+    e.matricula, 
+    CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre_completo,
+    g.nomenclatura AS grupo, 
+    u.email,
+    p.id AS numero_pregunta,
+    p.pregunta,
+    s.descripcion AS seccion_nombre,
+    r.respuesta,
+    COUNT(p.id) OVER (PARTITION BY s.id) AS total_preguntas_seccion,
+    ROW_NUMBER() OVER (PARTITION BY s.id ORDER BY p.id) AS numero_pregunta_seccion,
+    MIN(p.id) OVER (PARTITION BY s.id) AS primera_pregunta,
+    MAX(p.id) OVER (PARTITION BY s.id) AS ultima_pregunta
+FROM estudiantes AS e
+INNER JOIN usuarios AS u ON e.usuario_id = u.id
+INNER JOIN estudiante_grupo AS eg ON eg.estudiante_id = e.id
+INNER JOIN t_grupos AS g ON g.id = eg.grupo_id
+LEFT JOIN preguntas AS p ON p.seccion_id IN (SELECT id FROM secciones)
+LEFT JOIN secciones AS s ON s.id = p.seccion_id
+LEFT JOIN respuestas AS r ON r.pregunta_id = p.id AND r.estudiante_id = e.id  -- 🔥 Se asegura que la respuesta sea solo del estudiante correcto
+WHERE e.id = ?
+ORDER BY s.id ASC, p.id ASC;
+
 ");
 
 
@@ -149,12 +149,12 @@ $pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'U
             if ($fila['pregunta'] !== null) {
                 // $pdf->SetFont('Arial', 'BI', 15);
                 // $pdf->Cell(38, 10, mb_convert_encoding('Pregunta ('   . $fila['numero_pregunta'] . '): ', 'windows-1252', 'UTF-8'), 0, 0);
-                $pdf->SetFont('Arial', 'B', 12);
-
+                
                 // Guardar la posición inicial de la pregunta
                 $posY = $pdf->GetY();
                 
                 // Pregunta en varias líneas
+                $pdf->SetFont('Arial', 'B', 12);
                 $pdf->MultiCell(60, 10, mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 'L');
                 
                 // Guardar la nueva posición después de la pregunta
@@ -188,7 +188,7 @@ $pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'U
                 // $pdf->SetFont('Arial', 'B', 13);
                 // $pdf->MultiCell(0, 8, 'Pregunta ('   . $fila['numero_pregunta'] . '): ' . mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0);
                 
-                // Imprimir la respuesta
+           
                 // $pdf->SetFont('Arial', 'B', 12);
                 // $pdf->Cell(24, 10, mb_convert_encoding('Respuesta: ', 'windows-1252', 'UTF-8'), 0, 0);
                 // $pdf->SetFont('Arial', 'I', 10);
