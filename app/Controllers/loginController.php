@@ -18,7 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         id, 
         CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) AS nombre, 
         email, 
-        pass, 
+        pass,
+        email_verified,
+        email_verified_at,
         rol_id AS rol 
     FROM usuarios 
     WHERE email = '$emailUser'";
@@ -37,7 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['id'] = $rowData['id'];
                 $_SESSION['email'] = $rowData['email'];
                 $_SESSION['rol'] = $rowData['rol'];
-                $_SESSION['nombre'] = $rowData['nombre'];;
+                $_SESSION['nombre'] = $rowData['nombre'];
+                $_SESSION['email_verified'] = $rowData['email_verified'];
+                $_SESSION['email_verified_at'] = $rowData['email_verified_at'];
 
                 $rol = $rowData['rol'];
 

@@ -19,8 +19,7 @@
     INNER JOIN periodos_escolar AS p ON p.id = gt.periodo_id
     WHERE 
         gt.tutor_id = $tutor_id 
-        AND g.id = $grupo_id 
-        AND e.activo = 1 
+        AND g.id = $grupo_id  
         AND eg.activo = 1";
 
 $Alumnos = mysqli_query($conexion, $sqlAlumnos);

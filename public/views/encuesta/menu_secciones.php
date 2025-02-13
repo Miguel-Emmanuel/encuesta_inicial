@@ -1,5 +1,6 @@
 <?php
 include("../../../database/conexion.php");
+require("../../../app/Controllers/auth.php");
 session_start();
 if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
@@ -73,6 +74,18 @@ $result = $conexion->query($sql);
     <link rel="stylesheet" href="../../css/menusecciones.css">
 </head>
 <body>
+<?php
+    require("../sesiones/emailverified.php");
+
+    if ($email_verificado == 0):
+        echo '<script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+                myModal.show();
+            });
+          </script>';
+    endif;
+     ?>
     <div class="contenedor rounded shadow">
         <center>
         <h1>ENTREVISTA</h1>
