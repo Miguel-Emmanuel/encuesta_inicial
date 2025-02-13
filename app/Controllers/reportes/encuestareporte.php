@@ -2,6 +2,9 @@
 session_start();
 require_once('../../../database/conexion.php');  
 require('../../../PDF/fpdf.php');  
+try {
+    // Código de generación de PDF
+
 
 // Asegurar que MySQL use UTF-8
 $conexion->set_charset("utf8");
@@ -211,5 +214,8 @@ $pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'U
     }
 } else {
     echo "No se recibió la información necesaria.";
+}
+} catch (Exception $e) {
+    echo 'Error al generar el PDF: ' . $e->getMessage();
 }
 ?>
