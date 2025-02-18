@@ -342,25 +342,28 @@ echo "<button type='button' class='btn btn-secondary btn-sm rounded-pill'
                             echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
                         }
                         break;
+case 'select':
+    $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
+    if ($opciones_respuesta->num_rows > 0) {
+        echo "<div class='select-container'>";
+        echo "<select name='respuestas[$idPregunta]' class='respuesta-select' data-idpregunta='$idPregunta'>";
+        echo "<option value=''>Seleccione una opción</option>";
 
-                    case 'select':
-                        $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");
-                        if ($opciones_respuesta->num_rows > 0) {
-                            echo "<div class='select-container'>";
-                            echo "<select name='respuestas[$idPregunta]' class='respuesta-select' data-idpregunta='$idPregunta'>";
-                            echo "<option value=''>Seleccione una opción</option>";
-                            while ($opcion = $opciones_respuesta->fetch_object()) {
-                                $opcionId = $opcion->id;
-                                $nombreOpcion = $opcion->opcion1;
-                                $selected = ($opcionId == $respuestaTexto) ? 'selected' : '';
-                                echo "<option value='$opcionId' $selected >$nombreOpcion</option>";
-                            }
-                            echo "</select>";
-                            echo "</div>";
-                        } else {
-                            echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
-                        }
-                        break;
+        while ($opcion = $opciones_respuesta->fetch_object()) {
+            $opcionId = $opcion->id;
+            $nombreOpcion = $opcion->opcion1;
+            $selected = ($opcionId == $respuestaTexto) ? 'selected' : '';
+
+            // Enviamos ID y Texto separados por "|"
+            echo "<option value='$nombreOpcion' $selected>$nombreOpcion</option>";
+        }
+
+        echo "</select>";
+        echo "</div>";
+    } else {
+        echo "<p class='pregunta-texto'>No se encontraron opciones para la pregunta ID: $idPregunta</p>";
+    }
+    break;
 
                     case 'multi':
                         $opciones_respuesta = $conexion->query("SELECT * FROM opciones_respuesta WHERE pregunta_id = $idPregunta");

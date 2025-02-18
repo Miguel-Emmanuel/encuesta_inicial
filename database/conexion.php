@@ -1,7 +1,7 @@
 <?php
 // db.php
 $host = 'localhost';
-$db = 'encuesta';
+$db = 'encuesta_inyeccion';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
@@ -14,14 +14,14 @@ $charset = 'utf8mb4';
 // $charset = 'utf8mb4';
 try {
     $conexion = new mysqli($host, $user, $pass, $db);
-    
+
     // Verificar la conexión
     if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
     
-    // Establecer la codificación de caracteres UTF-8
-    $conexion->set_charset($charset);
+
+
 
 } catch (\Exception $e) {
     die("Error al conectar a la base de datos: " . $e->getMessage());

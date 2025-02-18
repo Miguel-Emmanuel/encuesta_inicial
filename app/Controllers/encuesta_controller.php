@@ -73,7 +73,7 @@ $stmt->close();
                     }
                 }
             }
-        }qzfr
+        }
         
         function obtenerOpcionId($conexion, $idPregunta, $opcion1, $opcion2 = null) {
             if ($opcion2 === null) {

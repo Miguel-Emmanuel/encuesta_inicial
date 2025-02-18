@@ -110,7 +110,8 @@ $result = $conexion->query($sql);
               echo "<tr>";
               echo "<td>" . $row["id"]  . ' | ' . $row["descripcion"] . "</td>";
             //   echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
-              echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+            //   echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" $botonEstado>Responder</button></td>";
+              echo "<td class='centrar'><button class='btn btn-success' onclick=\"window.location.href='seccion.php?seccion=" . urlencode($row["id"]) . "'\" >Responder</button></td>";
               echo "<td class='centrar'>" . $iconoCompletado . "</td>";
               echo "</tr>";
       
