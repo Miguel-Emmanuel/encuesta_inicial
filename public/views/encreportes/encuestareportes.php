@@ -1,5 +1,5 @@
 <?php
-require("../../../app/Controllers/reportes/obtener_estudiante.php");
+require("../../../app/Controllers/reportes/PDF/obtener_estudiante.php");
 
 // Si es tutor, obtenemos el ID de tutor
 if ($rol == 2) {
@@ -71,7 +71,8 @@ $grupos = $conexion->query($sqlGrupos);
                     <option value="" selected disabled>Seleccione un estudiante</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Generar Reporte</button>
+            <button type="submit" class="btn btn-primary" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
+            <button type="submit" class="btn btn-success" formaction="../../../app/Controllers/reportes/Excel/encuestareporte_excel.php" >Generar Reporte Excel</button>
         </form>
     </div>
 
