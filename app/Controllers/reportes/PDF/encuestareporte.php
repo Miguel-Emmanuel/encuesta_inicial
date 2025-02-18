@@ -60,7 +60,8 @@ ORDER BY s.id ASC, p.id ASC;
             function Header() {
                 $this->AliasNbPages(); // Inicializa el alias {nb}
                                 //Agregar imagen (ajusta la ruta, posición y tamaño según sea necesario)
-                                $this->Image(__DIR__ . '/../../public/img/Logo_UTVT.jpg', 10, 8, 40);// (archivo, x, y, ancho)
+                                // $this->Image(__DIR__ . '/../../public/img/Logo_UTVT.jpg', 10, 8, 40);// (archivo, x, y, ancho)
+                                $this->Image(__DIR__ . '/../../../../public/img/Logo_UTVT.jpg', 10, 8, 40);
 
                                 //Configurar fuente para el título
                                 $this->SetFont('Arial', 'B', 12);
