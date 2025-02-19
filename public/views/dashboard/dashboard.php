@@ -96,6 +96,9 @@
                             <li>
                                 <a href="/public/views/encreportes/index.php">Reporte Encuesta</a>
                             </li>
+                            <li>
+                                <a href="\database\exportar\exportar_excel.php">Exportar DB</a>
+                            </li>
                         </ul>
                     </li>
                     <!--
