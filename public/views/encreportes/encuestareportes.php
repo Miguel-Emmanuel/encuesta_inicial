@@ -48,6 +48,17 @@ $grupos = $conexion->query($sqlGrupos);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         .w-50 { max-width: 50%; }
+        .search-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .no-results {
+            color: red;
+            font-style: italic;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -65,9 +76,11 @@ $grupos = $conexion->query($sqlGrupos);
             </div>
             <div class="mb-3 w-50">
                 <label for="estudiante" class="form-label">Seleccionar Estudiante</label>
+                <input type="text" id="searchEstudiante" class="search-input" placeholder="Buscar estudiante..." style="display: none;">
                 <select class="form-select" id="estudiante" name="estudiante" required>
                     <option value="" selected disabled>Seleccione un estudiante</option>
                 </select>
+                <div id="noResults" class="no-results">No se encontraron coincidencias</div>
             </div>
             <button type="submit" class="btn btn-primary" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
             <button type="submit" class="btn btn-success" formaction="../../../app/Controllers/reportes/Excel/encuestareporte_excel.php" >Generar Reporte Excel</button>
@@ -78,6 +91,8 @@ $grupos = $conexion->query($sqlGrupos);
         document.addEventListener('DOMContentLoaded', function() {
             var grupoSelect = document.getElementById('grupo');
             var estudianteSelect = document.getElementById('estudiante');
+            var searchInput = document.getElementById('searchEstudiante');
+            var noResultsMessage = document.getElementById('noResults');
 
             grupoSelect.addEventListener('change', function() {
                 var grupoId = this.value;
@@ -90,12 +105,44 @@ $grupos = $conexion->query($sqlGrupos);
                     .then(response => response.json())
                     .then(data => {
                         estudianteSelect.innerHTML = '<option value="" selected disabled>Seleccione un estudiante</option>';
-                        data.forEach(estudiante => {
-                            var option = document.createElement('option');
-                            option.value = estudiante.estudiante_id;
-                            option.textContent = estudiante.matricula + ' - ' + estudiante.estudiante;
-                            estudianteSelect.appendChild(option);
-                        });
+                        if (data.length > 0) {
+                            data.forEach(estudiante => {
+                                var option = document.createElement('option');
+                                option.value = estudiante.estudiante_id;
+                                option.textContent = estudiante.matricula + ' - ' + estudiante.estudiante;
+                                estudianteSelect.appendChild(option);
+                            });
+
+                            // Mostramos el campo de búsqueda
+                            searchInput.style.display = 'block';
+
+                            // Filtrado de estudiantes mientras escriben
+                            searchInput.addEventListener('input', function() {
+                                var searchTerm = this.value.toLowerCase();
+                                var options = estudianteSelect.querySelectorAll('option');
+                                var matchFound = false;
+
+                                options.forEach(function(option) {
+                                    var text = option.textContent.toLowerCase();
+                                    if (text.includes(searchTerm)) {
+                                        option.style.display = 'block';  // Mostrar opciones que coinciden
+                                        matchFound = true;
+                                    } else {
+                                        option.style.display = 'none';   // Ocultar las que no coinciden
+                                    }
+                                });
+
+                                // Mostrar o ocultar el mensaje de no resultados
+                                if (!matchFound) {
+                                    noResultsMessage.style.display = 'block';
+                                } else {
+                                    noResultsMessage.style.display = 'none';
+                                }
+                            });
+                        } else {
+                            // Si no hay estudiantes
+                            noResultsMessage.style.display = 'block';
+                        }
                     })
                     .catch(error => console.error('Error:', error));
                 }
