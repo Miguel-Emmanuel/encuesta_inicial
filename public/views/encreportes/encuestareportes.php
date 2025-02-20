@@ -66,11 +66,29 @@ $grupos = $conexion->query($sqlGrupos);
                 </select>
             </div>
             <div class="mb-3 w-50">
-                <label for="estudiante" class="form-label">Seleccionar Estudiante</label>
-                <select class="form-select" id="estudiante" name="estudiante" required>
-                    <option value="" selected disabled>Seleccione un estudiante</option>
-                </select>
-            </div>
+    <label for="estudiante" class="form-label">Seleccionar Estudiante</label>
+    <!-- Input para filtrar opciones -->
+    <input type="text" id="searchEstudiante" class="form-control mb-2" placeholder="Buscar estudiante">
+
+    <select class="form-select" id="estudiante" name="estudiante" required>
+        <option value="" selected disabled>Seleccione un estudiante</option>
+    </select>
+</div>
+
+<!-- Script para filtrar opciones -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchEstudiante').on('input', function () {
+            var value = $(this).val().toLowerCase();
+            $('#estudiante option').each(function () {
+                var text = $(this).text().toLowerCase();
+                $(this).toggle(text.indexOf(value) > -1 || $(this).val().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
+
             <button type="submit" class="btn btn-primary" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
             <button type="submit" class="btn btn-success" formaction="../../../app/Controllers/reportes/Excel/encuestareporte_excel.php" >Generar Reporte Excel</button>
         </form>
