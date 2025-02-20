@@ -5,7 +5,14 @@ require_once('../../vendor/autoload.php'); // Asegúrate de la ruta correcta
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+ini_set('memory_limit', '256M'); // Aumenta a 256 MB, o el valor que consideres adecuado
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+try {
+    // Tu código que exporta la base de datos a Excel
 
 
 
@@ -55,4 +62,7 @@ header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetm
 header('Content-Disposition: attachment; filename="base_de_datos.xlsx"');
 $writer->save('php://output');
 exit;
+} catch (Exception $e) {
+    error_log('Excepción capturada: ' . $e->getMessage());
+}
 ?>
