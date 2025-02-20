@@ -1,6 +1,4 @@
 <?php
-require("../../../app/Controllers/reportes/PDF/obtener_estudiante.php");
-
 // Si es tutor, obtenemos el ID de tutor
 if ($rol == 2) {
     $idU = intval($idUsuario); // Asegurar que el ID del usuario es un entero válido
@@ -84,7 +82,7 @@ $grupos = $conexion->query($sqlGrupos);
             grupoSelect.addEventListener('change', function() {
                 var grupoId = this.value;
                 if (grupoId) {
-                    fetch('../../../app/Controllers/Estudiante_grupo/obtener_estudiante.php', {
+                    fetch('../../../app/Controllers/reportes/PDF/obtener_estudiante.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: 'grupo_id=' + encodeURIComponent(grupoId)
