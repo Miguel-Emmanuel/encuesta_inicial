@@ -1,7 +1,7 @@
 <?php
 // db.php
 $host = 'localhost';
-$db = 'encuesta_inyeccion';
+$db = 'encuesta_02';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
