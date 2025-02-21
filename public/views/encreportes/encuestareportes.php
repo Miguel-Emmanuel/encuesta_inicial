@@ -90,6 +90,9 @@ $grupos = $conexion->query($sqlGrupos);
 </script>
 
             <button type="submit" class="btn btn-danger" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
+            <button type="submit" class="btn btn-danger" formaction="../../../app/Controllers/reportes/PDF/encuestareporte_descarga.php">
+    <i class="fas fa-download"></i> <!-- Ícono de descarga -->
+</button>
             <button type="submit" class="btn btn-success" formaction="../../../app/Controllers/reportes/Excel/encuestareporte_excel.php" >Generar Reporte Excel</button>
         </form>
     </div>
@@ -122,5 +125,6 @@ $grupos = $conexion->query($sqlGrupos);
             });
         });
     </script>
+    
 </body>
 </html>

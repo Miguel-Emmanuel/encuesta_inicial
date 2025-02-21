@@ -88,55 +88,53 @@ foreach ($respuestas as $resp) {
 ////////////////////////////FIN CODIGO////////////////
 ///////////INSERCION DE DATOS PREGUNTAS DE LA INYECCION DE DATOS 
 
+
+
+
+///////POBLACION INDIGENA///////////////
 INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
 VALUES 
 (10384, '=', 'Si', 'Poblacion Indígena', 'Cualquier respuesta distinta de no (habla o entienede una lengua indigena)'),
- (10385, '=', 'Si', 'Poblacion Indígena', 'Cualquier respuesta distinta de no (habla o entienede una lengua indigena)'),
- (10386, '=', 'Si', 'Poblacion Indígena', 'Cualquier respuesta distinta de no (habla o entienede una lengua indigena)');
+(10385, '=', 'Si', 'Poblacion Indígena', 'Cualquier respuesta distinta de no (habla o entienede una lengua indigena)'),
+(10386, '=', 'Si', 'Poblacion Indígena', 'Cualquier respuesta distinta de no (habla o entienede una lengua indigena)');
+
+//////////END POBLACION INDIGENA/////////////
+/////////////////ECONOMICO///////////////////
+INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
+VALUES
+(10420, '=', 'SI', 'Económico', 'Respuesta Si a cursa alguna otra carrera alcutalmente ?'),
+(10363, '<=', '6223.20', 'Económico', 'Respuesta a ingreso mensual familiar <= 6223.20 en pregunta 60'),
+(10339, '=', 'Si', 'Económico', 'Respuesta Si en pregunta Trabajas?'),
+(10371, '=', 'Pensión (renta cerca de la UTVT)', 'Económico', 'Respuesta a lugar de residencia'),
+(10301, '=', 'Si', 'Económico', 'Respuesta si  a alguien depende de ti ?'),
+(10375, 'IN', 'De 60 a 90 minutos (1 hr a 1 ½ hrs),De 90 a 120 minutos (1 ½ hrs a 2 hrs),Más de 120 minutos (Más de 2 hrs)', 'Económico', 'Tiempo de traslado en pregunta'),
+
+///////////END ECONOMICO////////////
+
+
+/////////////////////SALUD////////////////////////
+
 
 
 INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10420, '=', 'SI', 'Económico', 'Respuesta Si a cursa alguna otra carrera alcutalmente ?');
+VALUES
+(10387, 'IN', 'Tienes alguna deficiencia auditiva,Problema de movilidad motriz,Otro:', 'Salud', 'Condiciones de salud (lentes, problmeas notices , etc)'),
+(10394, '=', 'Si', 'Salud', 'Respuesta Si '),
+(10388, '=', 'Si', 'Salud', 'Respuesta Si a Padecimiento cronico'),
+(10390, '=', 'Si', 'Salud', 'Respuesta Si a Tienes alguna alergia?'),
+(10392, '=', 'Si', 'Salud', 'Respueta Tomas algun medicamento periodicamente?');
 
 
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10387, 'IN', 'Tienes alguna deficiencia auditiva,Problema de movilidad motriz,Otro:', 'Salud', 'Condiciones de salud (lentes, problmeas notices , etc)');
-
-	INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-	VALUES (10394, '=', 'Si', 'Salud', 'Respuesta Si ');
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10388, '=', 'Si', 'Salud', 'Respuesta Si a Padecimiento cronico');
+///////////////////END SALUD////////////////////////
 
 
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10390, '=', 'Si', 'Salud', 'Respuesta Si a Tienes alguna alergia?');
-
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10392, '=', 'Si', 'Salud', 'Respueta Tomas algun medicamento periodicamente?');
-
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10301, '=', 'Si', 'Poblacion Indígena', 'Respuesta si  a alguien depende de ti ?');
-
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10339, '=', 'Si', 'Económico', 'Respuesta Si en pregunta Trabajas?');
-
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10363, '<=', '6223.20', 'Económico', 'Respuesta a ingreso mensual familiar <= 6223.20 en pregunta 60');
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10371, '=', 'Pensión (renta cerca de la UTVT)', 'Económico', 'Respuesta a lugar de residencia');
-
-INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
-VALUES (10375, 'IN', 'De 60 a 90 minutos (1 hr a 1 ½ hrs),De 90 a 120 minutos (1 ½ hrs a 2 hrs),Más de 120 minutos (Más de 2 hrs)', 'Económico', 'Tiempo de traslado en pregunta');
-
+//////////////////PATERNAL///////////////////////////
 INSERT INTO reglas_clasificacion (pregunta_id, operador, valor, grupo, descripcion)
 VALUES (10299, 'IN', 'Divorciad(a),Viudo(a),Unión libre,Casado(a)', 'Paternal', 'Estado civil en pregunta 10299');
 INSERT INTO clasificacion_estudiantes (estudiante_id, grupo, pregunta_id, respuesta)
+
+
+//////////////////END PATERNAL///////////////////////////
 SELECT 
     r.estudiante_id, 
     rc.grupo, 
@@ -152,4 +150,3 @@ WHERE (
     OR (rc.operador = 'IN' AND FIND_IN_SET(r.respuesta, rc.valor) > 0)
     OR (rc.operador = 'NOT IN' AND FIND_IN_SET(r.respuesta, rc.valor) = 0)
 );
-]
