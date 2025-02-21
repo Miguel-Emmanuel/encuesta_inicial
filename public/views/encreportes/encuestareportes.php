@@ -89,7 +89,7 @@ $grupos = $conexion->query($sqlGrupos);
     });
 </script>
 
-            <button type="submit" class="btn btn-primary" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
+            <button type="submit" class="btn btn-danger" formaction="../../../app/Controllers/reportes/PDF/encuestareporte.php" >Generar Reporte PDF</button>
             <button type="submit" class="btn btn-success" formaction="../../../app/Controllers/reportes/Excel/encuestareporte_excel.php" >Generar Reporte Excel</button>
         </form>
     </div>
