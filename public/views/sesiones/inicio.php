@@ -206,6 +206,11 @@ endif;
             </div>
         </a>
 
+        <a href="../filtros/index.php?f=5" class="">
+            <div class="filtro">
+                Grupos Vulnerables NEW
+            </div>
+        </a>
         <?php if ($rol == 2): ?>
         <div class="filtro">
             Grupo Tutor

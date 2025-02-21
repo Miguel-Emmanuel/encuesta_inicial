@@ -17,6 +17,9 @@ switch ($filtro):
     case 4:
         $content = 'GTT.php';  // Acción para cuando filtro es 4
         break;
+        case 5:
+            $content = '../Grupos_V/index.php';  // Acción para cuando filtro es 4
+            break;
 
     default:
         header("location: /public/views/sesiones/login.php");
