@@ -372,6 +372,25 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `users_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
+
+SELECT 
+    r.estudiante_id, 
+    rc.grupo, 
+    r.pregunta_id, 
+    r.respuesta
+FROM respuestas r
+JOIN reglas_clasificacion rc ON r.pregunta_id = rc.pregunta_id
+WHERE (
+    (rc.operador = '='    AND r.respuesta = rc.valor)
+    OR (rc.operador = '!=' AND r.respuesta <> rc.valor)
+    OR (rc.operador = '<=' AND r.respuesta <= rc.valor)
+    OR (rc.operador = '>'  AND r.respuesta >  rc.valor)
+    OR (rc.operador = 'IN' AND FIND_IN_SET(r.respuesta, rc.valor) > 0)
+    OR (rc.operador = 'NOT IN' AND FIND_IN_SET(r.respuesta, rc.valor) = 0)
+);
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
