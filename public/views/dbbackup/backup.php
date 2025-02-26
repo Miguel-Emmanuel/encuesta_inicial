@@ -1,4 +1,6 @@
 <?php
+include("exportmodal.php");
+include("importmodal.php");
 
 $respaldos = "SELECT * FROM respaldos";
 $consulta = mysqli_query($conexion, $respaldos);
@@ -19,8 +21,8 @@ $rrespaldos = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
         <thead>
             <tr>
                 <th style="text-align: center;">
-                    <a href="../../../database/exportar/exportar_dump.php"><button class="btn btn-secondary">Hacer Respaldo</button></a>
-                    <button class="btn btn-success"><i class="bi bi-filetype-xlsx"></i> Descargar Excel</button>
+                    <a href="../../../database/exportar/crear_backup.php"><button class="btn btn-secondary"><i class="bi bi-database-add"></i> Hacer Respaldo</button></a>
+                    <a href="../../../database/exportar/exportar_excel.php"><button class="btn btn-success"><i class="bi bi-filetype-xlsx"></i> Descargar Excel</button></a>
                 </th>
             </tr>
         </thead>
@@ -38,12 +40,14 @@ $rrespaldos = mysqli_fetch_all($consulta, MYSQLI_ASSOC);
 
             <?php foreach ($rrespaldos as $backup): ?>
                 <tr>
-                    <th scope="row"><?php echo $backup['fecha_creacion'] ?></th>
-                    <th scope="row"><?php echo $backup['nombre'] ?></th>
-                    <th scope="row" style="text-align:center;">
-                        <button><i class="fa-solid fa-download"></i></button>
-                        <button class="btn" style="background-color: #6f42c1;"><i class="bi bi-box-arrow-in-up"></i></button>
-                    </th>
+                    <td scope="row"><?php echo $backup['fecha_creacion'] ?></td>
+                    <td scope="row"><?php echo $backup['nombre'] ?></td>
+                    <td scope="row" style="text-align:center;">
+                    <button class="btn" type="submit" style="background-color: #388E3C;" data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo $backup['id'] ?>">
+                        <box-icon name='download' color='#fffefe'></box-icon>
+                    </button>
+                    <button class="btn" type="submit" style="background-color: #1976D2;" data-bs-toggle="modal" data-bs-target="#importBackdrop_<?php echo $backup['id'] ?>"><box-icon name='upload' color='#fffefe'></box-icon></button>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

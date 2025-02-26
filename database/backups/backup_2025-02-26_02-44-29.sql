@@ -517,7 +517,7 @@ CREATE TABLE `respaldos` (
   `ruta` text NOT NULL DEFAULT '',
   `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -526,7 +526,7 @@ CREATE TABLE `respaldos` (
 
 LOCK TABLES `respaldos` WRITE;
 /*!40000 ALTER TABLE `respaldos` DISABLE KEYS */;
-INSERT INTO `respaldos` VALUES (1,'backup_2025-02-25_21-39-46.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-25_21-39-46.sql','2025-02-25 21:39:47');
+INSERT INTO `respaldos` VALUES (2,'backup_2025-02-25_21-39-58.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-25_21-39-58.sql','2025-02-25 21:39:59'),(3,'backup_2025-02-25_21-40-01.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-25_21-40-01.sql','2025-02-25 21:40:01'),(4,'backup_2025-02-25_21-40-04.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-25_21-40-04.sql','2025-02-25 21:40:05');
 /*!40000 ALTER TABLE `respaldos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -727,4 +727,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-25 15:39:59
+-- Dump completed on 2025-02-25 20:44:30
