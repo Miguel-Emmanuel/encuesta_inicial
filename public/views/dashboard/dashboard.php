@@ -44,7 +44,7 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            <div class="p-4 pt-5">  
+            <div class="p-4 pt-5">
                 <h1><a href="/public/views/sesiones/index.php" class="logo">Encuesta Inicial</a></h1>
                 <ul class="list-unstyled components mb-5">
                     <b>Usuario: <?php echo $nrol; ?></b>
@@ -112,13 +112,23 @@
                             <li>
                                 <a href="/public/views/encreportes/index.php">Reporte Encuesta</a>
                             </li>
-                            <?php if ($rol == 1): ?>
-                            <li>
-                                <a href="\database\exportar\exportar_excel.php">Exportar DB</a>
-                            </li>
-                            <?php endif ?>
                         </ul>
                     </li>
+
+                    <?php if ($rol == 1): ?>
+                    <li>
+                        <a href="#dbSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Base
+                            de Datos</a>
+                        <ul class="collapse list-unstyled" id="dbSubmenu">
+                            <li>
+                                <a href="\database\exportar\exportar_excel.php">Exportar DB Excel</a>
+                            </li>
+                            <li>
+                                <a href="../dbbackup/index.php">Exportar DB Log</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php endif ?>
                     <!--
                     <li>
                         <a href="#">Gráficos</a>
