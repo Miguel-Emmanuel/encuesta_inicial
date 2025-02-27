@@ -65,7 +65,7 @@ ORDER BY s.id ASC, p.id ASC;
                                 //Configurar fuente para el título
                                 $this->SetFont('Arial', 'B', 12);
                                 $this->Cell(0, 10, '', 0, 1, 'C'); // Texto centrado
-                                $this->Ln(8); // Espacio después del título
+                                $this->Ln(10); // Espacio después del título
                 
             }
         
@@ -157,8 +157,8 @@ $pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'U
                 $posY = $pdf->GetY();
                 
                 // Pregunta en varias líneas
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->MultiCell(60, 10, mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 'L');
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->MultiCell(60, 3, mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 'L');
                 
                 // Guardar la nueva posición después de la pregunta
                 $alturaPregunta = $pdf->GetY() - $posY; // Altura total ocupada por la pregunta
@@ -173,8 +173,8 @@ $pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'U
                 $pdf->SetX(70); // Mover la respuesta a la derecha
                 
                 // Imprimir la respuesta
-                $pdf->SetFont('Arial', 'I', 10);
-                $pdf->MultiCell(120, 10, mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0, 'L');
+                $pdf->SetFont('Arial', 'I', 8);
+                $pdf->MultiCell(120, 3, mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0, 'L');
                 
                 // Asegurar que la próxima pregunta no se encime
                 $pdf->SetY($posY + $alturaPregunta); // Ajusta la posición según la altura de la pregunta
