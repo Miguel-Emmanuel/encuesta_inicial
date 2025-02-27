@@ -32,7 +32,7 @@ CREATE TABLE `clasificacion_estudiantes` (
   KEY `fk_clasificacion_pregunta` (`pregunta_id`),
   CONSTRAINT `fk_clasificacion_estudiante` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_clasificacion_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1026 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=799 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `clasificacion_estudiantes` */
 
