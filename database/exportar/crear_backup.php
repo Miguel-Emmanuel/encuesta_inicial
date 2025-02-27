@@ -14,6 +14,7 @@ $backupName = "backup_$fecha.sql";
 $dumpFile = "$backupDir/$backupName";
 
 // Comando mysqldump (ajustar ruta según instalación)
+$dumpFile = str_replace("\\", "/", $dumpFile);
 $mysqldumpPath = '"C:\xampp\mysql\bin\mysqldump.exe"';
 $command = "$mysqldumpPath --host=$host --user=$user --password=$pass --routines --events --databases $db > \"$dumpFile\"";
 
