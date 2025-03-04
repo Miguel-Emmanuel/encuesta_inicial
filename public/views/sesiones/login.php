@@ -1,7 +1,4 @@
-<?php
-session_start();
-include("../../../app/Models/conexion.php");
-if (isset($_SESSION['id']) == "") { ?>
+
 <!DOCTYPE html> 
 <html lang="en">
 
@@ -46,8 +43,3 @@ if (isset($_SESSION['id']) == "") { ?>
 <script src="../../../bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </html>
-
-<?php
-} else {
-	header("Location:  ../../../../app/Controllers/sesiones_controller.php");
-} ?>

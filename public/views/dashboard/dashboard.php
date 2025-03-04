@@ -104,7 +104,7 @@
 
                     <li>
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle">Apartados extra</a>
+                            class="dropdown-toggle">Reportes</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
                             <li>
                                 <a href="/public/views/seguimiento/index.php">Seguimiento de Estudiantes</a>
@@ -121,10 +121,7 @@
                             de Datos</a>
                         <ul class="collapse list-unstyled" id="dbSubmenu">
                             <li>
-                                <a href="\database\exportar\exportar_excel.php">Exportar DB Excel</a>
-                            </li>
-                            <li>
-                                <a href="../dbbackup/index.php">Exportar DB Log</a>
+                                <a href="../dbbackup/index.php">Exportar DB</a>
                             </li>
                         </ul>
                     </li>
