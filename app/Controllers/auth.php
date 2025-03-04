@@ -10,6 +10,7 @@ $nombre = $_SESSION['nombre'];
 $rol = $_SESSION['rol'];
 $idUsuario = $_SESSION['id']; // ID del usuario ya validado en auth.php
 $emailUsuario = $_SESSION['email']; // Correo electrónico del usuario
+$email_verificado = $_SESSION['email_verified'];
 
 switch($rol):
     case 1:
@@ -26,3 +27,5 @@ switch($rol):
         break;
     endswitch;
 ?>
+ <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+

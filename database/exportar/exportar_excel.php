@@ -15,7 +15,7 @@ try {
     // Tu código que exporta la base de datos a Excel
 
 
-
+ini_set('memory_limit', '256M');
 
 // Crear un nuevo archivo Excel
 $spreadsheet = new Spreadsheet();

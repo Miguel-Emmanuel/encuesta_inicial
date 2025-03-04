@@ -80,7 +80,7 @@ $estugrup = $conexion->query($sqlEstuGrup_cambio);
     // Consulta para obtener estudiantes que no están registrados en estudiante_grupo
     $sqlestuA = "SELECT estu.id, u.nombre, u.apellido_paterno, u.apellido_materno FROM estudiantes AS estu 
     INNER JOIN usuarios AS u ON u.id = estu.usuario_id 
-    WHERE estu.id NOT IN (SELECT estudiante_id FROM estudiante_grupo)";
+    WHERE estu.id NOT IN (SELECT estudiante_id FROM estudiante_grupo) AND u.activo = 1";
     $estu = $conexion->query($sqlestuA);
 
     // Consulta para obtener todos los estudiantes

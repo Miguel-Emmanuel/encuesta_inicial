@@ -8,7 +8,7 @@ if (isset($_POST['grupo_id'])) {
     $sqlestudiantes = "SELECT 
                         e.id AS estudiante_id,
                         e.matricula AS matricula,
-                        CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS estudiante
+                        CONCAT(u.apellido_paterno, ' ', u.apellido_materno, ' ', u.nombre) AS estudiante
                       FROM 
                         estudiantes e
                       JOIN 
