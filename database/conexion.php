@@ -1,7 +1,7 @@
 <?php
 // db.php
 $host = 'localhost';
-$db = 'encuesta_gv';
+$db = 'encuesta_02';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';

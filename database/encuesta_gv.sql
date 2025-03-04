@@ -15538,6 +15538,23 @@ insert  into `reglas_clasificacion`(`id`,`pregunta_id`,`operador`,`valor`,`grupo
 (42,10392,'=','Si','Salud','Respueta Tomas algun medicamento periodicamente?','2025-02-21 12:18:32','2025-02-21 12:18:32'),
 (43,10299,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil en pregunta 10299','2025-02-21 12:19:05','2025-02-21 12:19:05');
 
+/*Table structure for table `respaldos` */
+
+DROP TABLE IF EXISTS `respaldos`;
+
+CREATE TABLE `respaldos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL DEFAULT '',
+  `ruta` text NOT NULL DEFAULT '',
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `respaldos` */
+
+insert  into `respaldos`(`id`,`nombre`,`ruta`,`fecha_creacion`) values 
+(5,'backup_2025-03-04_01-08-51.sql','C:/xampp/htdocs/EncuestaInicial/database/exportar/../backups/backup_2025-03-04_01-08-51.sql','2025-03-03 18:08:52');
+
 /*Table structure for table `respuestas` */
 
 DROP TABLE IF EXISTS `respuestas`;
@@ -51286,6 +51303,7 @@ CREATE TABLE `usuarios` (
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`email`,`email_verified`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`activo`,`created_at`,`updated_at`) values 
+(1,'Director','Admin','General','director@gmail.com',1,'2025-03-03 17:57:55','$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,'2025-03-03 17:57:55','2025-03-03 17:57:55'),
 (2,'Mike','UTVT','UTVT','ptc@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
 (3,'Mike','Arriola','Ortega','estudiante@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (4,'Jimena','Diaz','Diaz','psicologia@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),
