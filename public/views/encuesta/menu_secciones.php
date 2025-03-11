@@ -1,7 +1,7 @@
 <?php
 include("../../../database/conexion.php");
 require("../../../app/Controllers/auth.php");
-session_start();
+// session_start();
 if (empty($_SESSION["id"])) {
     header("location: ../sesiones/login.php");
     exit;
