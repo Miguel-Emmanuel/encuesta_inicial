@@ -63,7 +63,7 @@ ORDER BY s.id ASC, p.id ASC;
                     $this->AliasNbPages(); // Inicializa el alias {nb}
                   // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
 // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
-$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
+$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
 $this->Ln(5);
 
 
@@ -73,13 +73,13 @@ $imageWidth = 40; // El ancho de la imagen
 
 // Calcula la posición x para la segunda imagen en el lado derecho
 $rightX = $pageWidth - $imageWidth - 10; // 10 es el margen desde el borde derecho
-$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
+$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
 
 
 //Configurar fuente para el título
                     $this->SetFont('Arial', 'B', 12);
                     $this->Cell(0, 10, '', 0, 1, 'C'); // Texto centrado
-                    $this->Ln(5); // Espacio después del título
+                    $this->Ln(9); // Espacio después del título
 
 
 
@@ -147,7 +147,12 @@ $this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/Logo_
             $seccion_actual = null;
 
 
-// Recorrer preguntas y respuestas
+
+// Inicialización de variables de columna
+$ancho_columna_pregunta = 95; // Ancho de la columna para la pregunta (izquierda)
+$ancho_columna_respuesta = 95; // Ancho de la columna para la respuesta (derecha)
+$alto_fila = 4; // Altura de las filas
+
 while ($fila = $resultado->fetch_assoc()) {
     // Si cambia la sección, imprimir un título de sección
     if ($fila['seccion_nombre'] !== $seccion_actual) {
@@ -166,31 +171,29 @@ while ($fila = $resultado->fetch_assoc()) {
         $pdf->SetFont('Arial', '', 11);
     }
 
-    // Imprimir la pregunta y respuesta en una tabla
+    // Imprimir la pregunta y respuesta en dos columnas
     if ($fila['pregunta'] !== null) {
         // Verificar si hay suficiente espacio en la página para la pregunta y respuesta
-        if ($pdf->GetY() + 10 > 270) { // Si el espacio restante es menor que 10 mm
+        if ($pdf->GetY() + $alto_fila > 270) { // Si el espacio restante es menor que 10 mm
             $pdf->AddPage(); // Si no hay suficiente espacio, agregar una nueva página
         }
 
-        // Definir el ancho de las columnas de la tabla
-        $ancho_pregunta = 190;
-        $ancho_respuesta = 190;
-
-        // Imprimir la pregunta sin recuadro (sin borde)
+        // Imprimir la pregunta en la columna izquierda (pregunta)
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->MultiCell($ancho_pregunta, 8, mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 'L');
-        
-        // Establecer color de fondo gris para la respuesta
+        $pregunta = mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8');
+        $pdf->SetX(10); // Establecer la posición en X para la columna de preguntas
+        $pdf->MultiCell($ancho_columna_pregunta, $alto_fila, $pregunta, 1, 'L', false);  
+        // Establecer el color de fondo gris claro para las respuestas
         $pdf->SetFillColor(230, 230, 230); // Gris claro (RGB: 230, 230, 230)
 
-        // Imprimir la respuesta en la segunda columna con fondo gris
+        // Imprimir la respuesta en la columna derecha (respuesta)
         $pdf->SetFont('Arial', 'I', 8);
         $respuesta = mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8');
-        $pdf->MultiCell($ancho_respuesta, 8, $respuesta, 1, 'L', true);
+        $pdf->SetXY(10 + $ancho_columna_pregunta, $pdf->GetY() - $alto_fila); // Ajustar Y a la misma línea
+        $pdf->MultiCell($ancho_columna_respuesta, $alto_fila, $respuesta, 1, 'L', true);
 
-        // Asegurar que la próxima pregunta no se encime
-        $pdf->Ln(2); // Espacio extra entre filas
+        // Asegurarse de que la próxima pregunta/respuesta no se superponga
+        $pdf->Ln(); // Espacio extra entre filas
     }
 
     // Verificar si se ha alcanzado el final de la página y agregar una nueva página si es necesario
@@ -203,10 +206,10 @@ while ($fila = $resultado->fetch_assoc()) {
 // Limpiar buffer antes de generar el PDF
             ob_end_clean();
 
-            $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+            // $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
 
             // Descargar el archivo PDF
-            // $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
+            $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
         } else {
             echo "No se encontró información para el estudiante seleccionado.";
         }
