@@ -63,7 +63,7 @@ ORDER BY s.id ASC, p.id ASC;
                     $this->AliasNbPages(); // Inicializa el alias {nb}
                   // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
 // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
-$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
+$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
 $this->Ln(5);
 
 
@@ -73,7 +73,7 @@ $imageWidth = 40; // El ancho de la imagen
 
 // Calcula la posición x para la segunda imagen en el lado derecho
 $rightX = $pageWidth - $imageWidth - 10; // 10 es el margen desde el borde derecho
-$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
+$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
 
 
 //Configurar fuente para el título
