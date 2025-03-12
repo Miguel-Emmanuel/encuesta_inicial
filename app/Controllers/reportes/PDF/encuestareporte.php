@@ -1,25 +1,25 @@
 <?php
 session_start();
-require_once('../../../../database/conexion.php');  
-require('../../../../PDF/fpdf.php');  
+require_once('../../../../database/conexion.php');
+require('../../../../PDF/fpdf.php');
 try {
     // Código de generación de PDF
 
 
-// Asegurar que MySQL use UTF-8
-$conexion->set_charset("utf8");
+    // Asegurar que MySQL use UTF-8
+    $conexion->set_charset("utf8");
 
-// Configurar la codificación global
-mb_internal_encoding("UTF-8");
-mb_http_output("ISO-8859-1");
+    // Configurar la codificación global
+    mb_internal_encoding("UTF-8");
+    mb_http_output("ISO-8859-1");
 
-// Iniciar el buffer de salida
-ob_start();
+    // Iniciar el buffer de salida
+    ob_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
-    $estudiante_id = intval($_POST['estudiante']);
-    
-    $query = $conexion->prepare("
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estudiante'])) {
+        $estudiante_id = intval($_POST['estudiante']);
+
+        $query = $conexion->prepare("
 SELECT 
     e.matricula, 
     CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre_completo,
@@ -46,176 +46,176 @@ ORDER BY s.id ASC, p.id ASC;
 ");
 
 
-    $query->bind_param("i", $estudiante_id);
-    $query->execute();
-    $resultado = $query->get_result();
+        $query->bind_param("i", $estudiante_id);
+        $query->execute();
+        $resultado = $query->get_result();
 
-    if ($resultado->num_rows > 0) {
-        // Crear PDF
-        
-        
+        if ($resultado->num_rows > 0) {
+            // Crear PDF
 
-        class PDF extends FPDF {
-            // Encabezado (necesario para inicializar el alias de páginas)
-            function Header() {
-                $this->AliasNbPages(); // Inicializa el alias {nb}
-                                //Agregar imagen (ajusta la ruta, posición y tamaño según sea necesario)
-                                $this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', 10, 8, 40); // (archivo, x, y, ancho)
-        
-                                //Configurar fuente para el título
-                                $this->SetFont('Arial', 'B', 12);
-                                $this->Cell(0, 10, '', 0, 1, 'C'); // Texto centrado
-                                $this->Ln(10); // Espacio después del título
-                
-            }
-        
-            // Pie de página con el formato "Página X - Y"
-            function Footer() {
-                $this->SetY(-15); // Posiciona el pie de página a 15 mm del borde inferior
-                $this->SetFont('Arial', 'I', 10); // Fuente Arial, cursiva, tamaño 10
-                $this->Cell(0, 10, 'Pagina ' . $this->PageNo() . ' - {nb}', 0, 0, 'C'); // Página X - Y
-            }
-            
-         
-        }
-        
-        // Crear PDF con la nueva clase
-        $pdf = new PDF();
-        $pdf->AliasNbPages(); // Permite que {nb} se reemplace con el total de páginas
-        $pdf->SetFont('Arial', '', 12);
-        
-   
-        $pdf->AddPage();
-        $pdf->SetFont('Arial', 'B', 30);
-        $pdf->Cell(0, 10, 'Reporte de Estudiante', 0, 1, 'C');
-        $pdf->Ln(10);
 
-        // Obtener la primera fila para la información del estudiante
-        $primera_fila = $resultado->fetch_assoc();
 
-        // Información del estudiante
-        // $pdf->SetFont('Arial', '', 12);
-        // $pdf->Cell(0, 10, mb_convert_encoding('Matrícula: ' . $primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
-        // $pdf->Cell(0, 10, mb_convert_encoding('Nombre: ' . $primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
-        // $pdf->Cell(0, 10, mb_convert_encoding('Grupo: ' . $primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
-        // $pdf->Cell(0, 10, mb_convert_encoding('Correo: ' . $primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
-        $pdf->SetFont('Arial', 'B', 12); // Texto estático en negrita
-$pdf->Cell(30, 10, mb_convert_encoding('Matrícula: ', 'windows-1252', 'UTF-8'), 0, 0);
-$pdf->SetFont('Arial', 'I', 12); // Datos en texto normal
-$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
+            class PDF extends FPDF
+            {
+                // Encabezado (necesario para inicializar el alias de páginas)
+                function Header()
+                {
+                    $this->AliasNbPages(); // Inicializa el alias {nb}
+                  // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
+// Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
+$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
+$this->Ln(5);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(30, 10, mb_convert_encoding('Nombre: ', 'windows-1252', 'UTF-8'), 0, 0);
-$pdf->SetFont('Arial', 'I', 12);
-$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(30, 10, mb_convert_encoding('Grupo: ', 'windows-1252', 'UTF-8'), 0, 0);
-$pdf->SetFont('Arial', 'I', 12);
-$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
+// Ubicar la segunda imagen en el lado derecho (coordenada x = ancho de la página - ancho de la imagen)
+$pageWidth = $this->GetPageWidth(); // Obtener el ancho total de la página
+$imageWidth = 40; // El ancho de la imagen
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(30, 10, mb_convert_encoding('Correo: ', 'windows-1252', 'UTF-8'), 0, 0);
-$pdf->SetFont('Arial', 'I', 12);
-$pdf->Cell(0, 10, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
+// Calcula la posición x para la segunda imagen en el lado derecho
+$rightX = $pageWidth - $imageWidth - 10; // 10 es el margen desde el borde derecho
+$this->Image('C:/Users/Usuario/Documents/Duales/EncuestaInicial/public/img/Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
 
-                $pdf->Ln(5);
 
-        // Reiniciar el puntero de resultados
-        $resultado->data_seek(0);
+//Configurar fuente para el título
+                    $this->SetFont('Arial', 'B', 12);
+                    $this->Cell(0, 10, '', 0, 1, 'C'); // Texto centrado
+                    $this->Ln(9); // Espacio después del título
 
-        // Variables para detectar cambios de sección
-        $seccion_actual = null;
 
-        // Recorrer preguntas y respuestas
-        while ($fila = $resultado->fetch_assoc()) {
-            // Si cambia la sección, imprimir un título de sección
-            if ($fila['seccion_nombre'] !== $seccion_actual) {
-                $seccion_actual = $fila['seccion_nombre'];
-                $pdf->SetFont('Arial', 'B', 20);
-                // $pdf->Ln(5);
-                $pdf->Cell(0, 10, mb_convert_encoding('Sección: ' . $seccion_actual, 'windows-1252', 'UTF-8'), 0, 1);
-                
-                // Imprimir cantidad de preguntas y rango en la sección
-                $pdf->SetFont('Arial', 'I', 12);
-                $pdf->Cell(0, 10, mb_convert_encoding(
-                    $fila['total_preguntas_seccion'] . ' (' . $fila['primera_pregunta'] . '-' . $fila['ultima_pregunta'] . ')',
-                    'windows-1252', 'UTF-8'
-                ), 0, 1);
-                
-                $pdf->Ln(3);
-                $pdf->SetFont('Arial', '', 11);
-            }
-            
-            
-            // Imprimir la pregunta
-            if ($fila['pregunta'] !== null) {
-                // $pdf->SetFont('Arial', 'BI', 15);
-                // $pdf->Cell(38, 10, mb_convert_encoding('Pregunta ('   . $fila['numero_pregunta'] . '): ', 'windows-1252', 'UTF-8'), 0, 0);
-                
-                // Guardar la posición inicial de la pregunta
-                $posY = $pdf->GetY();
-                
-                // Pregunta en varias líneas
-                $pdf->SetFont('Arial', 'B', 10);
-                $pdf->MultiCell(60, 3, mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0, 'L');
-                
-                // Guardar la nueva posición después de la pregunta
-                $alturaPregunta = $pdf->GetY() - $posY; // Altura total ocupada por la pregunta
-                
-                // Verificar si hay suficiente espacio en la página para la respuesta
-                // if ($pdf->GetY() + 10 > 270) { // Comprobamos si el espacio restante es menor que 10 mm
-                //     $pdf->AddPage(); // Si no hay suficiente espacio, agregar una nueva página
-                // }
-                
-                // Volver a la posición original para alinear la respuesta arriba
-                $pdf->SetY($posY);
-                $pdf->SetX(70); // Mover la respuesta a la derecha
-                
-                // Imprimir la respuesta
-                $pdf->SetFont('Arial', 'I', 8);
-                $pdf->MultiCell(120, 3, mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0, 'L');
-                
-                // Asegurar que la próxima pregunta no se encime
-                $pdf->SetY($posY + $alturaPregunta); // Ajusta la posición según la altura de la pregunta
-                $pdf->Ln(5); // Espacio extra entre filas
-                
-                // Verificar si se ha alcanzado el final de la página
-                if ($pdf->GetY() > 270) {
-                    $pdf->AddPage();
+
                 }
-                
 
-                
-
-                // $pdf->SetFont('Arial', 'B', 13);
-                // $pdf->MultiCell(0, 8, 'Pregunta ('   . $fila['numero_pregunta'] . '): ' . mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8'), 0);
-                
-           
-                // $pdf->SetFont('Arial', 'B', 12);
-                // $pdf->Cell(24, 10, mb_convert_encoding('Respuesta: ', 'windows-1252', 'UTF-8'), 0, 0);
-                // $pdf->SetFont('Arial', 'I', 10);
-                // $pdf->Cell(0, 10,  mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8'), 0, 1);
-                
-           
-                // $pdf->Ln(3);
+                // Pie de página con el formato "Página X - Y"
+                function Footer()
+                {
+                    $this->SetY(-15); // Posiciona el pie de página a 15 mm del borde inferior
+                    $this->SetFont('Arial', 'I', 10); // Fuente Arial, cursiva, tamaño 10
+                    $this->Cell(0, 10, 'Pagina ' . $this->PageNo() . ' - {nb}', 0, 0, 'C'); // Página X - Y
+                }
             }
+
+            // Crear PDF con la nueva clase
+            $pdf = new PDF();
+            $pdf->AliasNbPages(); // Permite que {nb} se reemplace con el total de páginas
+            $pdf->SetFont('Arial', '', 12);
+
+
+            $pdf->AddPage();
+            $pdf->SetFont('Arial', 'B', 20);
+            $pdf->Cell(0, 10, 'Reporte de Estudiante', 0, 1, 'C');
+            $pdf->Ln(5);
+
+            // Obtener la primera fila para la información del estudiante
+            $primera_fila = $resultado->fetch_assoc();
+
+            // Información del estudiante
+            // $pdf->SetFont('Arial', '', 12);
+            // $pdf->Cell(0, 10, mb_convert_encoding('Matrícula: ' . $primera_fila['matricula'], 'windows-1252', 'UTF-8'), 0, 1);
+            // $pdf->Cell(0, 10, mb_convert_encoding('Nombre: ' . $primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 0, 1);
+            // $pdf->Cell(0, 10, mb_convert_encoding('Grupo: ' . $primera_fila['grupo'], 'windows-1252', 'UTF-8'), 0, 1);
+            // $pdf->Cell(0, 10, mb_convert_encoding('Correo: ' . $primera_fila['email'], 'windows-1252', 'UTF-8'), 0, 1);
+
+
+
+            $pdf->SetFont('Arial', 'B', 12); // Fuente para los encabezados de la tabla
+
+            // Establecer color de fondo para las celdas de encabezado
+            $pdf->SetFillColor(48, 125, 105, 255); // Color gris claro para el fondo de la cabecera
+
+            // Cabecera de la tabla con los encabezados
+            $pdf->Cell(60, 6, 'Nombre', 1, 0, 'C', true);
+            $pdf->Cell(0, 6, mb_convert_encoding($primera_fila['nombre_completo'], 'windows-1252', 'UTF-8'), 1, 1, 'C', false);
+
+            // Nombre
+            $pdf->Cell(60, 6, 'Matricula', 1, 0, 'C', true);
+            $pdf->Cell(0, 6, mb_convert_encoding($primera_fila['matricula'], 'windows-1252', 'UTF-8'), 1, 1, 'C', false);
+
+            // Grupo
+            $pdf->Cell(60, 6, 'Grupo', 1, 0, 'C', true);
+            $pdf->Cell(0, 6, mb_convert_encoding($primera_fila['grupo'], 'windows-1252', 'UTF-8'), 1, 1, 'C', false);
+
+            // Correo
+            $pdf->Cell(60, 6, 'Correo', 1, 0, 'C', true);
+            $pdf->Cell(0, 6, mb_convert_encoding($primera_fila['email'], 'windows-1252', 'UTF-8'), 1, 1, 'C', false);
+
+            $pdf->Ln(4);
+
+            // Reiniciar el puntero de resultados
+            $resultado->data_seek(0);
+
+            // Variables para detectar cambios de sección
+            $seccion_actual = null;
+
+
+
+// Inicialización de variables de columna
+$ancho_columna_pregunta = 95; // Ancho de la columna para la pregunta (izquierda)
+$ancho_columna_respuesta = 95; // Ancho de la columna para la respuesta (derecha)
+$alto_fila = 4; // Altura de las filas
+
+while ($fila = $resultado->fetch_assoc()) {
+    // Si cambia la sección, imprimir un título de sección
+    if ($fila['seccion_nombre'] !== $seccion_actual) {
+        $seccion_actual = $fila['seccion_nombre'];
+        $pdf->SetFont('Arial', 'B', 15);
+        $pdf->Cell(0, 10, mb_convert_encoding('Sección: ' . $seccion_actual, 'windows-1252', 'UTF-8'), 0, 1);
+        
+        // Imprimir cantidad de preguntas y rango en la sección
+        $pdf->SetFont('Arial', 'I', 12);
+        $pdf->Cell(0, 10, mb_convert_encoding(
+            $fila['total_preguntas_seccion'] . ' (' . $fila['primera_pregunta'] . '-' . $fila['ultima_pregunta'] . ')',
+            'windows-1252', 'UTF-8'
+        ), 0, 1);
+        
+        $pdf->Ln(0);
+        $pdf->SetFont('Arial', '', 11);
+    }
+
+    // Imprimir la pregunta y respuesta en dos columnas
+    if ($fila['pregunta'] !== null) {
+        // Verificar si hay suficiente espacio en la página para la pregunta y respuesta
+        if ($pdf->GetY() + $alto_fila > 270) { // Si el espacio restante es menor que 10 mm
+            $pdf->AddPage(); // Si no hay suficiente espacio, agregar una nueva página
         }
 
-        // Limpiar buffer antes de generar el PDF
-        ob_end_clean();
-        
-        $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+        // Imprimir la pregunta en la columna izquierda (pregunta)
+        $pdf->SetFont('Arial', 'B', 10);
+        $pregunta = mb_convert_encoding($fila['pregunta'], 'ISO-8859-1', 'UTF-8');
+        $pdf->SetX(10); // Establecer la posición en X para la columna de preguntas
+        $pdf->MultiCell($ancho_columna_pregunta, $alto_fila, $pregunta, 1, 'L', false);  
+        // Establecer el color de fondo gris claro para las respuestas
+        $pdf->SetFillColor(230, 230, 230); // Gris claro (RGB: 230, 230, 230)
 
-        // Descargar el archivo PDF
-        // $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
-    } else {
-        echo "No se encontró información para el estudiante seleccionado.";
+        // Imprimir la respuesta en la columna derecha (respuesta)
+        $pdf->SetFont('Arial', 'I', 8);
+        $respuesta = mb_convert_encoding($fila['respuesta'] ?: 'No respondida', 'ISO-8859-1', 'UTF-8');
+        $pdf->SetXY(10 + $ancho_columna_pregunta, $pdf->GetY() - $alto_fila); // Ajustar Y a la misma línea
+        $pdf->MultiCell($ancho_columna_respuesta, $alto_fila, $respuesta, 1, 'L', true);
+
+        // Asegurarse de que la próxima pregunta/respuesta no se superponga
+        $pdf->Ln(); // Espacio extra entre filas
     }
-} else {
-    echo "No se recibió la información necesaria.";
+
+    // Verificar si se ha alcanzado el final de la página y agregar una nueva página si es necesario
+    if ($pdf->GetY() > 270) {
+        $pdf->AddPage();
+    }
 }
+
+
+// Limpiar buffer antes de generar el PDF
+            ob_end_clean();
+
+            $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+
+            // Descargar el archivo PDF
+            // $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
+        } else {
+            echo "No se encontró información para el estudiante seleccionado.";
+        }
+    } else {
+        echo "No se recibió la información necesaria.";
+    }
 } catch (Exception $e) {
     echo 'Error al generar el PDF: ' . $e->getMessage();
 }
-?>

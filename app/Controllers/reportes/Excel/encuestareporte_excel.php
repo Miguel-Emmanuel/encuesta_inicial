@@ -55,30 +55,66 @@ try {
                 'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]]
             ];
 
-            // Título principal
+                    // Título principal
             $sheet->setCellValue('A1', 'Reporte de Estudiante');
-            $sheet->mergeCells('A1:D1');
-            $sheet->getStyle('A1')->applyFromArray(['font' => ['bold' => true, 'size' => 14]]);
-            $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->mergeCells('A1:C1');
+            $sheet->getStyle('A1')->applyFromArray([
+                'font' => [
+                    'bold' => true,
+                    'size' => 14,
+                    'color' => ['rgb' => 'FFFFFF'], // Color de la fuente (blanco)
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => '2f7e68'], // Color de fondo (azul)
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Centrado
+                ]
+            ]);
 
+
+
+            // Título Datos Generales
+              $sheet->setCellValue('A3', 'Datos Generales');
+              $sheet->mergeCells('A3:B3');
+              $sheet->getStyle('A3')->applyFromArray(['font' => ['bold' => true, 'size' => 14]]);
             // Datos generales
-            $sheet->setCellValue('A2', 'Matrícula:');
-            $sheet->setCellValue('B2', $primera_fila['matricula']);
-            $sheet->setCellValue('A3', 'Nombre:');
-            $sheet->setCellValue('B3', $primera_fila['nombre_completo']);
-            $sheet->setCellValue('A4', 'Grupo:');
-            $sheet->setCellValue('B4', $primera_fila['grupo']);
-            $sheet->setCellValue('A5', 'Correo:');
-            $sheet->setCellValue('B5', $primera_fila['email']);
+            $sheet->setCellValue('A4', 'Matrícula:');
+            $sheet->setCellValue('B4', $primera_fila['matricula']);
+            $sheet->setCellValue('A5', 'Nombre:');
+            $sheet->setCellValue('B5', $primera_fila['nombre_completo']);
+            $sheet->setCellValue('A6', 'Grupo:');
+            $sheet->setCellValue('B6', $primera_fila['grupo']);
+            $sheet->setCellValue('A7', 'Correo:');
+            $sheet->setCellValue('B7', $primera_fila['email']);
+            // Aplicar bordes a toda la tabla
+            $sheet->getStyle("A3:B7")->applyFromArray($borderStyle);
+         
+
+            // Ajuste de tamaño específico para las columnas
+            $sheet->getColumnDimension('A')->setWidth(20); // Columna A
+            $sheet->getColumnDimension('B')->setWidth(41); // Columna B
+
+            // Ajuste de tamaño específico para las filas
+            $sheet->getRowDimension(3)->setRowHeight(25); // Fila 3
+            $sheet->getRowDimension(4)->setRowHeight(20); // Fila 4
+            $sheet->getRowDimension(5)->setRowHeight(20); // Fila 5
+            $sheet->getRowDimension(6)->setRowHeight(20); // Fila 6
+            $sheet->getRowDimension(7)->setRowHeight(20); // Fila 7
+            
+
+
+
 
             // Encabezados de tabla
-            $sheet->setCellValue('A7', 'Sección');
-            $sheet->setCellValue('B7', 'Pregunta');
-            $sheet->setCellValue('C7', 'Respuesta');
-            $sheet->getStyle('A7:C7')->applyFromArray($headerStyle);
+            $sheet->setCellValue('A10', '');
+            $sheet->setCellValue('B10', 'Pregunta');
+            $sheet->setCellValue('C10', 'Respuesta');
+            $sheet->getStyle('A10:C10')->applyFromArray($headerStyle);
 
             // Llenado de datos
-            $fila_excel = 8;
+            $fila_excel = 11;
             $seccion_actual = '';
             while ($row = $resultado->fetch_assoc()) {
                 if ($row['seccion_nombre'] !== $seccion_actual) {
@@ -87,7 +123,8 @@ try {
                     $sheet->mergeCells("A{$fila_excel}:C{$fila_excel}");
                     $sheet->getStyle("A{$fila_excel}")->applyFromArray([
                         'font' => ['bold' => true, 'size' => 12],
-                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D9E1F2']]
+                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D9E1F2']],
+                        'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]
                     ]);
                     $fila_excel++;
                     $seccion_actual = $row['seccion_nombre'];
@@ -101,12 +138,17 @@ try {
             }
 
             // Aplicar bordes a toda la tabla
-            $sheet->getStyle("A7:C{$fila_excel}")->applyFromArray($borderStyle);
+            $sheet->getStyle("A9:C{$fila_excel}")->applyFromArray($borderStyle);
 
             // Autoajustar columnas
             foreach (range('A', 'C') as $col) {
                 $sheet->getColumnDimension($col)->setAutoSize(true);
             }
+
+
+
+
+
 
             // Limpiar buffer antes de enviar encabezados
             if (ob_get_length()) {
