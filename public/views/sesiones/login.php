@@ -21,8 +21,8 @@
                 <h2 class="text-center bp-3"> Inicia Sesión </h2>
                 <br>
                 <?php include('msj.php'); ?>
-                <form name="formulario" method="post" action="/app/Controllers/loginController.php"> <!-- ESTE ES EL FORMULARIO -->
-                    <!-- Email input -->
+                <form name="formulario" method="post" action="/app/Controllers/loginController.php">
+                <!-- Email input -->
                     <input type="email" name="email" class="form-control form-control-sm" placeholder="Correo Electronico" aria-describedby="basic-addon3" required>
                     <!-- <div class="form-text" id="basic-addon3">Recuerda usar tu correo institucional proporcionado.</div> -->
                     <br>
