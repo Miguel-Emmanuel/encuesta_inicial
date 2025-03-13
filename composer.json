@@ -3,5 +3,8 @@
         "fpdf/fpdf": "^1.86",
         "phpoffice/phpspreadsheet": "^4.0",
         "mongodb/mongodb": "^1.21"
+    },
+    "require-dev": {
+        "jetbrains/phpstorm-stubs": "^2024.3"
     }
 }

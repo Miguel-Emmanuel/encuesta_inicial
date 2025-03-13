@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '7337180deca760c1b1224889cc683c8c6836dfdb',
+        'reference' => 'f2a37bd9fb9a3d3e4c8fbf76030a14527848d5f0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '7337180deca760c1b1224889cc683c8c6836dfdb',
+            'reference' => 'f2a37bd9fb9a3d3e4c8fbf76030a14527848d5f0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -36,6 +36,15 @@
             'install_path' => __DIR__ . '/../fpdf/fpdf',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'jetbrains/phpstorm-stubs' => array(
+            'pretty_version' => 'v2024.3',
+            'version' => '2024.3.0.0',
+            'reference' => '0e82bdfe850c71857ee4ee3501ed82a9fc5d043c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jetbrains/phpstorm-stubs',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
         'maennchen/zipstream-php' => array(
             'pretty_version' => '3.1.2',
