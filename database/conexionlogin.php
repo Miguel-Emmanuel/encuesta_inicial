@@ -1,37 +1,25 @@
 <?php
-// Intentar conexión a MariaDB
+// Ajusta los datos de conexión a MySQL
 $servername = "localhost";
-$username = "root"; // Cambia esto si usas un usuario diferente
-$password = ""; // Cambia esto si usas una contraseña
+$username = "root"; // Cambia si es necesario
+$password = ""; // Cambia si es necesario
+$dbname = "encuesta_02"; // Nombre de la base de datos
 
-// Intentamos conectar a la base de datos MySQL
-$conexion = mysqli_connect($servername, $username, $password);  // Cambié $conexion_mariadb a $conexion
+// Crea la conexión
+$conexion = mysqli_connect($servername, $username, $password);
 
-// Verificamos si la conexión fue exitosa
+// Verifica la conexión
 if (!$conexion) {
-    // Si no se puede conectar a MySQL, pasamos a la conexión de MongoDB
-    // No debemos mostrar error de conexión aquí, solo conectamos con MongoDB
-    include_once('mongo_conexion.php');
-    
-    // Si la conexión con MongoDB fue exitosa, $db estará disponible
-    if (isset($db)) {
-        echo "Conectado a MongoDB.";
-    } else {
-        die("No se pudo conectar a MongoDB.");
-    }
-} else {
-    // Si la conexión a MariaDB fue exitosa, seleccionamos la base de datos
-    $db_name = "encuesta_02";
-    $db_selected = mysqli_select_db($conexion, $db_name); // Usé $conexion en vez de $conexion_mariadb
+    die("Conexión fallida: " . mysqli_connect_error());
+}
 
-    if (!$db_selected) {
-        // Si no existe la base de datos, no mostramos error
-        echo "Base de datos no encontrada, pasando a MongoDB.";
-        // Conectamos a MongoDB si no encontramos la base de datos en MySQL
-        include_once('mongo_conexion.php');
-    } else {
-        echo "Conectado a MySQL.";
-        // Aquí puedes continuar con las operaciones en MariaDB si la base de datos existe
-    }
+// Verifica si la base de datos existe antes de intentar seleccionarla
+$db_check = mysqli_query($conexion, "SHOW DATABASES LIKE '$dbname'");
+if (mysqli_num_rows($db_check) == 0) {
+    // La base de datos no existe, asignamos $conexion a null para evitar intentar accederla más tarde
+    $conexion = null;
+} else {
+    // Si la base de datos existe, la seleccionamos
+    mysqli_select_db($conexion, $dbname);
 }
 ?>
