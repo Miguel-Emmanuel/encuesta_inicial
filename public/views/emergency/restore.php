@@ -1,53 +1,27 @@
 <?php
-// Verificar si los parámetros 'mensaje' y 'tipo' están presentes en la URL
-if (isset($_GET['mensaje']) && isset($_GET['tipo'])) {
-    $mensaje = urldecode($_GET['mensaje']); // Decodificar el mensaje
-    $tipo = $_GET['tipo']; // El tipo no necesita ser decodificado
-
-    // Mostrar la alerta usando SweetAlert2
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-    echo "<script>
-            window.onload = function() {
-                Swal.fire({
-                    title: '$tipo',
-                    html: '$mensaje', // Usar 'html' para interpretar los saltos de línea (<br>)
-                    icon: '$tipo',
-                    confirmButtonText: 'Aceptar'
-                });
-            };
-        </script>";
-}
 
 include("importmodal.php");
 include("exportmodal.php");
 ?>
+
+<style>
+    body{
+        padding: 5% 15% 15% 15%;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respaldos de Base de Datos</title>
+    <title>Respaldos de Base de Datos</title>`
 </head>
 <body>
     <table style="width: 100%;">
         <thead>
             <tr>
                 <h2>Respaldos de Base de Datos</h2>
-            </tr>
-            <tr>
-                <th style="text-align: center;">
-                    <a href="../../../database/exportar/crear_backup.php">
-                        <button class="btn btn-secondary" style="margin-top: 5%;">
-                            <i class="bi bi-database-add"></i> Hacer Respaldo
-                        </button>
-                    </a>
-                    <a href="../../../database/exportar/exportar_excel.php">
-                        <button class="btn btn-success" style="margin-top: 5%;">
-                            <i class="bi bi-filetype-xlsx"></i> Descargar Excel
-                        </button>
-                    </a>
-                </th>
             </tr>
         </thead>
     </table>
@@ -73,6 +47,10 @@ include("exportmodal.php");
                         <button class="btn" type="submit" style="background-color: #388E3C;" 
                             data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo $backup['_id'] ?>">
                             <box-icon name='download' color='#fffefe'></box-icon>
+                        </button>
+                        <button class="btn" type="submit" style="background-color: #1976D2;" 
+                            data-bs-toggle="modal" data-bs-target="#importBackdrop_<?php echo $backup['_id'] ?>">
+                            <box-icon name='upload' color='#fffefe'></box-icon>
                         </button>
                     </td>
                 </tr>
