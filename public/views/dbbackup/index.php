@@ -1,6 +1,7 @@
 <?php
 require("../../../app/Controllers/auth.php"); // Valida la sesión y variables de sesion
 include("../../../app/Models/conexion.php"); // Incluye la conexión a la base de datos
+include("../../../database/mongo_conexion.php");
 
 switch ($rol):
     case 1:

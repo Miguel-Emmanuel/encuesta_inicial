@@ -1,15 +1,14 @@
 <?php
-include("../conexion.php");
+include("../mongo_conexion.php"); // Conexión a MongoDB
+include("../conexion.php"); // Conexión a MongoDB
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         $backupId = $_POST['id'];
         
-        // Obtén la ruta del respaldo desde la base de datos usando el ID
-        $sql = "SELECT ruta FROM respaldos WHERE id = $backupId";
-        $result = $conexion->query($sql);
-        $backup = $result->fetch_assoc();
+        // Obtén la ruta del respaldo desde la colección de MongoDB usando el ID
+        $backup = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($backupId)]);
 
         if ($backup) {
             $filePath = $backup['ruta']; // Ruta completa del archivo de respaldo
