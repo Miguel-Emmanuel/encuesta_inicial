@@ -1,21 +1,17 @@
 <?php
-include("../conexion.php");
+include("emergency_conexion.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         $backupId = $_POST['id'];
 
-        // Obtén la ruta del respaldo desde MongoDB usando el ID (no desde MySQL)
-        // Aquí asumimos que ya tienes la conexión a MongoDB configurada
+        // Obtén la ruta del respaldo desde MongoDB usando el ID
         include("../mongo_conexion.php");
         $backup = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($backupId)]);
 
         if ($backup) {
             $filePath = $backup['ruta']; // Ruta completa del archivo de respaldo
-
-            // Verifica la ruta del archivo (agrega depuración)
-            echo "<pre>Ruta del archivo: " . $filePath . "</pre>";
 
             // Verifica si la ruta es válida
             if (!file_exists($filePath)) {
@@ -24,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Define la ruta de mysql como una variable
-            $mysqlPath = '"C:\xampp\mysql\bin\mysql.exe"'; // Ajusta la ruta si es necesario
+            $mysqlPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
 
             // Verifica si mysql.exe existe
             if (!file_exists($mysqlPath)) {
@@ -32,11 +28,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
 
-            // Imprime el comando para depuración
-            $command = "$mysqlPath --host=$host --user=$user --password=$pass $db < \"$filePath\"";
+            // Conexión a MySQL sin especificar la base de datos (solo servidor)
+            $connection = new mysqli($host, $user, $pass);
+
+            // Verifica si hay un error de conexión
+            if ($connection->connect_error) {
+                die("Error de conexión: " . $connection->connect_error);
+            }
+
+            // Verificar si la base de datos existe
+            $checkDbQuery = "SHOW DATABASES LIKE '$db'";
+            $dbResult = $connection->query($checkDbQuery);
+
+            // Si la base de datos no existe, crearla
+            if ($dbResult->num_rows == 0) {
+                $createDbQuery = "CREATE DATABASE $db";
+                if ($connection->query($createDbQuery) === TRUE) {
+                    echo "<script>alert('✅ Base de datos creada correctamente.');</script>";
+                } else {
+                    echo "<script>alert('❌ Error al crear la base de datos: " . $connection->error . "');</script>";
+                    exit;
+                }
+            } else {
+                echo "<script>alert('✅ La base de datos ya existe.');</script>";
+            }
+
+            // Cierra la conexión a la base de datos
+            $connection->close();
+
+            // Ahora importa el respaldo de la base de datos
+            $command = "\"$mysqlPath\" --host=$host --user=$user --password=$pass $db < \"$filePath\"";
             echo "<pre>Comando ejecutado: " . $command . "</pre>";
 
-            // Ejecutar el comando
+            // Ejecutar el comando para restaurar el respaldo
             exec($command, $output, $result);
 
             // Muestra detalles de la ejecución del comando para depuración

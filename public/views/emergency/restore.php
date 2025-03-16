@@ -1,7 +1,6 @@
 <?php
 
 include("importmodal.php");
-include("exportmodal.php");
 ?>
 
 <style>
@@ -44,10 +43,6 @@ include("exportmodal.php");
                     <td scope="row"><?php echo $backup['fecha_creacion'] ?></td>
                     <td scope="row"><?php echo $backup['nombre'] ?></td>
                     <td scope="row" style="text-align:center;">
-                        <button class="btn" type="submit" style="background-color: #388E3C;" 
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo $backup['_id'] ?>">
-                            <box-icon name='download' color='#fffefe'></box-icon>
-                        </button>
                         <button class="btn" type="submit" style="background-color: #1976D2;" 
                             data-bs-toggle="modal" data-bs-target="#importBackdrop_<?php echo $backup['_id'] ?>">
                             <box-icon name='upload' color='#fffefe'></box-icon>

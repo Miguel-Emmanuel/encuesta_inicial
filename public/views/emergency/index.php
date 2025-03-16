@@ -27,6 +27,9 @@ endswitch;
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../css/style.css">
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+        <!-- Incluir Bootstrap JS y dependencias -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 
