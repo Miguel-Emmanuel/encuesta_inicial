@@ -4,6 +4,7 @@ if (isset($_REQUEST['e'])) {
         '1' => "Error en las credenciales, revise nuevamente!",
         '2' => "No hay conexión con el sistema. Intente más tarde.",
         '3' => "Hubo un error desconocido. Por favor, intente nuevamente.",
+        '4' => "El sistema se encuentra fuera de servicio. Intente más tarde.",
     ];
 
     $mensaje = $mensajes[$_REQUEST['e']] ?? "Ocurrió un error, por favor intente nuevamente.";

@@ -1,25 +1,14 @@
 <?php
-// Ajusta los datos de conexión a MySQL
-$servername = "localhost";
-$username = "root"; // Cambia si es necesario
-$password = ""; // Cambia si es necesario
-$dbname = "encuesta_02"; // Nombre de la base de datos
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "encuesta_inicial";
 
-// Crea la conexión
-$conexion = mysqli_connect($servername, $username, $password);
+$conexion = null;
 
-// Verifica la conexión
-if (!$conexion) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
-
-// Verifica si la base de datos existe antes de intentar seleccionarla
-$db_check = mysqli_query($conexion, "SHOW DATABASES LIKE '$dbname'");
-if (mysqli_num_rows($db_check) == 0) {
-    // La base de datos no existe, asignamos $conexion a null para evitar intentar accederla más tarde
-    $conexion = null;
-} else {
-    // Si la base de datos existe, la seleccionamos
-    mysqli_select_db($conexion, $dbname);
+try {
+    $conexion = mysqli_connect($host, $user, $password, $database);
+} catch (mysqli_sql_exception $e) {
+    // No hagas un die o exit aquí, simplemente deja $conexion como null
 }
 ?>

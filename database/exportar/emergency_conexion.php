@@ -1,17 +1,19 @@
 <?php
-// Datos de conexión a la base de datos MySQL
-$host = 'localhost';  // Servidor MySQL
-$user = 'root';       // Usuario MySQL
-$pass = '';           // Contraseña de MySQL (vacía en tu caso)
-$db   = 'encuesta_02';  // Nombre de la base de datos a usar (si ya tienes un nombre específico)
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db = "encuesta_inicial";
 
-// Crear conexión
-$connection = new mysqli($host, $user, $pass);
+$conexion = null;
+$conexion_exitosa = false; // Variable para indicar si la conexión fue exitosa
 
-// Verificar conexión
-if ($connection->connect_error) {
-    die("Error de conexión: " . $connection->connect_error);
+try {
+    $conexion = mysqli_connect($host, $user, $pass, $db);
+    if ($conexion) {
+        $conexion_exitosa = true; // La conexión fue exitosa
+    }
+} catch (mysqli_sql_exception $e) {
+    // No hagas un die o exit aquí, simplemente deja $conexion como null
+    $conexion_exitosa = false; // La conexión falló
 }
-
-// Si la conexión es exitosa, puedes usarla para interactuar con la base de datos
 ?>

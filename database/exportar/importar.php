@@ -1,6 +1,15 @@
 <?php
 include("emergency_conexion.php");
 
+// Verifica si la conexión a MySQL fue exitosa
+if (!$conexion_exitosa) {
+    echo "<script>
+        alert('❌ La conexión con MySQL no se ha podido establecer, por favor contacte a soporte.');
+        window.history.back(); // Redirecciona a la página anterior
+    </script>";
+    exit; // Detiene la ejecución del script
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
@@ -15,7 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Verifica si la ruta es válida
             if (!file_exists($filePath)) {
-                echo "<script>alert('❌ El archivo no existe en la ruta proporcionada.');</script>";
+                echo "<script>
+                    alert('❌ El archivo no existe en la ruta proporcionada.');
+                    window.history.back(); // Redirecciona a la página anterior
+                </script>";
                 exit;
             }
 
@@ -24,7 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Verifica si mysql.exe existe
             if (!file_exists($mysqlPath)) {
-                echo "<script>alert('❌ No se encuentra mysql.exe en la ruta especificada.');</script>";
+                echo "<script>
+                    alert('❌ No se encuentra mysql.exe en la ruta especificada.');
+                    window.history.back(); // Redirecciona a la página anterior
+                </script>";
                 exit;
             }
 
@@ -33,7 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Verifica si hay un error de conexión
             if ($connection->connect_error) {
-                die("Error de conexión: " . $connection->connect_error);
+                echo "<script>
+                    alert('❌ Error de conexión: " . $connection->connect_error . "');
+                    window.history.back(); // Redirecciona a la página anterior
+                </script>";
+                exit;
             }
 
             // Verificar si la base de datos existe
@@ -46,7 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($connection->query($createDbQuery) === TRUE) {
                     echo "<script>alert('✅ Base de datos creada correctamente.');</script>";
                 } else {
-                    echo "<script>alert('❌ Error al crear la base de datos: " . $connection->error . "');</script>";
+                    echo "<script>
+                        alert('❌ Error al crear la base de datos: " . $connection->error . "');
+                        window.history.back(); // Redirecciona a la página anterior
+                    </script>";
                     exit;
                 }
             } else {
@@ -69,12 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 include("../../app/Controllers/sessiondestroy_controller.php");
             } else {
                 // Si ocurre un error, muestra la salida de la ejecución para depuración
-                echo "<script>alert('❌ Error al importar el archivo.');</script>";
+                echo "<script>
+                    alert('❌ Error al importar el archivo.');
+                    window.history.back(); // Redirecciona a la página anterior
+                </script>";
                 echo "<pre>Salida del comando: " . print_r($output, true) . "</pre>"; // Muestra la salida del comando mysql
                 echo "<pre>Código de resultado: " . $result . "</pre>";
             }
         } else {
-            echo "<script>alert('❌ No se encontró el respaldo en la base de datos.');</script>";
+            echo "<script>
+                alert('❌ No se encontró el respaldo en la base de datos.');
+                window.history.back(); // Redirecciona a la página anterior
+            </script>";
         }
     }
 }

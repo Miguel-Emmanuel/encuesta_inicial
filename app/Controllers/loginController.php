@@ -62,21 +62,26 @@ if ($conexion) {
     exit();
 }
 
-// Si MySQL no está disponible, buscar en MongoDB
-$usuario = $mongoDB->usuarios->findOne(["email" => $email]);
-if ($usuario && password_verify($passwordUser, $usuario['pass'] ?? '')) {
-    $_SESSION['id'] = (string)$usuario['_id'];
-    $_SESSION['email'] = $usuario['email'];
-    $_SESSION['rol'] = $usuario['rol_id'];
-    $_SESSION['nombre'] = $usuario['nombre'];
-    $_SESSION['email_verified'] = $usuario['email_verified'] ?? false;
+// Si no hay conexión con MySQL, intentamos en MongoDB
+try {
+    $usuario = $mongoDB->usuarios->findOne(["email" => $email]);
+    if ($usuario && password_verify($passwordUser, $usuario['pass'] ?? '')) {
+        $_SESSION['id'] = (string)$usuario['_id'];
+        $_SESSION['email'] = $usuario['email'];
+        $_SESSION['rol'] = $usuario['rol_id'];
+        $_SESSION['nombre'] = $usuario['nombre'];
+        $_SESSION['email_verified'] = $usuario['email_verified'] ?? false;
 
-    // Redirigir a la restauración de la base de datos
-    header("Location: ../../../../public/views/emergency/index.php");
+        // Redirigir a la restauración de la base de datos
+        header("Location: ../../../../public/views/emergency/index.php");
+        exit();
+    }
+} catch (Exception $e) {
+    header("Location: ../../public/views/sesiones/login.php?e=4");
     exit();
 }
 
-// Si no se encontró en MySQL ni MongoDB
-header("Location: ../../public/views/sesiones/login.php?e=1");
+// Si no hay conexión en ninguna de las bases de datos
+header("Location: ../../public/views/sesiones/login.php?e=2");
 exit();
 ?>
