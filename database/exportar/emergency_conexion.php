@@ -2,13 +2,13 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "encuesta_inicial";
+$db = "encuesta_02";
 
 $conexion = null;
 $conexion_exitosa = false; // Variable para indicar si la conexión fue exitosa
 
 try {
-    $conexion = mysqli_connect($host, $user, $pass, $db);
+    $conexion = mysqli_connect($host, $user, $pass);
     if ($conexion) {
         $conexion_exitosa = true; // La conexión fue exitosa
     }
