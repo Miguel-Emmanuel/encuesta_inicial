@@ -15538,6 +15538,28 @@ insert  into `reglas_clasificacion`(`id`,`pregunta_id`,`operador`,`valor`,`grupo
 (42,10392,'=','Si','Salud','Toma algun medicamento periodicamente?','2025-02-21 12:18:32','2025-03-03 18:24:50'),
 (43,10299,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil (Divorciado, Viudo, Casado, Unión libre).','2025-02-21 12:19:05','2025-03-03 18:26:29');
 
+
+
+
+INSERT  INTO `reglas_clasificacion`(`id`,`pregunta_id`,`operador`,`valor`,`grupo`,`descripcion`,`created_at`,`updated_at`) VALUES 
+(51,70,'=','Si','Poblacion Indígena','Papás o abuelos son indígenas','2025-02-21 12:17:31','2025-03-03 18:17:49'),
+(52,71,'=','Si','Poblacion Indígena','Papás o abuelos hablan o entienden alguna lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:11'),
+(53,72,'=','Si','Poblacion Indígena','El estudiante habla o entiende una lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:47'),
+(54,94,'=','Si','Económico','Cursa alguna otra carrera alcutalmente ?','2025-02-21 12:18:18','2025-03-03 18:19:12'),
+(55,60,'<=','6223.20','Económico','Ingreso mensual familiar <= 6223.20','2025-02-21 12:18:18','2025-03-03 18:19:25'),
+(56,50,'=','Si','Económico','Trabaja','2025-02-21 12:18:18','2025-03-03 18:19:31'),
+(57,63,'=','Departamento cerca de la Universidad','Económico','Renta cerca de la Universidad (foráneo)','2025-02-21 12:18:18','2025-03-03 18:20:06'),
+(58,12,'!=','no','Económico','Persona depende económicamente del estudiante','2025-02-21 12:18:18','2025-03-03 18:21:10'),
+(59,67,'IN','De 60 a 90 minutos,De 90 a 120 minutos,Más de 120 minutos','Económico','Tiempo de traslado es superior a 1 hora','2025-02-21 12:18:18','2025-03-03 18:21:50'),
+(60,73,'IN','Tienes alguna deficiencia auditiva,Problemas de movilidad motriz,Otro:','Salud','Condiciones de salud (lentes, problemas motrices , etc)','2025-02-21 12:18:32','2025-03-03 18:25:43'),
+(61,80,'=','Si','Salud','Ha recibido atencion psicológica o psiquiátrica?','2025-02-21 12:18:32','2025-03-03 18:23:58'),
+(62,74,'=','Si','Salud','Tiene algun padecimiento cronico','2025-02-21 12:18:32','2025-03-03 18:24:28'),
+(63,76,'=','Si','Salud','Tiene alguna alergia?','2025-02-21 12:18:32','2025-03-03 18:24:39'),
+(64,78,'=','Si','Salud','Toma algun medicamento periodicamente?','2025-02-21 12:18:32','2025-03-03 18:24:50'),
+(65,10,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil (Divorciado, Viudo, Casado, Unión libre).','2025-02-21 12:19:05','2025-03-03 18:26:29'),
+(66,11,'IN','2 hijos(as),Más de 2 hijos(as)','Paternal','2 Hijos o mas.','2025-02-21 12:19:05','2025-03-03 18:26:29');
+
+
 /*Table structure for table `respaldos` */
 
 DROP TABLE IF EXISTS `respaldos`;
