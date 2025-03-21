@@ -6,6 +6,11 @@ namespace Composer\Autoload;
 
 class ComposerStaticInita5f7f27f966a09b460f5f6d86877c6af
 {
+    public static $files = array (
+        'fe1d4898277c26748a003292f432cd3b' => __DIR__ . '/..' . '/jetbrains/phpstorm-stubs/PhpStormStubsMap.php',
+        '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'Z' => 
         array (
@@ -14,12 +19,14 @@ class ComposerStaticInita5f7f27f966a09b460f5f6d86877c6af
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
         ),
         'M' => 
         array (
+            'MongoDB\\' => 8,
             'Matrix\\' => 7,
         ),
         'F' => 
@@ -42,6 +49,10 @@ class ComposerStaticInita5f7f27f966a09b460f5f6d86877c6af
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
@@ -54,6 +65,10 @@ class ComposerStaticInita5f7f27f966a09b460f5f6d86877c6af
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'MongoDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mongodb/mongodb/src',
         ),
         'Matrix\\' => 
         array (

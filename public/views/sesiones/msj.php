@@ -1,13 +1,18 @@
 <?php
-//Sesion cerrada correctamente
-if(isset($_REQUEST['sc'])){ ?>
-	<div class="alert alert-success">La sesión a finalizado con éxito!</div>
-<?php }
+if (isset($_REQUEST['e'])) {
+    $mensajes = [
+        '1' => "Error en las credenciales, revise nuevamente!",
+        '2' => "No hay conexión con el sistema. Intente más tarde.",
+        '3' => "Hubo un error desconocido. Por favor, intente nuevamente.",
+        '4' => "El sistema se encuentra fuera de servicio. Intente más tarde.",
+    ];
 
-//Error, no existe el correo cuando se intenta loguear
-if(isset($_REQUEST['e'])){ ?>
-	<div class="alert alert-danger">Error en las credenciales, revise nuevamente!</div>
-<?php } 
+    $mensaje = $mensajes[$_REQUEST['e']] ?? "Ocurrió un error, por favor intente nuevamente.";
+    echo "<div class='alert alert-danger'>{$mensaje}</div>";
+}
 
+// Mensaje de sesión cerrada correctamente
+if (isset($_REQUEST['sc'])) {
+    echo "<div class='alert alert-success'>La sesión ha finalizado con éxito!</div>";
+}
 ?>
-<!--- FIN DE LOS MENSAJES PERSONALIZADOS -->

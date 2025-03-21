@@ -139,6 +139,56 @@
             "install-path": "../fpdf/fpdf"
         },
         {
+            "name": "jetbrains/phpstorm-stubs",
+            "version": "v2024.3",
+            "version_normalized": "2024.3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-stubs.git",
+                "reference": "0e82bdfe850c71857ee4ee3501ed82a9fc5d043c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/0e82bdfe850c71857ee4ee3501ed82a9fc5d043c",
+                "reference": "0e82bdfe850c71857ee4ee3501ed82a9fc5d043c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "v3.64.0",
+                "nikic/php-parser": "v5.3.1",
+                "phpdocumentor/reflection-docblock": "5.6.0",
+                "phpunit/phpunit": "11.4.3"
+            },
+            "time": "2024-12-14T08:03:12+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "PhpStormStubsMap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP runtime & extensions header files for PhpStorm",
+            "homepage": "https://www.jetbrains.com/phpstorm",
+            "keywords": [
+                "autocomplete",
+                "code",
+                "inference",
+                "inspection",
+                "jetbrains",
+                "phpstorm",
+                "stubs",
+                "type"
+            ],
+            "support": {
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2024.3"
+            },
+            "install-path": "../jetbrains/phpstorm-stubs"
+        },
+        {
             "name": "maennchen/zipstream-php",
             "version": "3.1.2",
             "version_normalized": "3.1.2.0",
@@ -331,6 +381,85 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.1"
             },
             "install-path": "../markbaker/matrix"
+        },
+        {
+            "name": "mongodb/mongodb",
+            "version": "1.21.1",
+            "version_normalized": "1.21.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mongodb/mongo-php-library.git",
+                "reference": "37bc8df3a67ddf8380704a5ba5dbd00e92ec1f6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/37bc8df3a67ddf8380704a5ba5dbd00e92ec1f6a",
+                "reference": "37bc8df3a67ddf8380704a5ba5dbd00e92ec1f6a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.0",
+                "ext-mongodb": "^1.21.0",
+                "php": "^8.1",
+                "psr/log": "^1.1.4|^2|^3"
+            },
+            "replace": {
+                "mongodb/builder": "*"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^12.0",
+                "phpunit/phpunit": "^10.5.35",
+                "rector/rector": "^1.2",
+                "squizlabs/php_codesniffer": "^3.7",
+                "vimeo/psalm": "6.5.*"
+            },
+            "time": "2025-02-28T17:24:20+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "MongoDB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Braun",
+                    "email": "andreas.braun@mongodb.com"
+                },
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com"
+                },
+                {
+                    "name": "Jérôme Tamarelle",
+                    "email": "jerome.tamarelle@mongodb.com"
+                }
+            ],
+            "description": "MongoDB driver library",
+            "homepage": "https://jira.mongodb.org/browse/PHPLIB",
+            "keywords": [
+                "database",
+                "driver",
+                "mongodb",
+                "persistence"
+            ],
+            "support": {
+                "issues": "https://github.com/mongodb/mongo-php-library/issues",
+                "source": "https://github.com/mongodb/mongo-php-library/tree/1.21.1"
+            },
+            "install-path": "../mongodb/mongodb"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -610,6 +739,59 @@
             "install-path": "../psr/http-message"
         },
         {
+            "name": "psr/log",
+            "version": "3.0.2",
+            "version_normalized": "3.0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "time": "2024-09-11T13:17:53+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
+            },
+            "install-path": "../psr/log"
+        },
+        {
             "name": "psr/simple-cache",
             "version": "3.0.0",
             "version_normalized": "3.0.0.0",
@@ -665,5 +847,7 @@
         }
     ],
     "dev": true,
-    "dev-package-names": []
+    "dev-package-names": [
+        "jetbrains/phpstorm-stubs"
+    ]
 }

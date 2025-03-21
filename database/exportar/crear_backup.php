@@ -1,6 +1,7 @@
 <?php
 require("../../app/Controllers/auth.php");
 include("../conexion.php");
+include("../mongo_conexion.php");
 
 // Ruta del backup
 $backupDir = __DIR__ . "/../backups";
@@ -9,8 +10,8 @@ if (!is_dir($backupDir)) {
 }
 
 // Nombre del archivo con timestamp
-$fecha = date("Y-m-d_H-i-s");
-$backupName = "backup_$fecha.sql";
+$fechaArchivo = date("Y-m-d_H-i-s");
+$backupName = "backup_$fechaArchivo.sql";
 $dumpFile = "$backupDir/$backupName";
 
 // Comando mysqldump (ajustar ruta según instalación)
@@ -21,55 +22,58 @@ $command = "$mysqldumpPath --host=$host --user=$user --password=$pass --routines
 // Ejecutar el comando
 exec($command, $output, $result);
 
-if ($result === 0) {
-    // Insertar en la base de datos
-    $sqlInsert = "INSERT INTO respaldos (nombre, ruta) VALUES ('$backupName', '$dumpFile')";
-    $conexion->query($sqlInsert);
+if ($result === 0) { // Si el backup se generó correctamente
+    // Obtener fecha local correctamente
+    $fechaLocal = (new DateTime('now', new DateTimeZone('America/Mexico_City')))->format('Y-m-d H:i:s');
 
-    // Verificar si hay más de 3 registros
-    $sqlCount = "SELECT id FROM respaldos ORDER BY id ASC";
-    $resultCount = $conexion->query($sqlCount);
+    // Insertar registro en MongoDB
+    $backupData = [
+        'nombre' => $backupName,
+        'ruta' => realpath($dumpFile), // Ruta absoluta
+        'fecha_creacion' => $fechaLocal // Fecha en zona horaria local
+    ];
 
-    if ($resultCount->num_rows > 3) {
-        // Obtener el registro más antiguo
-        $sqlOldest = "SELECT id, ruta FROM respaldos ORDER BY id ASC LIMIT 1";
-        $oldestResult = $conexion->query($sqlOldest);
+    $insertResult = $collection->insertOne($backupData);
 
-        if ($oldestResult->num_rows > 0) {
-            $oldestRow = $oldestResult->fetch_assoc();
-            $oldestId = $oldestRow['id'];
-            $oldestFile = $oldestRow['ruta'];
+    if ($insertResult->getInsertedCount() > 0) {
+        $mensaje = "Backup generado y registrado en MongoDB correctamente.";
+        $tipo = "success"; // Alerta de éxito
 
-            // Eliminar el archivo del sistema
-            if (file_exists($oldestFile)) {
-                unlink($oldestFile);
-            }
+        // Verificar cuántos respaldos existen
+        $backups = $collection->find([], ['sort' => ['fecha_creacion' => 1]]);
+        $backups = iterator_to_array($backups);
 
-            // Eliminar el registro de la base de datos
-            $sqlDelete = "DELETE FROM respaldos WHERE id = $oldestId";
-            if ($conexion->query($sqlDelete) === TRUE) {
-                echo "<script>
-                    alert('✅ Backup generado correctamente. Se eliminó el respaldo más antiguo.');
-                    window.location.href = document.referrer;
-                </script>";
+        if (count($backups) > 3) {
+            $oldestBackup = $backups[0]; // Primer elemento (más antiguo)
+            $oldestFilePath = $oldestBackup['ruta'];
+
+            // Eliminar archivo físico
+            if (file_exists($oldestFilePath)) {
+                unlink($oldestFilePath);
+                $mensaje .= "<br>Archivo más antiguo eliminado: {$oldestBackup['nombre']}";
             } else {
-                echo "<script>
-                    alert('❌ Error al eliminar el registro de la BD: " . addslashes($conexion->error) . "');
-                    window.location.href = document.referrer;
-                </script>";
+                $mensaje .= "<br>Archivo no encontrado en la ruta: $oldestFilePath";
             }
+
+            // Eliminar el registro en MongoDB
+            $collection->deleteOne(['_id' => $oldestBackup['_id']]);
+            $mensaje .= "<br>Registro eliminado.";
         }
     } else {
-        echo "<script>
-            alert('✅ Backup generado correctamente.');
-            window.location.href = document.referrer;
-        </script>";
+        $mensaje = "Error al registrar el backup.";
+        $tipo = "danger"; // Alerta de error
     }
 } else {
-    echo "<script>
-        alert('❌ Error al generar el backup.');
-        console.log(" . json_encode($output) . ");
-        window.location.href = document.referrer;
-    </script>";
+    $mensaje = "Error al generar el backup.";
+    $tipo = "danger"; // Alerta de error
 }
+
+// Enviar mensaje de error o éxito con alerta y redirección
+// Codificar los parámetros antes de pasarlos en la URL
+$mensaje = urlencode($mensaje);
+$tipo = urlencode($tipo);
+
+// Redirigir usando header() después de haber enviado los mensajes
+header("Location: /public/views/dbbackup/index.php?mensaje=$mensaje&tipo=$tipo");
+exit(); // Asegurarse de que el script no siga ejecutándose después de la redirección
 ?>
