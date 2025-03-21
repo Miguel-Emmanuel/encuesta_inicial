@@ -57,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Bandera para activar o desactivar la depuración (para pruebas)
 $debug = true;
 function evaluarCondicion($respuesta, $operador, $valor, $debug = true) {
-    $respuesta = trim($respuesta);
-    $valor = trim($valor);
+    $respuesta = ($respuesta);
+    $valor = ($valor);
 
     if ($debug) {
         echo "<pre>";
@@ -166,7 +166,7 @@ foreach ($respuestas as $idPregunta => $respuesta) {
     // Personalizar el mensaje de redirección
     $mensaje = "¡Redirección exitosa!";
     $mensajeCodificado = urlencode($mensaje . $nombreSeccion);
-    header("Location: ../../public/views/encuesta/menu_secciones.php");
+    // header("Location: ../../public/views/encuesta/menu_secciones.php");
     exit;
 }
 
