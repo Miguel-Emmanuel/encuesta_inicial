@@ -37,7 +37,7 @@ if ($result === 0) { // Si el backup se generó correctamente
 
     if ($insertResult->getInsertedCount() > 0) {
         $mensaje = "Backup generado y registrado en MongoDB correctamente.";
-        $tipo = "success"; // Alerta de éxito
+        $tipo = "Listo"; // Alerta de éxito
 
         // Verificar cuántos respaldos existen
         $backups = $collection->find([], ['sort' => ['fecha_creacion' => 1]]);
