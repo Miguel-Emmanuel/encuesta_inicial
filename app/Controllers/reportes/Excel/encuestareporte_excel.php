@@ -1,10 +1,13 @@
 <?php
 session_start();
 require_once('../../../../database/conexion.php');  
-require_once('../../../../vendor/autoload.php'); // Asegúrate de la ruta correcta
+require_once('../../../../vendor/autoload.php'); 
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 try {
     $conexion->set_charset("utf8");
@@ -18,14 +21,9 @@ try {
                 CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno) AS nombre_completo,
                 g.nomenclatura AS grupo, 
                 u.email,
-                p.id AS numero_pregunta,
-                p.pregunta,
                 s.descripcion AS seccion_nombre,
-                r.respuesta,
-                COUNT(p.id) OVER (PARTITION BY s.id) AS total_preguntas_seccion,
-                ROW_NUMBER() OVER (PARTITION BY s.id ORDER BY p.id) AS numero_pregunta_seccion,
-                MIN(p.id) OVER (PARTITION BY s.id) AS primera_pregunta,
-                MAX(p.id) OVER (PARTITION BY s.id) AS ultima_pregunta
+                p.pregunta,
+                r.respuesta
             FROM estudiantes AS e
             INNER JOIN usuarios AS u ON e.usuario_id = u.id
             INNER JOIN estudiante_grupo AS eg ON eg.estudiante_id = e.id
@@ -47,49 +45,110 @@ try {
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
-            // Título
+            // Estilos para encabezados
+            $headerStyle = [
+                'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+                'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '4F81BD']],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER]
+            ];
+            $borderStyle = [
+                'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]]
+            ];
+
+                    // Título principal
             $sheet->setCellValue('A1', 'Reporte de Estudiante');
-            $sheet->mergeCells('A1:L1');
-            $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->mergeCells('A1:C1');
+            $sheet->getStyle('A1')->applyFromArray([
+                'font' => [
+                    'bold' => true,
+                    'size' => 14,
+                    'color' => ['rgb' => 'FFFFFF'], // Color de la fuente (blanco)
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => '2f7e68'], // Color de fondo (azul)
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Centrado
+                ]
+            ]);
 
-            // Datos del estudiante
-            $sheet->setCellValue('A2', 'Matrícula:');
-            $sheet->setCellValue('B2', $primera_fila['matricula']);
-            $sheet->setCellValue('A3', 'Nombre:');
-            $sheet->setCellValue('B3', $primera_fila['nombre_completo']);
-            $sheet->setCellValue('A4', 'Grupo:');
-            $sheet->setCellValue('B4', $primera_fila['grupo']);
-            $sheet->setCellValue('A5', 'Correo:');
-            $sheet->setCellValue('B5', $primera_fila['email']);
 
-            // Encabezados para las preguntas/respuestas
-            $sheet->setCellValue('A7', 'Sección');
-            $sheet->setCellValue('B7', 'Número Pregunta');
-            $sheet->setCellValue('C7', 'Pregunta');
-            $sheet->setCellValue('D7', 'Respuesta');
-            $sheet->setCellValue('E7', 'Total Preguntas Sección');
-            $sheet->setCellValue('F7', 'Num. Pregunta Sección');
-            $sheet->setCellValue('G7', 'Primera Pregunta Sección');
-            $sheet->setCellValue('H7', 'Última Pregunta Sección');
 
-            $fila_excel = 8;
+            // Título Datos Generales
+              $sheet->setCellValue('A3', 'Datos Generales');
+              $sheet->mergeCells('A3:B3');
+              $sheet->getStyle('A3')->applyFromArray(['font' => ['bold' => true, 'size' => 14]]);
+            // Datos generales
+            $sheet->setCellValue('A4', 'Matrícula:');
+            $sheet->setCellValue('B4', $primera_fila['matricula']);
+            $sheet->setCellValue('A5', 'Nombre:');
+            $sheet->setCellValue('B5', $primera_fila['nombre_completo']);
+            $sheet->setCellValue('A6', 'Grupo:');
+            $sheet->setCellValue('B6', $primera_fila['grupo']);
+            $sheet->setCellValue('A7', 'Correo:');
+            $sheet->setCellValue('B7', $primera_fila['email']);
+            // Aplicar bordes a toda la tabla
+            $sheet->getStyle("A3:B7")->applyFromArray($borderStyle);
+         
+
+            // Ajuste de tamaño específico para las columnas
+            $sheet->getColumnDimension('A')->setWidth(20); // Columna A
+            $sheet->getColumnDimension('B')->setWidth(41); // Columna B
+
+            // Ajuste de tamaño específico para las filas
+            $sheet->getRowDimension(3)->setRowHeight(25); // Fila 3
+            $sheet->getRowDimension(4)->setRowHeight(20); // Fila 4
+            $sheet->getRowDimension(5)->setRowHeight(20); // Fila 5
+            $sheet->getRowDimension(6)->setRowHeight(20); // Fila 6
+            $sheet->getRowDimension(7)->setRowHeight(20); // Fila 7
+            
+
+
+
+
+            // Encabezados de tabla
+            $sheet->setCellValue('A10', '');
+            $sheet->setCellValue('B10', 'Pregunta');
+            $sheet->setCellValue('C10', 'Respuesta');
+            $sheet->getStyle('A10:C10')->applyFromArray($headerStyle);
+
+            // Llenado de datos
+            $fila_excel = 11;
+            $seccion_actual = '';
             while ($row = $resultado->fetch_assoc()) {
-                if ($row['pregunta'] !== null) {
-                    $sheet->setCellValue('A' . $fila_excel, $row['seccion_nombre']);
-                    $sheet->setCellValue('B' . $fila_excel, $row['numero_pregunta']);
-                    $sheet->setCellValue('C' . $fila_excel, $row['pregunta']);
-                    $sheet->setCellValue('D' . $fila_excel, $row['respuesta'] ?: 'No respondida');
-                    $sheet->setCellValue('E' . $fila_excel, $row['total_preguntas_seccion']);
-                    $sheet->setCellValue('F' . $fila_excel, $row['numero_pregunta_seccion']);
-                    $sheet->setCellValue('G' . $fila_excel, $row['primera_pregunta']);
-                    $sheet->setCellValue('H' . $fila_excel, $row['ultima_pregunta']);
+                if ($row['seccion_nombre'] !== $seccion_actual) {
+                    // Agregar nombre de la sección como encabezado de grupo
+                    $sheet->setCellValue('A' . $fila_excel, strtoupper($row['seccion_nombre']));
+                    $sheet->mergeCells("A{$fila_excel}:C{$fila_excel}");
+                    $sheet->getStyle("A{$fila_excel}")->applyFromArray([
+                        'font' => ['bold' => true, 'size' => 12],
+                        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D9E1F2']],
+                        'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]
+                    ]);
                     $fila_excel++;
+                    $seccion_actual = $row['seccion_nombre'];
                 }
+
+                // Agregar pregunta y respuesta
+                $sheet->setCellValue('A' . $fila_excel, '');
+                $sheet->setCellValue('B' . $fila_excel, $row['pregunta']);
+                $sheet->setCellValue('C' . $fila_excel, $row['respuesta'] ?: 'No respondida');
+                $fila_excel++;
             }
 
-            foreach (range('A','H') as $col) {
+            // Aplicar bordes a toda la tabla
+            $sheet->getStyle("A9:C{$fila_excel}")->applyFromArray($borderStyle);
+
+            // Autoajustar columnas
+            foreach (range('A', 'C') as $col) {
                 $sheet->getColumnDimension($col)->setAutoSize(true);
             }
+
+
+
+
+
 
             // Limpiar buffer antes de enviar encabezados
             if (ob_get_length()) {

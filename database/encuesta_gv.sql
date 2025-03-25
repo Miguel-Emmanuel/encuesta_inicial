@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.0 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - encuesta_02
+MySQL - 10.4.32-MariaDB : Database - encuesta_gv
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 10.4.32-MariaDB : Database - encuesta_02
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta_02` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta_gv` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `encuesta_02`;
+USE `encuesta_gv`;
 
 /*Table structure for table `clasificacion_estudiantes` */
 
@@ -15522,43 +15522,21 @@ CREATE TABLE `reglas_clasificacion` (
 /*Data for the table `reglas_clasificacion` */
 
 insert  into `reglas_clasificacion`(`id`,`pregunta_id`,`operador`,`valor`,`grupo`,`descripcion`,`created_at`,`updated_at`) values 
-(29,10384,'=','Si','Poblacion Indígena','Papás o abuelos son indígenas','2025-02-21 12:17:31','2025-03-03 18:17:49'),
-(30,10385,'=','Si','Poblacion Indígena','Papás o abuelos hablan o entienden alguna lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:11'),
-(31,10386,'=','Si','Poblacion Indígena','El estudiante habla o entiende una lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:47'),
-(32,10420,'=','SI','Económico','Cursa alguna otra carrera alcutalmente ?','2025-02-21 12:18:18','2025-03-03 18:19:12'),
-(33,10363,'<=','6223.20','Económico','Ingreso mensual familiar <= 6223.20','2025-02-21 12:18:18','2025-03-03 18:19:25'),
-(34,10339,'=','Si','Económico','Trabaja','2025-02-21 12:18:18','2025-03-03 18:19:31'),
-(35,10371,'=','Pensión (renta cerca de la UTVT)','Económico','Renta cerca de la Universidad (foráneo)','2025-02-21 12:18:18','2025-03-03 18:20:06'),
-(36,10301,'=','Si','Económico','Persona depende económicamente del estudiante','2025-02-21 12:18:18','2025-03-03 18:21:10'),
-(37,10375,'IN','De 60 a 90 minutos (1 hr a 1 ½ hrs),De 90 a 120 minutos (1 ½ hrs a 2 hrs),Más de 120 minutos (Más de 2 hrs)','Económico','Tiempo de traslado es superior a 1 hora','2025-02-21 12:18:18','2025-03-03 18:21:50'),
-(38,10387,'IN','Tienes alguna deficiencia auditiva,Problema de movilidad motriz,Otro:','Salud','Condiciones de salud (lentes, problemas motrices , etc)','2025-02-21 12:18:32','2025-03-03 18:25:43'),
-(39,10394,'=','Si','Salud','Ha recibido atencion psicológica o psiquiátrica?','2025-02-21 12:18:32','2025-03-03 18:23:58'),
-(40,10388,'=','Si','Salud','Tiene algun padecimiento cronico','2025-02-21 12:18:32','2025-03-03 18:24:28'),
-(41,10390,'=','Si','Salud','Tiene alguna alergia?','2025-02-21 12:18:32','2025-03-03 18:24:39'),
-(42,10392,'=','Si','Salud','Toma algun medicamento periodicamente?','2025-02-21 12:18:32','2025-03-03 18:24:50'),
-(43,10299,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil (Divorciado, Viudo, Casado, Unión libre).','2025-02-21 12:19:05','2025-03-03 18:26:29');
-
-
-
-
-INSERT  INTO `reglas_clasificacion`(`id`,`pregunta_id`,`operador`,`valor`,`grupo`,`descripcion`,`created_at`,`updated_at`) VALUES 
-(51,70,'=','Si','Poblacion Indígena','Papás o abuelos son indígenas','2025-02-21 12:17:31','2025-03-03 18:17:49'),
-(52,71,'=','Si','Poblacion Indígena','Papás o abuelos hablan o entienden alguna lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:11'),
-(53,72,'=','Si','Poblacion Indígena','El estudiante habla o entiende una lengua indígena','2025-02-21 12:17:31','2025-03-03 18:18:47'),
-(54,94,'=','Si','Económico','Cursa alguna otra carrera alcutalmente ?','2025-02-21 12:18:18','2025-03-03 18:19:12'),
-(55,60,'<=','6223.20','Económico','Ingreso mensual familiar <= 6223.20','2025-02-21 12:18:18','2025-03-03 18:19:25'),
-(56,50,'=','Si','Económico','Trabaja','2025-02-21 12:18:18','2025-03-03 18:19:31'),
-(57,63,'=','Departamento cerca de la Universidad','Económico','Renta cerca de la Universidad (foráneo)','2025-02-21 12:18:18','2025-03-03 18:20:06'),
-(58,12,'!=','no','Económico','Persona depende económicamente del estudiante','2025-02-21 12:18:18','2025-03-03 18:21:10'),
-(59,67,'IN','De 60 a 90 minutos,De 90 a 120 minutos,Más de 120 minutos','Económico','Tiempo de traslado es superior a 1 hora','2025-02-21 12:18:18','2025-03-03 18:21:50'),
-(60,73,'IN','Tienes alguna deficiencia auditiva,Problemas de movilidad motriz,Otro:','Salud','Condiciones de salud (lentes, problemas motrices , etc)','2025-02-21 12:18:32','2025-03-03 18:25:43'),
-(61,80,'=','Si','Salud','Ha recibido atencion psicológica o psiquiátrica?','2025-02-21 12:18:32','2025-03-03 18:23:58'),
-(62,74,'=','Si','Salud','Tiene algun padecimiento cronico','2025-02-21 12:18:32','2025-03-03 18:24:28'),
-(63,76,'=','Si','Salud','Tiene alguna alergia?','2025-02-21 12:18:32','2025-03-03 18:24:39'),
-(64,78,'=','Si','Salud','Toma algun medicamento periodicamente?','2025-02-21 12:18:32','2025-03-03 18:24:50'),
-(65,10,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil (Divorciado, Viudo, Casado, Unión libre).','2025-02-21 12:19:05','2025-03-03 18:26:29'),
-(66,11,'IN','2 hijos(as),Más de 2 hijos(as)','Paternal','2 Hijos o mas.','2025-02-21 12:19:05','2025-03-03 18:26:29');
-
+(29,10384,'=','Si','Poblacion Indígena','Cualquier respuesta distinta de no (habla o entienede una lengua indigena)','2025-02-21 12:17:31','2025-02-21 12:17:31'),
+(30,10385,'=','Si','Poblacion Indígena','Cualquier respuesta distinta de no (habla o entienede una lengua indigena)','2025-02-21 12:17:31','2025-02-21 12:17:31'),
+(31,10386,'=','Si','Poblacion Indígena','Cualquier respuesta distinta de no (habla o entienede una lengua indigena)','2025-02-21 12:17:31','2025-02-21 12:17:31'),
+(32,10420,'=','SI','Económico','Respuesta Si a cursa alguna otra carrera alcutalmente ?','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(33,10363,'<=','6223.20','Económico','Respuesta a ingreso mensual familiar <= 6223.20 en pregunta 60','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(34,10339,'=','Si','Económico','Respuesta Si en pregunta Trabajas?','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(35,10371,'=','Pensión (renta cerca de la UTVT)','Económico','Respuesta a lugar de residencia','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(36,10301,'=','Si','Económico','Respuesta si  a alguien depende de ti ?','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(37,10375,'IN','De 60 a 90 minutos (1 hr a 1 ½ hrs),De 90 a 120 minutos (1 ½ hrs a 2 hrs),Más de 120 minutos (Más de 2 hrs)','Económico','Tiempo de traslado en pregunta','2025-02-21 12:18:18','2025-02-21 12:18:18'),
+(38,10387,'IN','Tienes alguna deficiencia auditiva,Problema de movilidad motriz,Otro:','Salud','Condiciones de salud (lentes, problmeas notices , etc)','2025-02-21 12:18:32','2025-02-21 12:18:32'),
+(39,10394,'=','Si','Salud','Respuesta Si ','2025-02-21 12:18:32','2025-02-21 12:18:32'),
+(40,10388,'=','Si','Salud','Respuesta Si a Padecimiento cronico','2025-02-21 12:18:32','2025-02-21 12:18:32'),
+(41,10390,'=','Si','Salud','Respuesta Si a Tienes alguna alergia?','2025-02-21 12:18:32','2025-02-21 12:18:32'),
+(42,10392,'=','Si','Salud','Respueta Tomas algun medicamento periodicamente?','2025-02-21 12:18:32','2025-02-21 12:18:32'),
+(43,10299,'IN','Divorciad(a),Viudo(a),Unión libre,Casado(a)','Paternal','Estado civil en pregunta 10299','2025-02-21 12:19:05','2025-02-21 12:19:05');
 
 /*Table structure for table `respaldos` */
 

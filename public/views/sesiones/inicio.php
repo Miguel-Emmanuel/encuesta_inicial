@@ -200,12 +200,17 @@ endif;
         <?php endif ?>
 
         <!-- //<a href="../gruposV/filtro.html" class="" > -->
-        <a href="../filtros/index.php?f=2" class="">
+        <!-- <a href="../filtros/index.php?f=2" class="">
             <div class="filtro">
                 Grupos Vulnerables
             </div>
-        </a>
+        </a> -->
 
+        <a href="../filtros/index.php?f=5" class="">
+            <div class="filtro">
+                Grupos Vulnerables 
+            </div>
+        </a>
         <?php if ($rol == 2): ?>
         <div class="filtro">
             Grupo Tutor
