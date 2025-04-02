@@ -1,14 +1,30 @@
 <?php
-include("../mongo_conexion.php"); // Conexión a MongoDB
-include("../conexion.php"); // Conexión a MongoDB
+// Incluir las conexiones a MySQL (respaldos y base de datos principal)
+include("../conexion.php"); // Conexión a MySQL principal
+include("../mongo_conexion.php"); // Conexión a MySQL (tabla respaldos)
+
+// Verificar conexión a MySQL
+if ($conexion->connect_error) {
+    die("Error de conexión a MySQL: " . $conexion->connect_error);
+}
+
+// Verificar conexión a la tabla 'respaldos' en MySQL
+if (!$conexion_respaldo) {
+    die("Error de conexión a la base de datos de respaldos.");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['accion'])) {
         $accion = $_POST['accion'];
         $backupId = $_POST['id'];
-        
-        // Obtén la ruta del respaldo desde la colección de MongoDB usando el ID
-        $backup = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($backupId)]);
+
+        // Obtener la ruta del respaldo desde la tabla 'respaldos' en MySQL usando el ID
+        $query = "SELECT ruta FROM respaldos WHERE id = ?";
+        $stmt = $conexion_respaldo->prepare($query);
+        $stmt->bind_param('i', $backupId); // Usamos 'i' porque el ID es un entero
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $backup = $result->fetch_assoc();
 
         if ($backup) {
             $filePath = $backup['ruta']; // Ruta completa del archivo de respaldo
@@ -59,4 +75,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 ?>

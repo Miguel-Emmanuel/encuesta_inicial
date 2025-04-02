@@ -1,5 +1,6 @@
 <?php
 include("emergency_conexion.php");
+include("../mongo_conexion.php"); // Aquí incluimos el archivo que maneja la conexión a MySQL (con el nombre 'mongo_conexion.php')
 
 // Verifica si la conexión a MySQL fue exitosa
 if (!$conexion_exitosa) {
@@ -15,11 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $accion = $_POST['accion'];
         $backupId = $_POST['id'];
 
-        // Obtén la ruta del respaldo desde MongoDB usando el ID
-        include("../mongo_conexion.php");
-        $backup = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($backupId)]);
+        // Aquí obtenemos la ruta del respaldo desde la base de datos "respaldo" (no desde MongoDB)
+        $query = "SELECT ruta FROM respaldos WHERE id = '$backupId'"; // Cambiar la consulta según tu estructura de base de datos
+        $result = mysqli_query($conexion_respaldo, $query);
 
-        if ($backup) {
+        if ($result && mysqli_num_rows($result) > 0) {
+            // Obtener la ruta del archivo de respaldo
+            $backup = mysqli_fetch_assoc($result);
             $filePath = $backup['ruta']; // Ruta completa del archivo de respaldo
 
             // Verifica si la ruta es válida
