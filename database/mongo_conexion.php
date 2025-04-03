@@ -7,15 +7,21 @@
     use MongoDB\Client;
 
     // Crear conexión con MongoDB
-    $mongoClient = new Client("mongodb://localhost:27017"); // Ajusta la conexión si es necesario
+    $mongoClient = new Client("mongodatabase://localhost:27017"); // Ajusta la conexión si es necesario
     $mongoDB = $mongoClient->encuesta; // Base de datos
     $collection = $mongoDB->respaldos; // Colección */
 
-    $host = "localhost";
-    $user = "root";
-    $password = "";
-    $database = "respaldo";
+    // $host = "localhost";
+    // $user = "root";
+    // $password = "";
+  // $database = "respaldo";
 
+
+    $host = '162.240.99.108';
+$database = 'desarrollosutvt_respaldo_encuesta';
+$user = 'desarrollosutvt_mike';
+$password = 'AIOM020605';
+$charset = 'utf8mb4';
     $conexion_respaldo = null;
 
     try {
@@ -37,7 +43,7 @@ CREATE TABLE `usuarios` (
   `email` VARCHAR(250) NOT NULL,
   `email_verified` TINYINT(1) NOT NULL DEFAULT 0,
   `email_verified_at` TIMESTAMP NULL DEFAULT NULL,
-  `pass` TEXT NOT NULL,
+  `password` TEXT NOT NULL,
   `remember_token` VARCHAR(100) DEFAULT NULL,
   `rol_id` BIGINT(20) UNSIGNED NOT NULL,
   `activo` INT(11) DEFAULT 1,

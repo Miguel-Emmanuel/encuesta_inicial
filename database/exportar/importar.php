@@ -35,10 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Define la ruta de mysql como una variable
-            $mysqlPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
-
+            // $$mysqldumpPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
+//////////////////PARA SERVIDOR ///////////////
+$mysqldumpPath = '"/bin/mysql"';
+/////////////////////////////////////////////////
             // Verifica si mysql.exe existe
-            if (!file_exists($mysqlPath)) {
+            if (!file_exists($$mysqldumpPath)) {
                 echo "<script>
                     alert('❌ No se encuentra mysql.exe en la ruta especificada.');
                     window.history.back(); // Redirecciona a la página anterior
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $connection->close();
 
             // Ahora importa el respaldo de la base de datos
-            $command = "\"$mysqlPath\" --host=$host --user=$user --password=$pass $db < \"$filePath\"";
+            $command = "\"$$mysqldumpPath\" --host=$host --user=$user --password=$pass $db < \"$filePath\"";
             echo "<pre>Comando ejecutado: " . $command . "</pre>";
 
             // Ejecutar el comando para restaurar el respaldo

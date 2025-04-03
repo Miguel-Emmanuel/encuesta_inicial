@@ -63,21 +63,21 @@ ORDER BY s.id ASC, p.id ASC;
                     $this->AliasNbPages(); // Inicializa el alias {nb}
                   // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
 // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
-$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
-$this->Ln(5);
+// $this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
+
 
 
 
 ///////////////Ruta para servidor////////////////
 
-// $imgPath2 = realpath(__DIR__ . '/../../../../public/img/gobierno.png');
-// if (!$imgPath2) {
-//     die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/gobierno.png');
-// }
-// $this->Image($imgPath2, 20, 16, 40);
+$imgPath2 = realpath(__DIR__ . '/../../../../public/img/gobierno.png');
+if (!$imgPath2) {
+    die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/gobierno.png');
+}
+$this->Image($imgPath2, 20, 16, 40);
 
 ////////////////////////////////////////
-
+$this->Ln(5);
 
 // Ubicar la segunda imagen en el lado derecho (coordenada x = ancho de la página - ancho de la imagen)
 $pageWidth = $this->GetPageWidth(); // Obtener el ancho total de la página
@@ -85,24 +85,21 @@ $imageWidth = 40; // El ancho de la imagen
 
 // Calcula la posición x para la segunda imagen en el lado derecho
 $rightX = $pageWidth - $imageWidth - 10; // 10 es el margen desde el borde derecho
-$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
+// $this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
 
 
-<<<<<<< HEAD
-=======
 ///////////////Ruta para servidor////////////////
 
-// $imgPath = realpath(__DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
-// if (!$imgPath) {
-//     die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
-// }
-// $this->Image($imgPath, $rightX, 8, 40); // (archivo, x, y, ancho)  
+$imgPath = realpath(__DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
+if (!$imgPath) {
+    die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
+}
+$this->Image($imgPath, $rightX, 8, 40); // (archivo, x, y, ancho)  
 
 ////////////////////////////////////////
 
 
 
->>>>>>> dev_mike
 //Configurar fuente para el título
                     $this->SetFont('Arial', 'B', 12);
                     $this->Cell(0, 10, '', 0, 1, 'C'); // Texto centrado

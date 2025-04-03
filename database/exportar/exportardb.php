@@ -31,7 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Definir la ruta de mysqldump como una variable
             $mysqldumpPath = '"C:\xampp\mysql\bin\mysqldump.exe"'; // Ajusta la ruta si es necesario
-
+//////////////////PARA SERVIDOR ///////////////
+// $mysqldumpPath = '"/bin/mysqldump"';
+/////////////////////////////////////////////////
             // Determina qué tipo de exportación se necesita
             switch ($accion) {
                 case 'data':

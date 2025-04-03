@@ -7,11 +7,11 @@ $pass = '';
 $charset = 'utf8mb4';
 
 
-// // $host = '162.240.99.108';
-// // $db = 'desarrollosutvt_encuesta';
-// // $user = 'desarrollosutvt_mike';
-// // $pass = 'AIOM020605';
-// // $charset = 'utf8mb4';
+// $host = '162.240.99.108';
+// $db = 'desarrollosutvt_encuesta';
+// $user = 'desarrollosutvt_mike';
+// $pass = 'AIOM020605';
+// $charset = 'utf8mb4';
 try {
     $conexion = new mysqli($host, $user, $pass, $db);
 

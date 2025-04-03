@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.0 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - encuesta
+MySQL - 10.4.32-MariaDB : Database - desarrollosutvt_encuesta
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 10.4.32-MariaDB : Database - encuesta
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`desarrollosutvt_encuesta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `encuesta`;
+USE `desarrollosutvt_encuesta`;
 
 /*Table structure for table `clasificacion_estudiantes` */
 
@@ -15537,6 +15537,7 @@ CREATE TABLE `usuarios` (
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`email`,`email_verified`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`activo`,`created_at`,`updated_at`) values 
+ (1,'Juan','Perez','Lopez','director@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,NULL,NULL),
 (2,'Mike','UTVT','UTVT','ptc@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
 (3,'Mike','Arriola','Ortega','estudiante@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (4,'Jimena','Diaz','Diaz','psicologia@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),
