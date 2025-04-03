@@ -56,8 +56,8 @@ try {
             ];
 
                     // Título principal
-            $sheet->setCellValue('A1', 'Reporte de Estudiante');
-            $sheet->mergeCells('A1:C1');
+                    $sheet->setCellValue('A1', 'Reporte de Estudiante ' . $primera_fila['matricula']);
+                    $sheet->mergeCells('A1:C1');
             $sheet->getStyle('A1')->applyFromArray([
                 'font' => [
                     'bold' => true,
