@@ -63,19 +63,19 @@ ORDER BY s.id ASC, p.id ASC;
                     $this->AliasNbPages(); // Inicializa el alias {nb}
                   // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
 // Ubicar la primera imagen en el lado izquierdo (coordenada x = 10)
-$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
-$this->Ln(5);
+// $this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\gobierno.png', 20, 16, 40); // (archivo, x, y, ancho)
+// $this->Ln(5);
 
 
 
 ///////////////Ruta para servidor////////////////
 
-// $imgPath2 = realpath(__DIR__ . '/../../../../public/img/gobierno.png');
-// if (!$imgPath2) {
-//     die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/gobierno.png');
-// }
-// $this->Image($imgPath2, 20, 16, 40);
-
+$imgPath2 = realpath(__DIR__ . '/../../../../public/img/gobierno.png');
+if (!$imgPath2) {
+    die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/gobierno.png');
+}
+$this->Image($imgPath2, 20, 16, 40);
+$this->Ln(5);
 ////////////////////////////////////////
 
 
