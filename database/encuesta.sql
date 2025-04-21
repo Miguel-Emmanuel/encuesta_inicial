@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.0 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - desarrollosutvt_encuesta
+MySQL - 10.4.32-MariaDB : Database - encuesta
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 10.4.32-MariaDB : Database - desarrollosutvt_encuesta
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`desarrollosutvt_encuesta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`encuesta` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `desarrollosutvt_encuesta`;
+USE `encuesta`;
 
 /*Table structure for table `clasificacion_estudiantes` */
 
