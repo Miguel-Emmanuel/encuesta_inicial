@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Define la ruta de mysql como una variable
-            // $$mysqldumpPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
+            $$mysqldumpPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
 //////////////////PARA SERVIDOR ///////////////
-$mysqldumpPath = '"/bin/mysql"';
+// $mysqldumpPath = '"/bin/mysql"';
 /////////////////////////////////////////////////
             // Verifica si mysql.exe existe
             if (!file_exists($$mysqldumpPath)) {

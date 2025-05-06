@@ -11,17 +11,17 @@
     $mongoDB = $mongoClient->encuesta; // Base de datos
     $collection = $mongoDB->respaldos; // Colección */
 
-    // $host = "localhost";
-    // $user = "root";
-    // $password = "";
-  // $database = "respaldo";
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+  $database = "respaldo";
 
 
-    $host = '162.240.99.108';
-$database = 'desarrollosutvt_respaldo_encuesta';
-$user = 'desarrollosutvt_mike';
-$password = 'AIOM020605';
-$charset = 'utf8mb4';
+//     $host = '162.240.99.108';
+// $database = 'desarrollosutvt_respaldo_encuesta';
+// $user = 'desarrollosutvt_mike';
+// $password = 'AIOM020605';
+// $charset = 'utf8mb4';
     $conexion_respaldo = null;
 
     try {
