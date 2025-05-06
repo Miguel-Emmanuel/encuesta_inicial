@@ -230,11 +230,9 @@ while ($fila = $resultado->fetch_assoc()) {
 // Limpiar buffer antes de generar el PDF
             ob_end_clean();
 
-             $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+            $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
 
             // Descargar el archivo PDF
-<<<<<<< HEAD
-          //$pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
         } else {
             echo "No se encontró información para el estudiante seleccionado.";
         }
