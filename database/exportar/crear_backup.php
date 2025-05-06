@@ -16,7 +16,7 @@ $dumpFile = "$backupDir/$backupName";
 
 // Comando mysqldump (ajustar ruta según instalación)
 $dumpFile = str_replace("\\", "/", $dumpFile);
-$mysqldumpPath = '""D:\Programas\Xampp\mysql\bin\mysqldump.exe""';
+$mysqldumpPath = '"C:\xampp\mysql\bin\mysqldump.exe"'; // Ajusta la ruta si es necesario
 //////////////////PARA SERVIDOR ///////////////
 // $mysqldumpPath = '"/bin/mysqldump"';
 /////////////////////////////////////////////////

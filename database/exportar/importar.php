@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Define la ruta de mysql como una variable
-            $mysqlPath = 'D:\Programas\Xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
+            $mysqlPath = 'C:\xampp\mysql\bin\mysql.exe'; // Ajusta la ruta si es necesario
 
             // Verifica si mysql.exe existe
             if (!file_exists($mysqlPath)) {
