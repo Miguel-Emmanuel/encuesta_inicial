@@ -15537,6 +15537,7 @@ CREATE TABLE `usuarios` (
 /*Data for the table `usuarios` */
 
 insert  into `usuarios`(`id`,`nombre`,`apellido_paterno`,`apellido_materno`,`email`,`email_verified`,`email_verified_at`,`pass`,`remember_token`,`rol_id`,`activo`,`created_at`,`updated_at`) values 
+ (1,'Juan','Perez','Lopez','director@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,NULL,NULL),
 (2,'Mike','UTVT','UTVT','ptc@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),
 (3,'Mike','Arriola','Ortega','estudiante@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),
 (4,'Jimena','Diaz','Diaz','psicologia@gmail.com',1,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),

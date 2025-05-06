@@ -10,7 +10,6 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
@@ -24,30 +23,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `encuesta_02` /*!40100 DEFAULT CHARACTE
 USE `encuesta_02`;
 
 --
--- Table structure for table `colonias`
---
-
-DROP TABLE IF EXISTS `colonias`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `colonias` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL DEFAULT '',
-  `ciudad` varchar(50) DEFAULT NULL,
-  `municipio` int(6) DEFAULT NULL,
-  `asentamiento` varchar(25) DEFAULT NULL,
-  `codigo_postal` int(5) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_municipio` (`municipio`) USING BTREE,
-  KEY `index_nombre` (`nombre`) USING BTREE,
-  KEY `index_asentamiento` (`asentamiento`) USING BTREE,
-  KEY `index_codigo_postal` (`codigo_postal`) USING BTREE,
-  KEY `index_ciudad` (`ciudad`) USING BTREE,
-  CONSTRAINT `fk_municipio` FOREIGN KEY (`municipio`) REFERENCES `municipios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1607710190 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `colonias`
 --
 
@@ -58,25 +33,6 @@ INSERT INTO `colonias` VALUES (280092620,'Felipe Carrillo Puerto','Ciudad Madero
 UNLOCK TABLES;
 
 --
--- Table structure for table `dependencias_preguntas`
---
-
-DROP TABLE IF EXISTS `dependencias_preguntas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dependencias_preguntas` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `pregunta_id` bigint(20) unsigned NOT NULL,
-  `depende_de_pregunta_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_dependencia_pregunta` (`pregunta_id`),
-  KEY `fk_depende_de_pregunta` (`depende_de_pregunta_id`),
-  CONSTRAINT `fk_depende_de_pregunta` FOREIGN KEY (`depende_de_pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_dependencia_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `dependencias_preguntas`
 --
 
@@ -84,23 +40,6 @@ LOCK TABLES `dependencias_preguntas` WRITE;
 /*!40000 ALTER TABLE `dependencias_preguntas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `dependencias_preguntas` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `estados`
---
-
-DROP TABLE IF EXISTS `estados`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estados` (
-  `id` int(4) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `pais` int(3) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `index_pais` (`pais`) USING BTREE,
-  CONSTRAINT `fk_pais` FOREIGN KEY (`pais`) REFERENCES `paises` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `estados`
@@ -113,32 +52,6 @@ INSERT INTO `estados` VALUES (1,'Aguascalientes',1),(2,'Baja California',1),(3,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `estudiante_grupo`
---
-
-DROP TABLE IF EXISTS `estudiante_grupo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estudiante_grupo` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `estudiante_id` bigint(20) unsigned DEFAULT NULL,
-  `grupo_id` int(11) DEFAULT NULL,
-  `tutor_id` int(11) NOT NULL,
-  `periodo_id` bigint(20) unsigned DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `desactivated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `estudiante_id` (`estudiante_id`),
-  KEY `grupo_id` (`grupo_id`),
-  KEY `periodo_id` (`periodo_id`),
-  CONSTRAINT `estudiante_grupo_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE NO ACTION,
-  CONSTRAINT `estudiante_grupo_ibfk_2` FOREIGN KEY (`grupo_id`) REFERENCES `t_grupos` (`id`) ON DELETE NO ACTION,
-  CONSTRAINT `estudiante_grupo_ibfk_3` FOREIGN KEY (`periodo_id`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `estudiante_grupo`
 --
 
@@ -149,34 +62,6 @@ INSERT INTO `estudiante_grupo` VALUES (1,1,1,0,1,0,'2024-10-04 19:39:24',NULL),(
 UNLOCK TABLES;
 
 --
--- Table structure for table `estudiante_respuesta`
---
-
-DROP TABLE IF EXISTS `estudiante_respuesta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estudiante_respuesta` (
-  `id` bigint(200) unsigned NOT NULL AUTO_INCREMENT,
-  `estudiante_id` bigint(200) unsigned NOT NULL,
-  `pregunta_id` bigint(200) unsigned NOT NULL,
-  `opcion_id` bigint(200) unsigned DEFAULT NULL,
-  `seccion_id` bigint(200) unsigned DEFAULT NULL,
-  `respuesta_texto` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `estudiante_respuesta_usuario_id_foreign` (`estudiante_id`),
-  KEY `estudiante_respuesta_pregunta_id_foreign` (`pregunta_id`),
-  KEY `estudiante_respuesta_opcion_id_foreign` (`opcion_id`),
-  KEY `estudiante_respuesta_seccion_id_foreign` (`seccion_id`),
-  CONSTRAINT `estudiante_respuesta_estudiante_id_foreign` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`),
-  CONSTRAINT `estudiante_respuesta_opcion_id_foreign` FOREIGN KEY (`opcion_id`) REFERENCES `opciones_respuesta` (`id`),
-  CONSTRAINT `estudiante_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`),
-  CONSTRAINT `estudiante_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3089 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `estudiante_respuesta`
 --
 
@@ -184,27 +69,6 @@ LOCK TABLES `estudiante_respuesta` WRITE;
 /*!40000 ALTER TABLE `estudiante_respuesta` DISABLE KEYS */;
 /*!40000 ALTER TABLE `estudiante_respuesta` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `estudiantes`
---
-
-DROP TABLE IF EXISTS `estudiantes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estudiantes` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` bigint(20) unsigned DEFAULT NULL,
-  `matricula` text DEFAULT NULL,
-  `telefono` text DEFAULT NULL,
-  `genero` int(11) DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  KEY `grupos_v` (`genero`),
-  CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `estudiantes`
@@ -217,31 +81,6 @@ INSERT INTO `estudiantes` VALUES (1,3,'123456','7226668884',1,1),(2,6,'123456','
 UNLOCK TABLES;
 
 --
--- Table structure for table `grupo_tutor`
---
-
-DROP TABLE IF EXISTS `grupo_tutor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `grupo_tutor` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `grupo_id` int(11) DEFAULT NULL,
-  `tutor_id` bigint(20) unsigned DEFAULT NULL,
-  `periodo_id` bigint(20) unsigned DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `desactivated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `tutor_id` (`tutor_id`),
-  KEY `grupo_id` (`grupo_id`),
-  KEY `periodo_id` (`periodo_id`),
-  CONSTRAINT `grupo_tutor_ibfk_1` FOREIGN KEY (`tutor_id`) REFERENCES `tutores` (`id`) ON DELETE NO ACTION,
-  CONSTRAINT `grupo_tutor_ibfk_2` FOREIGN KEY (`grupo_id`) REFERENCES `t_grupos` (`id`) ON DELETE NO ACTION,
-  CONSTRAINT `grupo_tutor_ibfk_3` FOREIGN KEY (`periodo_id`) REFERENCES `periodos_escolar` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `grupo_tutor`
 --
 
@@ -250,24 +89,6 @@ LOCK TABLES `grupo_tutor` WRITE;
 INSERT INTO `grupo_tutor` VALUES (1,1,2,1,1,'2024-10-04 19:32:36',NULL),(2,2,1,1,1,'2024-10-07 16:51:17',NULL),(3,3,2,1,1,'2024-10-07 16:54:51',NULL);
 /*!40000 ALTER TABLE `grupo_tutor` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `gruposv`
---
-
-DROP TABLE IF EXISTS `gruposv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gruposv` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombregv` text DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
-  `prioridad` int(11) DEFAULT NULL,
-  `tipo` varchar(50) DEFAULT NULL,
-  `activo` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `gruposv`
@@ -280,24 +101,6 @@ INSERT INTO `gruposv` VALUES (5,'Factores Económicos','Estudiantes que proviene
 UNLOCK TABLES;
 
 --
--- Table structure for table `links`
---
-
-DROP TABLE IF EXISTS `links`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `links` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) DEFAULT NULL,
-  `token` text DEFAULT NULL,
-  `activo` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `links`
 --
 
@@ -305,23 +108,6 @@ LOCK TABLES `links` WRITE;
 /*!40000 ALTER TABLE `links` DISABLE KEYS */;
 /*!40000 ALTER TABLE `links` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `municipios`
---
-
-DROP TABLE IF EXISTS `municipios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `municipios` (
-  `id` int(6) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `estado` int(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `index_estado` (`estado`) USING BTREE,
-  CONSTRAINT `fk_estado` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=32059 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `municipios`
@@ -334,29 +120,6 @@ INSERT INTO `municipios` VALUES (1001,'Aguascalientes',1),(1002,'Asientos',1),(1
 UNLOCK TABLES;
 
 --
--- Table structure for table `opciones_respuesta`
---
-
-DROP TABLE IF EXISTS `opciones_respuesta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `opciones_respuesta` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `pregunta_id` bigint(20) unsigned NOT NULL,
-  `seccion_id` bigint(20) unsigned NOT NULL,
-  `opcion1` text NOT NULL,
-  `opcion2` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `opciones_respuesta_pregunta_id_foreign` (`pregunta_id`),
-  KEY `opciones_respuesta_seccion_id_foreign` (`seccion_id`),
-  CONSTRAINT `opciones_respuesta_pregunta_id_foreign` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `opciones_respuesta_seccion_id_foreign` FOREIGN KEY (`seccion_id`) REFERENCES `secciones` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `opciones_respuesta`
 --
 
@@ -364,20 +127,6 @@ LOCK TABLES `opciones_respuesta` WRITE;
 /*!40000 ALTER TABLE `opciones_respuesta` DISABLE KEYS */;
 /*!40000 ALTER TABLE `opciones_respuesta` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `paises`
---
-
-DROP TABLE IF EXISTS `paises`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `paises` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `paises`
@@ -390,23 +139,6 @@ INSERT INTO `paises` VALUES (1,'México');
 UNLOCK TABLES;
 
 --
--- Table structure for table `periodos_escolar`
---
-
-DROP TABLE IF EXISTS `periodos_escolar`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `periodos_escolar` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(50) DEFAULT NULL,
-  `inicio` date DEFAULT NULL,
-  `fin` date DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `periodos_escolar`
 --
 
@@ -415,27 +147,6 @@ LOCK TABLES `periodos_escolar` WRITE;
 INSERT INTO `periodos_escolar` VALUES (1,'Septiembre - Diciembre 2024','2024-09-02','2024-12-20',1);
 /*!40000 ALTER TABLE `periodos_escolar` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `preguntas`
---
-
-DROP TABLE IF EXISTS `preguntas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `preguntas` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `pregunta` text NOT NULL,
-  `depende_p` text DEFAULT NULL,
-  `tipo` varchar(255) NOT NULL,
-  `seccion_id` varchar(255) NOT NULL,
-  `activo` tinyint(1) NOT NULL,
-  `ayuda` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10444 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `preguntas`
@@ -448,25 +159,6 @@ INSERT INTO `preguntas` VALUES (10296,'CURP','','curp','1',1,'','2025-02-20 00:3
 UNLOCK TABLES;
 
 --
--- Table structure for table `preguntas_gruposv`
---
-
-DROP TABLE IF EXISTS `preguntas_gruposv`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `preguntas_gruposv` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `pregunta_id` bigint(20) unsigned NOT NULL,
-  `grupov_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pregunta_id` (`pregunta_id`),
-  KEY `grupov_id` (`grupov_id`),
-  CONSTRAINT `preguntas_gruposv_ibfk_1` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `preguntas_gruposv_ibfk_2` FOREIGN KEY (`grupov_id`) REFERENCES `gruposv` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `preguntas_gruposv`
 --
 
@@ -474,25 +166,6 @@ LOCK TABLES `preguntas_gruposv` WRITE;
 /*!40000 ALTER TABLE `preguntas_gruposv` DISABLE KEYS */;
 /*!40000 ALTER TABLE `preguntas_gruposv` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `programa_edu`
---
-
-DROP TABLE IF EXISTS `programa_edu`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `programa_edu` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `grado` varchar(20) DEFAULT NULL,
-  `nombre` text DEFAULT NULL,
-  `clave` varchar(10) DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `programa_edu`
@@ -505,22 +178,6 @@ INSERT INTO `programa_edu` VALUES (1,'TSU','TSU en TI, área Desarrollo de Softw
 UNLOCK TABLES;
 
 --
--- Table structure for table `respaldos`
---
-
-DROP TABLE IF EXISTS `respaldos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `respaldos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL DEFAULT '',
-  `ruta` text NOT NULL DEFAULT '',
-  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `respaldos`
 --
 
@@ -529,25 +186,6 @@ LOCK TABLES `respaldos` WRITE;
 INSERT INTO `respaldos` VALUES (2,'backup_2025-02-27_19-33-26.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-27_19-33-26.sql','2025-02-27 19:33:27'),(3,'backup_2025-02-27_19-33-31.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-27_19-33-31.sql','2025-02-27 19:33:31'),(4,'backup_2025-02-27_19-33-46.sql','C:/Users/eduhu/Documents/Proyectos/EncuestaInicial/database/exportar/../backups/backup_2025-02-27_19-33-46.sql','2025-02-27 19:33:46');
 /*!40000 ALTER TABLE `respaldos` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `respuestas`
---
-
-DROP TABLE IF EXISTS `respuestas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `respuestas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pregunta_id` varchar(50) NOT NULL,
-  `estudiante_id` bigint(20) unsigned NOT NULL,
-  `respuesta` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `estudiante_id` (`estudiante_id`),
-  CONSTRAINT `respuestas_ibfk_1` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=107378 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `respuestas`
@@ -561,23 +199,6 @@ INSERT INTO `respuestas` VALUES (89897,'10325',157,'jm_69oso@hotmail.com','2025-
 UNLOCK TABLES;
 
 --
--- Table structure for table `roles`
---
-
-DROP TABLE IF EXISTS `roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roles` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `roles`
 --
 
@@ -586,23 +207,6 @@ LOCK TABLES `roles` WRITE;
 INSERT INTO `roles` VALUES (1,'Director de Carrera','Hola',NULL,NULL),(2,'PTC/Tutor','Hola',NULL,NULL),(3,'Estudiante','Hola',NULL,NULL),(4,'Psicología','Hola',NULL,NULL);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `secciones`
---
-
-DROP TABLE IF EXISTS `secciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `secciones` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `secciones`
@@ -615,25 +219,6 @@ INSERT INTO `secciones` VALUES (1,'general','Datos Generales',NULL,NULL),(2,'eme
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_grupos`
---
-
-DROP TABLE IF EXISTS `t_grupos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_grupos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` text DEFAULT NULL,
-  `programa_e` bigint(20) unsigned DEFAULT NULL,
-  `nomenclatura` varchar(15) DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `programa_e` (`programa_e`),
-  CONSTRAINT `t_grupos_ibfk_1` FOREIGN KEY (`programa_e`) REFERENCES `programa_edu` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `t_grupos`
 --
 
@@ -642,25 +227,6 @@ LOCK TABLES `t_grupos` WRITE;
 INSERT INTO `t_grupos` VALUES (1,'DSM',1,'DSM-108',1),(2,'IRD',2,'IRD - 11',1),(3,'IDGS',12,'IDGS - 101',1);
 /*!40000 ALTER TABLE `t_grupos` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `tutores`
---
-
-DROP TABLE IF EXISTS `tutores`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tutores` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `usuario_id` bigint(20) unsigned DEFAULT NULL,
-  `clave_sp` text DEFAULT NULL,
-  `telefono` text DEFAULT NULL,
-  `activo` int(11) DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `tutores_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `tutores`
@@ -673,34 +239,6 @@ INSERT INTO `tutores` VALUES (1,17,'00794492','7226598068',1),(2,18,'1129599','7
 UNLOCK TABLES;
 
 --
--- Table structure for table `usuarios`
---
-
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usuarios` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `apellido_paterno` varchar(50) NOT NULL,
-  `apellido_materno` varchar(50) NOT NULL,
-  `email` varchar(250) NOT NULL,
-  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `pass` text NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `rol_id` bigint(20) unsigned NOT NULL,
-  `activo` int(11) DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`) USING HASH,
-  KEY `users_rol_id_foreign` (`rol_id`),
-  CONSTRAINT `users_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `usuarios`
 --
 
@@ -709,22 +247,13 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES (1,'Director','Admin','General','director@gmail.com',1,'2025-02-27 15:56:22','$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,1,1,'2025-02-27 15:56:22','2025-02-27 15:56:22'),(2,'Mike','UTVT','UTVT','ptc@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),(3,'Mike','Arriola','Ortega','estudiante@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(4,'Jimena','Diaz','Diaz','psicologia@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,4,1,NULL,NULL),(5,'Eduh','Olvera','Aldama','eduholvera@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),(6,'Fernanda','Gomez','Alcantara','fernanda@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(7,'Ángel','Camacho','Linares','angel@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(8,'Arturo','De Jesús','Gonzales','arturo@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(9,'Rodrigo','Castillo','Ortega','rodrigo@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(10,'Diego','Castañeda','Ramirez','diego@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(11,'Jesús','Buen','Día','jesus@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(12,'Emiliano','Bermudez','Olivares','emi@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(13,'Carolina','Garcia','Garcia','caro@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(14,'Jorge','Castañeda','Campuzano','jorge@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(15,'Ian','Gonzales','Gomez','ian@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(16,'Eduardo','edu','edu','eduard@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(17,'Pamela Elisa','Rosales','Aviles','pamela.rosales@utvtol.edu.mx',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),(18,'Miguel Angel','Orona','Lopez','miguel.orona@utvtol.edu.mx',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,2,1,NULL,NULL),(19,'Mike estudiante','Arriola ','Ortega','al222010230@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(22,'Gustavo ','Ovando','Moreno','al222410815@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(23,'Jackson Alejandro','Flores','Vega','al222410895@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(24,'VALENTIN','CARLOS','ESQUILA','al222410922@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(25,'Uriel Tonatuh ','Gonzalez','Miranda','al222410834@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(26,'Marco Antonio ','Guadarrama','Rojas ','al222410861@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(27,'XIMENA','CORDERO','MONTOYA ','al222410938@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(28,'Jesus Ivan','Romero','Ortega','al222410828@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(29,'Stephany Guadalupe','Araujo','Rubi','al222410966@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(30,'Angélica Lucero','Mejía','Soriano','alms222411196@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(31,'Alex Garet ','Atilano','Crisoforo','al222411174@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(32,'YULIANA LIZETH','BETANCOURT ','MEDINA','al222411198@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(33,'Aline Iveth','Vazquez','Diaz','al222410848@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(34,'Nadia Monserrath','Diaz','Mayen','al222410965@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(35,'Katia Jimena ','Reza','Sánchez','al222411208@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(36,'Atziri Sarai ','Rodríguez','Gómez','al222411180@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(37,'Alan Osiris','Almaraz','Tovar','al222410962@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(38,'Cristopher ','Quiroz','Perez','al222411204@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(39,'Santiago Adonai','Gutierrez ','Morales','al2024222410927@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(40,'Brenda','Escobar','Cabrera','al222410840@gmai.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(41,'Alison Betzabeth','fuentes','de Jesús','al222411583@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(42,'Alondra Estefany  ','Tellez','Salcedo','al222410958@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(43,'Alexander','Peña','Hernández','al222410899@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(44,'Uriel','Rodríguez ','Castillo ','al22241118@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(45,'Angel Ivan ','Jiménez','Hernández','al222410830@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(46,'Betzabeth Dayanm ','Ruiz','Trujillo','al222410983@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(47,'Leonardo Alejandro ','Martinez ','Aquiles','al222411197@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(48,'Diego Abraham','Octaviano','Ramirez','al222410100@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(49,'pedro','rojas','hurtado','al222410846@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(50,'Juan Pablo','Romero ','Ortega','al222410888@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(51,'Alan','Alcantara','Valencia','al222410908@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(52,'Angel de Jesus ','Martinez','Cervantes','al222410961@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(53,'KEIRA','MORALES','PIÑA','al222410913@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(54,'Ximena','Florencio','Cisneros','la22410863@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(55,'DIEGO ALVARO','ARRIAGA','PEREZ','al222410845@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(56,'Adolfo Angel ','Esquivel','Aguilar ','al222410890@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(57,'maria de la cruz ','jardon','medina','al222410823@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(58,'JAEL SEBASTIAN','SEGURA','SEGURA','al222410981@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(59,'Manuel Isaac  ','Garduño','Hernandez','al222410872@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(60,'Consuelo Estrella','Posadas','Garcia','al222410083@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(61,'Yire Abdiel','Ramirez','Sanchez','al222411183@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(62,'hanz andres ','gonzalez','ocampo','al222410917@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(63,'Gustavo Angel ','Palomares ','Duro','gustavopalomaresduro@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(64,'Fernanda','Ramirez','Garcia','al222410980@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(65,'bianca','gutierrez','diaz','al222411050@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(66,'Crhystopher Kevin ','Luis','Esteban ','al222411218@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(67,'Hugo','Hernández','Reyes','al222411339@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(68,'Victor Manuel','De la Cruz','Alcántara','al222410860@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(69,'Irving Alejandro','Gonzalez','Bermudez','al222411210@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(70,'Giovanni','Calzada','Castañeda','al222411192@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(71,'Jonathan ','Anduaga','Gonzalez','al222411173@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(72,'cassandra','medina','lerma','al222410826@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(73,'Dayanna Consuelo ','Reyes','García','al222410870@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(74,'miguel','nava ','meza','al2224109946@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(75,'Gabriel Jair','Bernal','De Jesus','al222410880@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(76,'Jaredtzi Aide','Noyola','Sanabria','al222410893@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(77,'Sebastian Uriel','Mendez','Flores','al222410637@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(78,'Luis Rodrigo','Briseño','Valencia','al222411202@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(79,'Gabriel','Chavez','Enriquez','al222411175@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(80,'Nilzehat Azucena','García','Guadarrama','al222410926@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(81,'Sebastian Yael','Martinez ','Martinez','al419085307@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(82,'Cristhian','Hernandez','Salinas','al224550053@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(83,'Mai Adiyareth','Ponce','Sanchez','al222411179@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(84,'DIEGO','GUERRERO','RAMIREZ','al222410887@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(85,'Alexandra ','Banderilla ','Romero ','al222410847@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(86,'Santiago','Farfan','Anduaga','al222411107@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(87,'Diego','Hernandez','Barranco','al222410837@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(88,'Kevin Horacio ','Dominguez','Posadas','al222410875@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(89,'Rita Karla Rubí ','Botello ','Rodríguez ','al222410871@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(90,'Kevin','Quiroz','Balderas','al222410936@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(91,'Rhaziel ','García ','López ','al222410822@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(92,'Abril Adilene','Hernandez','Romero','al222411216@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(93,'Alexa','Díaz ','Loperena','al222410877@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(94,'Edith','Villanueva','Vázquez','al222410792@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(95,'alexis ','valdes','avila','al222411219@gmail.ccom',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(96,'MONICA  WENDOLYNE','ROMERO','GONZALEZ','al222410984@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(97,'Karol Masiel ','Morales ','de la Cruz ','al222410975@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(98,'Monica Guadalupe','Flores','Segundo','al222410914@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(99,'David','García','Genaro','al222410881@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(100,'Raul','Valdes','Villavicencio ','al222411222@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(101,'Antonio','Ruaro','Pedraza','al222411207@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(102,'Zuheidi','Mendoza','Sanchez','al222410849@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(103,'Samar Alejandra','Arriaga','Mancera','al222411181@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(104,'Jesus Efren ','Granda ','Pichardo','al222411176@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(105,'Christopher Alejandro','Henandez ','Salas','al222411597@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(106,'Levid','Fuentes','Mireles','al242410892@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(107,'Sharon Mariel ','Hernandez ','Guzman ','al222410960@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(108,'Zadquiel Emanuel','Jimenez','Sanchez','al222410952@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(109,'Angel','Ventura','Gonzalez','al222411205@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(110,'Alexandre ','Morales','Almeida ','al222410829@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(111,'Luis Angel','Hernández ','Piña','al222410825@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(112,'cristian ','ruiz','flores','al222410992@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(113,'Evelyn ','Elías ','Vicencio ','al222411323@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(114,'Gustavo Arael','Consuelos','Hernández','al222411217@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(115,'Andry Gabriel','Rosales ','Loyo','al222410919@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(116,'Yocelin','Meliton','Esquivel','esquivelyocelin9@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(117,'Einar Ivan','Lazcano','Luna','al222411190@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(118,'Itzel','Martínez ','Bonifacio','al222410968@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(119,'LIZET ESTRELLA','PALOMARES','VILLEGAS','al222410876@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(120,'Dorian Brisa','Robledo','Padilla','al222411200@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(121,'Monica Daely','Isidro','Silva','al222410859@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(122,'Oliver Alexander','Escobar','Maya','al222410891@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(123,'maria fernanda ','flores ','flores','al222410931@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(124,'Eduardo','Gonzalez','Villalva','al222410988@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(125,'Pablo','Ramírez','Romero','al222410915@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(126,'ulises','zamoza','nava','al222411203@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(127,'Dylan Santiago','Alonso','Carrillo','al22410852@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(128,'Alexzandro','Garay','Lorenzo','al222410901@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(129,'Ricardo','Diaz','Avila','al222411209@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(130,'Angel Rafael','Rojas','Caballero','al222410939@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(131,'Marisol ','Cortez','González ','al222410909@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(132,'Danna Perla ','Garcia','Guzman','al222411172@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(133,'moises michel','bolaños','martinez','al222410038@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(134,'Jorge Abraham','Guerra','Gutiérrez','al222410884@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(135,'Juan Pablo','Vega','Lopez','al222410944@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(136,'NAHUM YAVET ','CASTILLO','RAMIREZ','al222411182@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(137,'Guadalupe Itzel ','Pineda','Cisneros','lupiispineda@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(138,'Uriel ','Rodríguez ','Castillo','al22241118-duplicado-116@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(139,'AXEL EMANUEL','HERNANDEZ','TOMAS','222410295@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(140,'Andrea ','Sanabria','Almonte','al222410945@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(141,'Angel Gabriel ','Torrez','Garcia','al222410843@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(142,'Bryan ','Torres','Jimenez','al222410943@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(143,'Miriam Sarahi ','Hernández ','Fuentes ','mirih222410042@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(144,'Valeria','Peña','Romero','al222410959@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(145,'Ana Karen ','Miranda','Huerta ','al222411177@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(146,'Mario Alberto','Almeida','Ancira','al222410916@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(147,'Isaac','Diaz','Sanchez','isaac.diazsanchez196@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(148,'Samuel','Gutierrez','Ugalde','al222410897@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(149,'Aldo emmanuel','Rubio','Valencia ','al2224109030@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(150,'Santiago Angel','MORENO','FLORES','al222410898@gmal.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(151,'Manuel','Rodriguez','Calderon','al222410850@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(152,'pedro ariel','paniagua','gonzalez','al24552001@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(153,'Victoria ','García ','Herrera','al222411195@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(154,'Rafael','Telles','Medrano','al222411168@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(155,'Diego','Garcia','Bustamante','diegobustamante535@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(156,'MARIA GUADALUPE','RUIZ','ROMERO','al222410977@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(157,'Osvaldo','Salinas','Aranda','al222411167@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(158,'Ailen','Zagaceta ','Garcia ','al222410947@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL),(159,'Cristian Antonio ','Sara ','Escutia ','al222410824@gmail.com',0,NULL,'$2y$10$aER9aGyQDx3kDNS8I8tUseDYXSRTMB6eiGZ6XwjJH768ur7Uczj2C',NULL,3,1,NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'encuesta_02'
---
-
---
--- Dumping routines for database 'encuesta_02'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-20 12:36:44
+-- Dump completed on 2025-04-01 19:49:16

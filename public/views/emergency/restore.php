@@ -1,10 +1,12 @@
 <?php
-
 include("importmodal.php");
+include("../../../database/mongo_conexion.php"); // Conexión a MySQL de respaldo
+$query = "SELECT id, nombre, ruta, fecha_creacion FROM respaldos ORDER BY fecha_creacion DESC";
+$result = mysqli_query($conexion_respaldo, $query);
 ?>
 
 <style>
-    body{
+    body {
         padding: 5% 15% 15% 15%;
     }
 </style>
@@ -14,7 +16,7 @@ include("importmodal.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Respaldos de Base de Datos</title>`
+    <title>Respaldos de Base de Datos</title>
 </head>
 <body>
     <table style="width: 100%;">
@@ -35,21 +37,20 @@ include("importmodal.php");
         </thead>
         <tbody>
             <?php
-            include("../../../database/mongo_conexion.php");
-            // Obtener los respaldos desde MongoDB
-            $respaldos = $collection->find([], ['sort' => ['fecha_creacion' => -1]]);
-            foreach ($respaldos as $backup): ?>
+            // Obtener los respaldos desde MySQL
+
+            while ($backup = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                    <td scope="row"><?php echo $backup['fecha_creacion'] ?></td>
-                    <td scope="row"><?php echo $backup['nombre'] ?></td>
+                    <td scope="row"><?php echo $backup['fecha_creacion']; ?></td>
+                    <td scope="row"><?php echo $backup['nombre']; ?></td>
                     <td scope="row" style="text-align:center;">
                         <button class="btn" type="submit" style="background-color: #1976D2;" 
-                            data-bs-toggle="modal" data-bs-target="#importBackdrop_<?php echo $backup['_id'] ?>">
+                            data-bs-toggle="modal" data-bs-target="#importBackdrop_<?php echo $backup['id']; ?>">
                             <box-icon name='upload' color='#fffefe'></box-icon>
                         </button>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </tbody>
     </table>
 </body>

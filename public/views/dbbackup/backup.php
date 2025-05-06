@@ -18,8 +18,8 @@ if (isset($_GET['mensaje']) && isset($_GET['tipo'])) {
         </script>";
 }
 
-include("importmodal.php");
 include("exportmodal.php");
+include("../../../database/mongo_conexion.php"); // Ahora es MySQL
 ?>
 
 <!DOCTYPE html>
@@ -62,21 +62,22 @@ include("exportmodal.php");
         </thead>
         <tbody>
             <?php
-            include("../../../database/mongo_conexion.php");
-            // Obtener los respaldos desde MongoDB
-            $respaldos = $collection->find([], ['sort' => ['fecha_creacion' => -1]]);
-            foreach ($respaldos as $backup): ?>
+            // Obtener los respaldos desde MySQL
+            $query = "SELECT id, nombre, ruta, fecha_creacion FROM respaldos ORDER BY fecha_creacion DESC";
+            $result = mysqli_query($conexion_respaldo, $query);
+
+            while ($backup = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                    <td scope="row"><?php echo $backup['fecha_creacion'] ?></td>
-                    <td scope="row"><?php echo $backup['nombre'] ?></td>
+                    <td scope="row"><?php echo $backup['fecha_creacion']; ?></td>
+                    <td scope="row"><?php echo $backup['nombre']; ?></td>
                     <td scope="row" style="text-align:center;">
                         <button class="btn" type="submit" style="background-color: #388E3C;" 
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo $backup['_id'] ?>">
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop_<?php echo $backup['id']; ?>">
                             <box-icon name='download' color='#fffefe'></box-icon>
                         </button>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </tbody>
     </table>
 </body>

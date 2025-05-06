@@ -1,7 +1,7 @@
 <?php
 require("../../app/Controllers/auth.php");
-include("../conexion.php");
-include("../mongo_conexion.php");
+include("../conexion.php"); // Conexión a MySQL
+include("../mongo_conexion.php"); // Este archivo ya está para MySQL
 
 // Ruta del backup
 $backupDir = __DIR__ . "/../backups";
@@ -17,7 +17,11 @@ $dumpFile = "$backupDir/$backupName";
 // Comando mysqldump (ajustar ruta según instalación)
 $dumpFile = str_replace("\\", "/", $dumpFile);
 $mysqldumpPath = '"C:\xampp\mysql\bin\mysqldump.exe"';
+//////////////////PARA SERVIDOR ///////////////
+// $mysqldumpPath = '"/bin/mysqldump"';
+/////////////////////////////////////////////////
 $command = "$mysqldumpPath --host=$host --user=$user --password=$pass --routines --events --databases $db > \"$dumpFile\"";
+
 
 // Ejecutar el comando
 exec($command, $output, $result);
@@ -26,22 +30,19 @@ if ($result === 0) { // Si el backup se generó correctamente
     // Obtener fecha local correctamente
     $fechaLocal = (new DateTime('now', new DateTimeZone('America/Mexico_City')))->format('Y-m-d H:i:s');
 
-    // Insertar registro en MongoDB
-    $backupData = [
-        'nombre' => $backupName,
-        'ruta' => realpath($dumpFile), // Ruta absoluta
-        'fecha_creacion' => $fechaLocal // Fecha en zona horaria local
-    ];
+    // Insertar registro en MySQL (en la tabla 'respaldos')
+    $insertQuery = "INSERT INTO respaldos (nombre, ruta, fecha_creacion) VALUES (?, ?, ?)";
+    $stmt = $conexion_respaldo->prepare($insertQuery);
+    $stmt->bind_param("sss", $backupName, realpath($dumpFile), $fechaLocal);
 
-    $insertResult = $collection->insertOne($backupData);
-
-    if ($insertResult->getInsertedCount() > 0) {
-        $mensaje = "Backup generado y registrado en MongoDB correctamente.";
+    if ($stmt->execute()) {
+        $mensaje = "Backup generado y registrado en la base de datos correctamente.";
         $tipo = "Listo"; // Alerta de éxito
 
         // Verificar cuántos respaldos existen
-        $backups = $collection->find([], ['sort' => ['fecha_creacion' => 1]]);
-        $backups = iterator_to_array($backups);
+        $query = "SELECT * FROM respaldos ORDER BY fecha_creacion ASC"; // Ordenar por fecha
+        $result = $conexion_respaldo->query($query);
+        $backups = $result->fetch_all(MYSQLI_ASSOC);
 
         if (count($backups) > 3) {
             $oldestBackup = $backups[0]; // Primer elemento (más antiguo)
@@ -55,12 +56,15 @@ if ($result === 0) { // Si el backup se generó correctamente
                 $mensaje .= "<br>Archivo no encontrado en la ruta: $oldestFilePath";
             }
 
-            // Eliminar el registro en MongoDB
-            $collection->deleteOne(['_id' => $oldestBackup['_id']]);
-            $mensaje .= "<br>Registro eliminado.";
+            // Eliminar el registro en MySQL
+            $deleteQuery = "DELETE FROM respaldos WHERE id = ?";
+            $stmt = $conexion_respaldo->prepare($deleteQuery);
+            $stmt->bind_param("i", $oldestBackup['id']);
+            $stmt->execute();
+            $mensaje .= "<br>Registro eliminado de la base de datos.";
         }
     } else {
-        $mensaje = "Error al registrar el backup.";
+        $mensaje = "Error al registrar el backup en la base de datos.";
         $tipo = "danger"; // Alerta de error
     }
 } else {

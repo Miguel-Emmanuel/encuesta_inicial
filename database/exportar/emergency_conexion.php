@@ -1,8 +1,15 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "encuesta_02";
+// $host = "localhost";
+// $user = "root";
+// $pass = "";
+// $db = "encuesta_02";
+
+
+$host = '162.240.99.108';
+$db = 'desarrollosutvt_encuesta';
+$user = 'desarrollosutvt_mike';
+$pass = 'AIOM020605';
+$charset = 'utf8mb4';
 
 $conexion = null;
 $conexion_exitosa = false; // Variable para indicar si la conexión fue exitosa
