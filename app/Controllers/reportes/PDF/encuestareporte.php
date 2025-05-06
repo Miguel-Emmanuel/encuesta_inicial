@@ -233,7 +233,8 @@ while ($fila = $resultado->fetch_assoc()) {
              $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
 
             // Descargar el archivo PDF
-            //$pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
+<<<<<<< HEAD
+          //$pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
         } else {
             echo "No se encontró información para el estudiante seleccionado.";
         }
