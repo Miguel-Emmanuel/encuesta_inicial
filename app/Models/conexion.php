@@ -1,14 +1,14 @@
 <?php 
-// $host="localhost";
-// $user="root";
-// $pass="";
-// $dbname="encuesta";
+$host="localhost";
+$user="root";
+$pass="";
+$dbname="encuesta_02";
 
 
-$host="162.240.99.108";
-$user="desarrollosutvt_mike";
-$pass="AIOM020605";
-$dbname="desarrollosutvt_encuesta";
+// $host="162.240.99.108";
+// $user="desarrollosutvt_mike";
+// $pass="AIOM020605";
+// $dbname="desarrollosutvt_encuesta";
 
 
 $conexion= new mysqli($host, $user, $pass, $dbname);

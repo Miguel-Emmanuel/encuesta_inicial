@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "encuesta";
+$db = "encuesta_02";
 
 // $host = '162.240.99.108';
 // $db = 'desarrollosutvt_encuesta';
