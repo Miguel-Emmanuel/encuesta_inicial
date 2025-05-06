@@ -67,6 +67,7 @@ ORDER BY s.id ASC, p.id ASC;
 // $this->Ln(5);
 
 
+
 ///////////////Ruta para servidor////////////////
 
 $imgPath2 = realpath(__DIR__ . '/../../../../public/img/gobierno.png');
@@ -75,8 +76,8 @@ if (!$imgPath2) {
 }
 $this->Image($imgPath2, 20, 16, 40);
 $this->Ln(5);
-
 ////////////////////////////////////////
+$this->Ln(5);
 
 // Ubicar la segunda imagen en el lado derecho (coordenada x = ancho de la página - ancho de la imagen)
 $pageWidth = $this->GetPageWidth(); // Obtener el ancho total de la página
@@ -84,18 +85,20 @@ $imageWidth = 40; // El ancho de la imagen
 
 // Calcula la posición x para la segunda imagen en el lado derecho
 $rightX = $pageWidth - $imageWidth - 10; // 10 es el margen desde el borde derecho
-$this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
+// $this->Image('C:\xampp\htdocs\EncuestaInicial\public\img\Logo_UTVT.jpg', $rightX, 8, 40); // (archivo, x, y, ancho)                   
 
 
 ///////////////Ruta para servidor////////////////
 
-// $imgPath = realpath(__DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
-// if (!$imgPath) {
-//     die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
-// }
-// $this->Image($imgPath, $rightX, 8, 40); // (archivo, x, y, ancho)  
+$imgPath = realpath(__DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
+if (!$imgPath) {
+    die("No se encontró la imagen en la ruta: " . __DIR__ . '/../../../../public/img/Logo_UTVT.jpg');
+}
+$this->Image($imgPath, $rightX, 8, 40); // (archivo, x, y, ancho)  
 
 ////////////////////////////////////////
+
+
 
 //Configurar fuente para el título
                     $this->SetFont('Arial', 'B', 12);
@@ -227,10 +230,11 @@ while ($fila = $resultado->fetch_assoc()) {
 // Limpiar buffer antes de generar el PDF
             ob_end_clean();
 
-            $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
+             $pdf->Output('I', 'Reporte_Estudiante.pdf'); // Mostrar en el navegador
 
             // Descargar el archivo PDF
-            // $pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
+<<<<<<< HEAD
+          //$pdf->Output('D', 'Reporte_Estudiante_' . $primera_fila['matricula'] . '.pdf');
         } else {
             echo "No se encontró información para el estudiante seleccionado.";
         }
