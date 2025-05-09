@@ -17,9 +17,9 @@ $stmt->close();
 
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "<pre>";
-    var_dump($_POST);
-    echo "</pre>";
+    // echo "<pre>";
+    // var_dump($_POST);
+    // echo "</pre>";
     // exit;
     // Obtener respuestas del formulario
     $respuestas = $_POST['respuestas'];
@@ -61,10 +61,10 @@ function evaluarCondicion($respuesta, $operador, $valor, $debug = true) {
     $valor = ($valor);
 
     if ($debug) {
-        echo "<pre>";
-        echo ">>> Entré a evaluarCondicion <<<\n";
-        var_dump("Comparando respuesta: [" . $respuesta . "] con valor: [" . $valor . "] usando operador: " . $operador);
-        echo "</pre>";
+        // echo "<pre>";
+        // echo ">>> Entré a evaluarCondicion <<<\n";
+        // var_dump("Comparando respuesta: [" . $respuesta . "] con valor: [" . $valor . "] usando operador: " . $operador);
+        // echo "</pre>";
     }
     
     switch ($operador) {
@@ -166,7 +166,7 @@ foreach ($respuestas as $idPregunta => $respuesta) {
     // Personalizar el mensaje de redirección
     $mensaje = "¡Redirección exitosa!";
     $mensajeCodificado = urlencode($mensaje . $nombreSeccion);
-    // header("Location: ../../public/views/encuesta/menu_secciones.php");
+     header("Location: ../../public/views/encuesta/menu_secciones.php");
     exit;
 }
 
